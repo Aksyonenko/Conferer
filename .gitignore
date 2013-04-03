@@ -1,0 +1,4 @@
+#Ignore some of the Visual Studio files & folders
+bin/
+obj/
+*.suo
