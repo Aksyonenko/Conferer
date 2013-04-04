@@ -16,6 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DBF16B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7166DADD-7CEC-46AD-9656-43062CC3C2C1}"
+	ProjectSection(SolutionItems) = preProject
+		Build.proj = Build.proj
+		.build\Conferer.Common.targets = .build\Conferer.Common.targets
+		.build\SharedAssemblyInfo.cs = .build\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

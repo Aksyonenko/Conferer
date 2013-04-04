@@ -1,0 +1,41 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <RootFolder Condition="'$(RootFolder)' == ''">..</RootFolder>
+    <BuildConfiguration Condition="'$(BuildConfiguration)' == ''">Release</BuildConfiguration>
+    <SolutionPath Condition="'$(SolutionPath)' == ''">$(RootFolder)\Conferer.sln</SolutionPath>
+    <MSBuildCommunityTasksPath>$(RootFolder)\.build</MSBuildCommunityTasksPath>
+    <Git>C:\Program Files (x86)\Git\cmd\git.exe</Git>
+    <BuildVersionMajor>1</BuildVersionMajor>
+    <BuildVersionMinor>0</BuildVersionMinor>
+    <BuildVersionBuild>$(GO_PIPELINE_COUNTER)</BuildVersionBuild>
+    <GitVersion/>
+  </PropertyGroup>
+
+  <Target Name="Build" DependsOnTargets="Version">
+    <MSBuild Projects="$(SolutionPath)" Properties="Configuration=$(BuildConfiguration);Platform=Any CPU"/>
+  </Target>
+
+  <Import Project="$(RootFolder)\.build\MSBuild.Community.Tasks.Targets"/>
+
+  <Target Name="Version" DependsOnTargets="GetGitLastCommit">
+    <AssemblyInfo
+        OutputFile="SharedAssemblyInfo.cs"
+        CodeLanguage="CS"
+        AssemblyProduct="Conferer"
+        AssemblyCompany="Conferer"
+        AssemblyTradeMark="Conferer"
+        AssemblyCopyright="©Conferer 2013"
+        AssemblyVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild)"
+        AssemblyFileVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild)"
+        AssemblyInformationalVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild).@(ItemsFromFile)"/>
+  </Target>
+
+  <Target Name="GetGitLastCommit">
+    <Exec Command="&quot;$(Git)&quot; rev-parse --verify --short HEAD > &quot;ver.tmp&quot;" />
+    <ReadLinesFromFile File="ver.tmp">
+      <Output TaskParameter="Lines" ItemName="ItemsFromFile"/>
+    </ReadLinesFromFile>
+    <Delete Files="ver.tmp" />
+    <Message Text="@(ItemsFromFile)" />
+  </Target>
+</Project>
