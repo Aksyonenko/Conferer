@@ -20,7 +20,9 @@
 var isLoaded = false;
 
 function LOG(text) {
-    $('#log').append('<p>[' + new Date().toISOString() + ']: ' + text + '</p>');
+    if($('#log')) {
+        $('#log').append('<p>[' + new Date().toISOString() + ']: ' + text + '</p>');    
+    }
 }
 
 var app = {
@@ -30,7 +32,7 @@ var app = {
             return;
         }
 
-        var version = '0.1.17';
+        var version = '0.1.19';
         LOG('version: ' + version);
 
         this.bindEvents();
