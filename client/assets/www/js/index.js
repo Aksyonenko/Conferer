@@ -16,9 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+var isLoaded = false;
+
+function LOG(text) {
+    $('#log').append('<p>[' + new Date().toISOString() + ']: ' + text + '</p>');
+}
+
 var app = {
     // Application Constructor
     initialize: function() {
+        if (isLoaded) {
+            return;
+        }
+
+        var version = '0.1.17';
+        LOG('version: ' + version);
+
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -27,23 +41,28 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        $(document).on('mobileinit', this.onDeviceReady);
+        $(document).ready(this.onDeviceReady);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
+
+    _isLoaded: false,
+
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+        if (isLoaded) {
+            return;
+        }
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        console.log('app.onDeviceReady()');
+        $('#log').append('<p>[' + new Date().toISOString() + '] app.onDeviceReady()</p>');
+        isLoaded = true;
 
-        console.log('Received Event: ' + id);
+        $.mobile.allowCrossDomainPages = true;
+        $.support.cors = true;
+
+        var mainView = new conferer.proto.views.MainView({el: '#content'});
     }
 };

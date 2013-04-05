@@ -27,6 +27,7 @@ public class ConferenceScheduler extends DroidGap
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+    	super.setIntegerProperty("loadUrlTimeoutValue", 600000);
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl());

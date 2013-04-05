@@ -2,3 +2,7 @@
 bin/
 obj/
 *.suo
+
+#ignore folders created by Eclipse
+client/bin/
+client/gen/
