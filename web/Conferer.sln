@@ -19,9 +19,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7166DADD-7CEC-46AD-9656-43062CC3C2C1}"
 	ProjectSection(SolutionItems) = preProject
 		Build.proj = Build.proj
-		.build\Conferer.Common.targets = .build\Conferer.Common.targets
+		.build\Conferer.Build.targets = .build\Conferer.Build.targets
+		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
 		.build\SharedAssemblyInfo.cs = .build\SharedAssemblyInfo.cs
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E4DFECDC-1471-463E-9FD0-B2C1144406AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
