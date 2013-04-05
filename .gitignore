@@ -1,7 +1,10 @@
-#Ignore some of the Visual Studio files & folders
+# ignore some of the Visual Studio files & folders
 bin/
 obj/
 *.suo
+test-results.xml
+*.user
+NUnit.Runners
 
 #ignore folders created by Eclipse
 client/bin/

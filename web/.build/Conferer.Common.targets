@@ -3,13 +3,24 @@
     <RootFolder Condition="'$(RootFolder)' == ''">..</RootFolder>
     <BuildConfiguration Condition="'$(BuildConfiguration)' == ''">Release</BuildConfiguration>
     <SolutionPath Condition="'$(SolutionPath)' == ''">$(RootFolder)\Conferer.sln</SolutionPath>
-    <MSBuildCommunityTasksPath>$(RootFolder)\.build</MSBuildCommunityTasksPath>
-    <Git>C:\Program Files (x86)\Git\cmd\git.exe</Git>
+    <BuildDirectory>$(RootFolder)\.build</BuildDirectory>
+    <MSBuildCommunityTasksPath>$(BuildDirectory)</MSBuildCommunityTasksPath>
     <BuildVersionMajor>1</BuildVersionMajor>
     <BuildVersionMinor>0</BuildVersionMinor>
-    <BuildVersionBuild>$(GO_PIPELINE_COUNTER)</BuildVersionBuild>
-    <GitVersion/>
+    <BuildVersionBuild Condition="'$(GO_PIPELINE_COUNTER)' == ''">0</BuildVersionBuild>
+    <TestCategories Condition="'$(TestCategories)' == ''">UnitTest,AcceptanceTest</TestCategories>
+    <TestResultsFile Condition="'$(TestResultsFile)' == ''">$(RootFolder)\test-results.xml</TestResultsFile>
+    <NUnitPackageName>NUnit.Runners</NUnitPackageName>
+    <NUnit>$(BuildDirectory)\$(NUnitPackageName)\tools</NUnit>
+    <Git>C:\Program Files (x86)\Git\cmd\git.exe</Git>
+    <NuGet>$(RootFolder)\.nuget\NuGet.exe</NuGet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <TestCategoriesList Include="$(TestCategories)"/>
+    <TestAssemblies Include="$(RootFolder)\**\bin\$(BuildConfiguration)\*Tests.dll"/>
+    <AssemblyInfoFiles Include="$(RootFolder)\**\Properties\AssemblyInfo.cs"/>
+  </ItemGroup>
 
   <Target Name="Build" DependsOnTargets="Version">
     <MSBuild Projects="$(SolutionPath)" Properties="Configuration=$(BuildConfiguration);Platform=Any CPU"/>
@@ -17,7 +28,7 @@
 
   <Import Project="$(RootFolder)\.build\MSBuild.Community.Tasks.Targets"/>
 
-  <Target Name="Version" DependsOnTargets="GetGitLastCommit">
+  <Target Name="Version" DependsOnTargets="GetGitLastCommitHash">
     <AssemblyInfo
         OutputFile="SharedAssemblyInfo.cs"
         CodeLanguage="CS"
@@ -27,15 +38,28 @@
         AssemblyCopyright="©Conferer 2013"
         AssemblyVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild)"
         AssemblyFileVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild)"
-        AssemblyInformationalVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild).@(ItemsFromFile)"/>
+        AssemblyInformationalVersion="$(BuildVersionMajor).$(BuildVersionMinor).$(BuildVersionBuild).@(GitLastCommitHash)"/>
   </Target>
 
-  <Target Name="GetGitLastCommit">
+  <Target Name="GetGitLastCommitHash">
     <Exec Command="&quot;$(Git)&quot; rev-parse --verify --short HEAD > &quot;ver.tmp&quot;" />
     <ReadLinesFromFile File="ver.tmp">
-      <Output TaskParameter="Lines" ItemName="ItemsFromFile"/>
+      <Output TaskParameter="Lines" ItemName="GitLastCommitHash"/>
     </ReadLinesFromFile>
     <Delete Files="ver.tmp" />
-    <Message Text="@(ItemsFromFile)" />
+  </Target>
+
+  <Target Name="ExecuteTests" DependsOnTargets="DownloadNUnitRunners">
+    <NUnit ToolPath="$(NUnit)"
+           Assemblies="@(TestAssemblies)"
+           OutputXmlFile="$(TestResultsFile)"
+           ContinueOnError="true"
+           Framework="4.0"
+           IncludeCategory="@(TestCategoriesList)">
+    </NUnit>
+  </Target>
+
+  <Target Name="DownloadNUnitRunners">
+    <Exec Command="$(NuGet) install $(NUnitPackageName) -o $(BuildDirectory) -x"/>
   </Target>
 </Project>
