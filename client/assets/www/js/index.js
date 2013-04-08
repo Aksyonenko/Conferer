@@ -26,6 +26,8 @@ function LOG(text) {
 }
 
 var app = {
+    _isLoaded: false,
+
     // Application Constructor
     initialize: function() {
         if (isLoaded) {
@@ -37,34 +39,39 @@ var app = {
 
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
+
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         $(document).on('mobileinit', this.onDeviceReady);
         $(document).ready(this.onDeviceReady);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-
-    _isLoaded: false,
 
     onDeviceReady: function() {
         if (isLoaded) {
             return;
         }
 
-        console.log('app.onDeviceReady()');
-        $('#log').append('<p>[' + new Date().toISOString() + '] app.onDeviceReady()</p>');
+        LOG('<p>[' + new Date().toISOString() + '] app.onDeviceReady()</p>');
         isLoaded = true;
 
-        $.mobile.allowCrossDomainPages = true;
+        //$.mobile.allowCrossDomainPages = true;
+        //$.mobile.hashListeningEnabled = false;
+        //$.mobile.linkBindingEnabled = false;
+        //$.mobile.ajaxLinksEnabled = false;
+
         $.support.cors = true;
 
-        var mainView = new conferer.proto.views.MainView({el: '#content'});
+        var mainView = new conferer.proto.views.MainView({el: '#container'});
+
+
+/*
+
+$('#page_id).page('destroy').page();
+$("div[data-role='page']").page('destroy').page();
+w
+*/
+
+
+
     }
 };

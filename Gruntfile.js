@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 
 */
 
-    grunt.registerTask('default', [/*'jshint', */ 'concat:js', 'uglify', 'sass']);
+    grunt.registerTask('default', [/*'jshint', 'concat:js', 'uglify', 'sass'*/]);
 
     // grunt.registerTask('watchJs', ['jshint', 'concat:js', 'uglify:Public', 'uglify:Admin']);
     // grunt.registerTask('watchCss', ['concat:js', 'cssmin:uglify:Public', 'uglify:Admin']);
