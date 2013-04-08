@@ -3,7 +3,10 @@ conferer.proto = conferer.proto || {};
 conferer.proto.models = {};
 
 
-conferer.proto.models.ConferenceAnnouncement = Backbone.Model.extend({
+
+
+
+conferer.proto.models.ConferenceSummary = Backbone.Model.extend({
 
 	idAttribute: 'conferenceID',
 
@@ -13,17 +16,21 @@ conferer.proto.models.ConferenceAnnouncement = Backbone.Model.extend({
 	},
 
 	initialize: function(var_args) {
-		//console.log('ConferenceAnnouncement.initialize: ' + this.getTitle());
+		//console.log('ConferenceSummary.initialize: ' + this.getTitle());
 	},
 
-	getID: function() { return this.id;},
-	getTitle: function() { return this.get('title');},
-	getDates: function() { return '11-12.04.12';}
+	getID: function() { return this.id; },
+	getTitle: function() { return this.get('title'); },
+	getDates: function() { return '11-12.04.12'; }
 });
 
 
+
+
+
+
 conferer.proto.models.ConferencesList = Backbone.Collection.extend({
-	model: conferer.proto.models.ConferenceAnnouncement,
+	model: conferer.proto.models.ConferenceSummary,
 
 	_filters: {},
 
@@ -48,6 +55,9 @@ conferer.proto.models.ConferencesList = Backbone.Collection.extend({
 			success: function(collection, response) {
 				console.log('[' + new Date().toISOString() + '] ConferencesListModel.loadCollections.success !!!!!!!!', collection);
 				LOG('loading success');
+
+				// renderCollection();
+
 			},
 			error: function(collection, response, errorText) {
 				console.log('[' + new Date().toISOString() + '] ConferencesListModel.loadCollections.failure !!!!!!!!!!!!!', collection, response, errorText);
