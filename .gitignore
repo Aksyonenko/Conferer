@@ -9,3 +9,7 @@ NUnit.Runners
 #ignore folders created by Eclipse
 client/bin/
 client/gen/
+
+#ignore /output for assets
+client/assets/www/output/
+client/assets/www/js/conferer.js
