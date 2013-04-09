@@ -1,4 +1,4 @@
-<div data-role="header" id="header" data-position="fixed">
+<div data-role="header" id="header-global" data-position="fixed">
 </div>
 
 <div data-role="content" id="content">

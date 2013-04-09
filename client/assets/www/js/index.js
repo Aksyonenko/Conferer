@@ -21,8 +21,9 @@ var isLoaded = false;
 
 function LOG(text) {
     if($('#log')) {
-        $('#log').append('<p>[' + new Date().toISOString() + ']: ' + text + '</p>');    
+        $('#log').append('<p>[' + new Date().toISOString() + ']: ' + text + '</p>');
     }
+    console.log('-------------- ', text);
 }
 
 var app = {
@@ -34,8 +35,8 @@ var app = {
             return;
         }
 
-        var version = '0.1.19';
-        LOG('version: ' + version);
+        var version = '0.1.20';
+        // LOG('version: ' + version);
 
         this.bindEvents();
     },
@@ -51,13 +52,19 @@ var app = {
             return;
         }
 
-        LOG('<p>[' + new Date().toISOString() + '] app.onDeviceReady()</p>');
+        LOG('index.js onDeviceReady');
         isLoaded = true;
 
         //$.mobile.allowCrossDomainPages = true;
         //$.mobile.hashListeningEnabled = false;
         //$.mobile.linkBindingEnabled = false;
         //$.mobile.ajaxLinksEnabled = false;
+        $.mobile.ajaxEnabled = false;
+        $.mobile.linkBindingEnabled = false;
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.pushStateEnabled = false;
+
+
 
         $.support.cors = true;
 

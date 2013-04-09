@@ -1,5 +1,5 @@
 Backbone.sync = function(method, model, options) {
-	console.log('>>>> CUSTOM SYNC: started');
+	//console.log('>>>> CUSTOM SYNC: started');
 	var methodMap = {
 		'create': 'POST',
 		'update': 'PUT',
@@ -55,19 +55,19 @@ Backbone.sync = function(method, model, options) {
 
 	// Make the request, allowing the user to override any Ajax options.
 
-	console.log('>>>> CUSTOM SYNC: creating ajax ');
+	//console.log('>>>> CUSTOM SYNC: creating ajax ');
 	var ajax = new XMLHttpRequest();
 	var timeout = setTimeout(function() {
-		console.log('>>>> CUSTOM SYNC: error: timeout');
+		//console.log('>>>> CUSTOM SYNC: error: timeout');
 		ajax.abort();
 		params.error(ajax, 'timeout');
 	}, 300000);
 
-	console.log('>>>> CUSTOM SYNC: timer: started');
+	//console.log('>>>> CUSTOM SYNC: timer: started');
 
 
 	ajax.onreadystatechange = function() {
-			console.log('>>>> CUSTOM SYNC: readyState:' + ajax.readyState);
+			//console.log('>>>> CUSTOM SYNC: readyState:' + ajax.readyState);
 		if(ajax.readyState != 4) {
 			return;
 		}
@@ -75,10 +75,10 @@ Backbone.sync = function(method, model, options) {
 		clearTimeout(timeout);
 
 		if((ajax.status == 200) || (ajax.status == 0)) {
-			console.log('>>>> CUSTOM SYNC: success ' + ajax.responseText);
+			//console.log('>>>> CUSTOM SYNC: success ' + ajax.responseText);
 			params.success(params.dataType == 'json' ? JSON.parse(ajax.responseText) : ajax.responseText, 'ok', ajax);
 		} else {
-			console.log('>>>> CUSTOM SYNC: error:error');
+			//console.log('>>>> CUSTOM SYNC: error:error');
 			params.error(ajax, 'error');
 		}
 	}
