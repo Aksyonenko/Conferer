@@ -2,7 +2,13 @@ var conferer = conferer || {};
 conferer.proto = conferer.proto || {};
 conferer.proto.models = {};
 
-
+Date.prototype.getDateParams = function() {
+	return {
+		day: this.getDate(),
+		month: this.getMonth() + 1,
+		year: this.getFullYear()
+	}
+};
 
 
 
@@ -10,7 +16,7 @@ conferer.proto.models.ConferenceSummary = Backbone.Model.extend({
 	idAttribute: 'conferenceID',
 	defaults: {
 		'title': 'unknown2',
-		'date': 'unknow2n'
+		'startDate': 'unknow2n'
 	},
 
 	initialize: function(var_args) {
@@ -18,8 +24,12 @@ conferer.proto.models.ConferenceSummary = Backbone.Model.extend({
 	},
 
 	getID: function() { return this.id; },
+	
 	getTitle: function() { return this.get('title'); },
-	getDates: function() { return '11-12.04.12'; }
+	
+	getDates: function() { 
+		return new Date(this.get('startDate')).getDateParams();
+	}
 });
 
 
@@ -35,8 +45,9 @@ conferer.proto.models.ConferencesList = Backbone.Collection.extend({
 		_.bind(this, 'loadCollections');
 		var_args = var_args || {};
 		this._filters = var_args.filters || {order: 'date'};
-		//this.url = 'http://conferer.local/get_cl.php';
-		this.url = 'http://contacts.cityi.com.ua/conferer/get_cl.php';
+		this.url = 'http://conferer.local/get_cl.php';
+		//this.url = 'http://contacts.cityi.com.ua/conferer/get_cl.php';
+		// this.url = 'http://10.11.100.25:8080/conferer/conferences?start=1357084800000';
 		this.loadCollections();
 	},
 

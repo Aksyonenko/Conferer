@@ -1,1 +1,1 @@
-app.initialize();
+coferer.initialize();
