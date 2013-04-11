@@ -261,6 +261,7 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 		_.bind(this, 'getHtml');
     	this._html = this._templateParsed((this.model && this.model.attributes) ? this.model.attributes : null);
 	}
+
 });
 
 

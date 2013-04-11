@@ -10,8 +10,6 @@ Date.prototype.getDateParams = function() {
 	}
 };
 
-
-
 conferer.proto.models.ConferenceSummary = Backbone.Model.extend({
 	idAttribute: 'conferenceID',
 	defaults: {
@@ -31,11 +29,6 @@ conferer.proto.models.ConferenceSummary = Backbone.Model.extend({
 		return new Date(this.get('startDate')).getDateParams();
 	}
 });
-
-
-
-
-
 
 conferer.proto.models.ConferencesList = Backbone.Collection.extend({
 	model: conferer.proto.models.ConferenceSummary,
