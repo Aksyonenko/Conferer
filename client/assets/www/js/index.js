@@ -8,6 +8,7 @@ function LOG(text) {
 
 var coferer = {
     _isLoaded: false,
+    mainView: null,
     
     containerSelectors: {
         headerGlobal: '#header-global',
@@ -47,6 +48,6 @@ var coferer = {
         // cross domains requests
         $.support.cors = true;
 
-        var mainView = new conferer.proto.views.MainView({el: '#container'});
+        this.mainView = new conferer.proto.views.MainView({el: '#container'});
     }
 };

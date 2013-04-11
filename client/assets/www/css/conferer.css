@@ -1,21 +1,8 @@
-/*
 
-<div class="left" style="width:400px; background:red; position:absolute; left:-400px; top:0;"></div> \
-<div class="center" style="width:400px; background:green; position:absolute; left:0; top:0;"><span class="swiperight"></span></div> \
-<div class="right" style="width:400px; background:blue; position:absolute; left:400px; top:0;"></div> \
-
-*/
-
-.left {
-	width:400px; position:absolute; left:-400px; top:0;	
-}
-
-.center {
-	width:400px; position:absolute; left:0px; top:0;	
-}
-
+.left,
+.center,
 .right {
-	width:400px; position:absolute; left:400px; top:0;	
+	position:absolute; top:0;	
 }
 
 .swipeleft,

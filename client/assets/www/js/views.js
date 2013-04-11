@@ -17,20 +17,7 @@ conferer.proto.views._Base = Backbone.View.extend({
 		}
 		return this;
 	},
-/*
-	loadTemplateAsync: function(templateName, callbackFunc) {
-		(function(caller) {
-			conferer.helper.loadTemplate(templateName, function(parsedHTML) {
-				caller.onTemplateLoaded(parsedHTML, callbackFunc);
-			});
-		})(this);
-	},
 
-	onTemplateLoaded: function(parsedHTML, callbackFunc) {
-		this._templateParsed = parsedHTML;
-		callbackFunc(this);
-	},
-*/
 	initialize: function(var_args) {
 		_.bindAll(this, 'render'/*, 'loadTemplateAsync', 'onTemplateLoaded'*/);
 		this._templateParsed = _.template(this._templateRaw);
@@ -43,20 +30,17 @@ conferer.proto.views._Base = Backbone.View.extend({
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MainView
 conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 	_name: 'MainView',
+	_width: 0,
 	_templateRaw: ' \
 		<div id="dashboard" style="background:#444; position:fixed; top:0; left:0; height:2000px; width: 200px; overflow-y:auto;">xdfgsdrfg</div> \
         <div id="footer-global"></div> \
-        <div id="content-wrapper" style="background:black; overflow:hidden; position:absolute; left: 200px; top:0px; width:100%; overflow:hidden; z-index:100;"> \
-            <div id="header-global" style="background:#ccc; position:fixed; top:0; left:200px; width:100%; height:100px; z-index:101;"></div> \
+        <div id="content-wrapper" style="background:black; overflow:hidden; position:absolute; left: 0; top:0px; width:100%; overflow:hidden; z-index:100;"> \
+            <div id="header-global" style="background:#ccc; position:fixed; top:0; left:0; width:100%; height:100px; z-index:101;"></div> \
             <div id="content" style="background:#999; margin-top:100px; min-height:800px;"> \
-                <div id="conference-list" style="width:100%; position:relative;"> \
-                	<div class="left" style="background:red; "></div> \
-                	<div class="center" style="background:green; "></div> \
-                	<div class="right" style="background:blue;"></div> \
-                </div> \
-                <div id="conference-details"> \
-                    conference-details \
-                </div> \
+            	<div id="conference-list" style="position:relative; width: 100%;"> \
+            	</div> \
+            	<div id="conference-details"> \
+            	</div> \
             </div> \
         </div>',
 	conferenceListLeft: null,
@@ -68,8 +52,11 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 		conferer.proto.views._Base.prototype.render.call(this);
 	},
 
+	getWidth: function() { return this._width; },
+
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		_.bind(this, 'getWidth')
 		this.render();
 
 		this.header = new conferer.proto.views.HeaderGlobal({
@@ -80,16 +67,28 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 			prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
 			nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
+		
+		this.conferenceListContainer = new conferer.proto.views.conferenceListContainer({
+			el: '#conference-list'
+		});
+
+		this._bodyWidth = $('body').width();
+		var shift = this._bodyWidth;
+
 		this.conferenceListLeft = new conferer.proto.views.ConferencesList({
 			el: '#conference-list > .left',
+			shift: -shift,
+			maxShift: shift,
 			model: new conferer.proto.models.ConferencesList({
 				month: prevDate.getMonth()*1 + 1,
 				year: prevDate.getFullYear()
 			}) // {filters: {order: 'date'}})
 		});
-		
+
 		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
 			el: '#conference-list > .center',
+			shift: 0,
+			maxShift: shift,
 			model: new conferer.proto.models.ConferencesList({
 				month: currentDate.getMonth()*1 + 1,
 				year: currentDate.getFullYear()
@@ -98,6 +97,8 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 		
 		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
 			el: '#conference-list > .right',
+			shift: shift,
+			maxShift: shift,
 			model: new conferer.proto.models.ConferencesList({
 				month: nextDate.getMonth()*1 + 1,
 				year: nextDate.getFullYear()
@@ -132,7 +133,115 @@ conferer.proto.views.HeaderGlobal = conferer.proto.views._Base.extend({
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferencesList -> ConferenceSummary
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListContainer
+conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend({
+	_name: 'conferenceListContainer',
+	_templateRaw: ' \
+                	<div class="left" style="background:red; "></div> \
+                	<div class="center" style="background:green; "></div> \
+                	<div class="right" style="background:blue;"></div> \
+	',
+
+
+    bindEvents: function() {
+		$(document).bind('touchmove', function(e) {
+			e.preventDefault();
+		});
+
+		var that = this,
+			hammerHandler = this.$el.hammer({
+				drag_min_distance: 5,
+				stop_browser_behavior : true
+			}),
+			lastHandledDragTime = 0,
+			lastHandledDragPosition = -1,
+			isDraggingNow = false,
+			shift = 0,
+
+			//childWidth = this.$el.find('.center').outerWidth(),
+			childWidth = $('body').width(),
+			minShift = Math.floor(childWidth/2); // half of one of three views;
+
+			//containerWidth = this.$el.width(),
+			//maxShift = child*2//containerWidth,
+			//minShift = Math.floor(containerWidth/2); // half of one of three views
+
+		hammerHandler.on('dragstart', function(e) {
+			shift = 0;
+			isDraggingNow = true;
+			lastHandledDragTime = e.gesture.timestamp;
+			lastHandledDragPosition = e.gesture.center.pageX - e.target.offsetLeft;
+		});
+
+		hammerHandler.on('dragend', function(e) {
+			if (!isDraggingNow) {
+				return;
+			}
+
+			lastHandledDragTime = 0;
+			lastHandledDragPosition = -1;
+			isDraggingNow = false;
+
+
+			if (Math.abs(shift) < minShift) {
+				that.$el.animate({
+					left: 0
+				}, 500);
+
+				shift = 0;
+			} else {
+
+				that.$el.animate({
+					left: (shift < 0 ? -1 : 1) * (childWidth)
+				}, 500, function() {
+
+					if (shift < 0) {
+						console.log('moveRight');
+						conferer.events.conferenceList.trigger('conferenceList-moveRight', {t:11});
+					} else {
+						console.log('moveLeft');
+						conferer.events.conferenceList.trigger('conferenceList-moveLeft', {t:22});
+					}
+					that.$el.css('left', 0);
+					shift = 0;
+				});
+			}
+
+		});
+
+		hammerHandler.on('drag', function(e) {
+			if (e.gesture.timestamp - lastHandledDragTime < 30 || !isDraggingNow) {
+				return;
+			}
+			var currentPosition = e.gesture.center.pageX - e.target.offsetLeft,
+				deltaPosition = currentPosition - lastHandledDragPosition;
+			if (Math.abs(deltaPosition) < 10) {
+				return;
+			}
+			lastHandledDragTime = e.gesture.timestamp;
+			lastHandledDragPosition = currentPosition;
+
+			shift += (Math.abs(shift) + deltaPosition < childWidth) ? deltaPosition : 0;
+			that.$el.css('left', shift);
+
+			if (Math.abs(shift) >= minShift) {
+				hammerHandler.trigger('dragend');
+			}
+		});
+
+	},
+
+	initialize: function(var_args) {
+		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		_.bind(this, 'bindEvents');
+		this.render();
+		this.bindEvents();
+	}
+});
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListContainer -> ConferencesList -> ConferenceSummary
 conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 	_name: 'ConferenceSummary',
 	_templateRaw: ' \
@@ -148,8 +257,8 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 	getHtml: function() { return this._html; },
 
 	initialize: function(var_args) {
-		_.bind(this, 'getHtml');
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		_.bind(this, 'getHtml');
     	this._html = this._templateParsed((this.model && this.model.attributes) ? this.model.attributes : null);
 	}
 });
@@ -157,12 +266,16 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferencesList
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListContainer -> ConferencesList
 conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
+	events: {
+	},
 	_name: 'ConferencesList',
-	_templateRaw: '<%= this.$el.attr("class")  %><ul class="conference-summary-container">conference-list<span class="swipeleft">></span><span class="swiperight"><</span></ul>',
+	_templateRaw: '<%= this.$el.attr("class") %><ul class="conference-summary-container">conference-list<!-- span class="swipeleft">></span><span class="swiperight"><</span --></ul>',
 	_listContainer: null,
 	_listContainerName: '.conference-summary-container',
+	_shift: 0,
+	_maxShift: 0,
 
     render: function() {
 		conferer.proto.views._Base.prototype.render.call(this);
@@ -171,26 +284,29 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		this._shift = var_args.shift;
+		this._maxShift = var_args.maxShift;
 
-
-
-
-		
+		this.$el.css('left', this._shift);
+// TODO: $('body').width() should become variable
+		this.$el.css('width', this._maxShift);
+		//this.$el.css('width', $('body').width());
 		var that = this;
 
 
+// TODO: refactor
 		//conferer.events['conferenceList-moveRight']
 		this.listenTo(conferer.events.conferenceList, 'conferenceList-moveRight', function(e) {
 			var currentClass = that.$el.attr('class');
 			switch (currentClass) {
 				case 'left':
-					that.$el.removeClass(currentClass).addClass('right');
+					that.$el.removeClass(currentClass).addClass('right').css('left', this._maxShift);
 					break;
 				case 'center':
-					that.$el.removeClass(currentClass).addClass('left');
+					that.$el.removeClass(currentClass).addClass('left').css('left', -this._maxShift);
 					break;
 				case 'right':
-					that.$el.removeClass(currentClass).addClass('center');
+					that.$el.removeClass(currentClass).addClass('center').css('left', 0);
 					break;
 				default: break;
 			}
@@ -199,13 +315,13 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 			var currentClass = that.$el.attr('class');
 			switch (currentClass) {
 				case 'left':
-					that.$el.removeClass(currentClass).addClass('center');
+					that.$el.removeClass(currentClass).addClass('center').css('left', 0);
 					break;
 				case 'center':
-					that.$el.removeClass(currentClass).addClass('right');
+					that.$el.removeClass(currentClass).addClass('right').css('left', this._maxShift);
 					break;
 				case 'right':
-					that.$el.removeClass(currentClass).addClass('left');
+					that.$el.removeClass(currentClass).addClass('left').css('left', -this._maxShift);
 					break;
 				default: break;
 			}
@@ -215,23 +331,6 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 
 		this.listenTo(this.model, 'reset', function() {
 			that.render();
-
-			that.$el.find('.swipeleft').on('click', function() {
-				console.log('fire swipeleft');
-				conferer.events.conferenceList.trigger('conferenceList-moveLeft', {t:22});
-			});
-
-
-
-			that.$el.find('.swiperight').on('click', function() {
-// TODO:
-// animate
-// ajax
-				// change
-				//console.log(conferer.events['conferenceList-moveRight']);
-				console.log('fire swiperight');
-				conferer.events.conferenceList.trigger('conferenceList-moveRight', {t:11});
-			});
 
 			// create and append subViews (ConferenceSummary)
 			var collection = that.model;
