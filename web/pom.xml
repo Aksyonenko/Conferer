@@ -16,6 +16,19 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.1</version>
+
+				<configuration>
+					<url>http://ec2-79-125-106-6.eu-west-1.compute.amazonaws.com:8080/manager/text</url>
+					<username>admin</username>
+					<password>admin</password>
+					<path>/</path>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
