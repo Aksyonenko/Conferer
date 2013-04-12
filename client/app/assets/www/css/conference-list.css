@@ -1,0 +1,144 @@
+#conference-list {
+	position: relative; 
+	width: 100%; 
+}
+
+/*
+					<div id="conference-list-header"> \
+						<div id="conference-list-header-next">January</div> \
+						<div id="conference-list-header-prev">November</div> \
+						<div id="conference-list-header-current"> \
+							<div id="conference-list-header-calendar"> \
+								<div id="conference-list-header-calendar-week"></div> \
+								<div id="conference-list-header-calendar-day"></div> \
+							</div> \
+							<div id="conference-list-header-current-month">December</div> \
+							<div id="conference-list-header-current-year">2013</div> \
+						</div> \
+					</div> \
+
+*/
+		#conference-list-header {
+			height: 109px;
+			color: #d94343;
+			border-bottom: 1px solid #d94343;
+			position: relative;
+		}
+				#conference-list-header-prev,
+				#conference-list-header-next {
+					font-size: 20px;
+					height: 46px;
+					position: absolute;
+					top: 32px;
+				}
+						#conference-list-header-prev {
+							left: 15px;
+							background: url('i/swipe-left.png') no-repeat left bottom transparent;
+							background-size: 27px auto;
+						}
+						#conference-list-header-next {
+							right: 15px;
+							background: url('i/swipe-right.png') no-repeat right bottom transparent;
+							background-size: 27px auto;
+						}
+				#conference-list-header-current {
+					height: 109px;
+					width: 100%;
+					margin: 0 auto;
+					font-size: 26px;
+				}
+						#conference-list-header-calendar {
+							background: url('i/conference-list-header-calendar.png') no-repeat 0 0 transparent;
+							background-size: auto 71px;
+							width: 71px;
+							height: 70px;
+							position: absolute;
+							left: 33%;
+							top: 21px;
+							color: #f0f0f0;
+							text-align: center;
+							min-width: 400px;
+						}
+								#conference-list-header-calendar-week {
+									font-family: 'HelveticaLTStd-Cond';
+									font-size: 19px;
+									width: 66px;
+									line-height: 18px;
+								}
+								#conference-list-header-calendar-day {
+									font-size: 36px;
+									width: 65px;
+									line-height: 46px;
+								}
+						#conference-list-header-current-month {
+							position: absolute;
+							top: 33px;
+							left: 50%;
+						}
+						#conference-list-header-current-year {
+							font-family: 'HelveticaLTStd-BlkCond';
+							font-size: 30px;
+							position: absolute;
+							bottom: 18px;
+							left: 50%;
+						}
+
+
+
+		#conference-list .conference-summary-container {
+			margin: 0 15px;
+		}
+				#conference-list .conference-summary {
+					color: #434343;
+    				min-height: 150px;
+    				background: #d94343;
+				}
+						#conference-list .conference-summary .white {
+							margin: 15px 35px 0 -15px;
+		    				padding-left: 15px;
+							background: #f0f0f0;
+							border-bottom: 1px solid #eeb2b2;
+							overflow: hidden;
+							position: relative;
+						}
+						#conference-list .conference-summary .title {
+							margin-bottom: 10px;
+						}
+						#conference-list .conference-summary .info {
+							height: 100%;
+						}
+								#conference-list .conference-summary .logo {
+									position: relative;
+									border: 1px solid #d94343;
+									width: 150px;
+									float: left;
+									margin: 0 15px 15px 0;
+								}
+										#conference-list .conference-summary .img {
+											text-align: center;
+											height: 105px;
+										}
+												#conference-list .conference-summary .img img {
+													margin-top: 20px;
+													height: 60px;
+												}
+										#conference-list .conference-summary .date {
+											position: absolute;
+											bottom: -5px;
+											left: 5px;
+											padding: 2px 5px;
+											background: #f0f0f0;
+										}
+								#conference-list .conference-summary .details {
+								}
+										#conference-list .conference-summary .description {
+											font-family: 'HelveticaLTStd-Cond';
+											font-size: 15px;
+										}
+										#conference-list .conference-summary .location {
+											position: absolute;
+											font-size: 12px;
+											bottom: 13px;
+											left: 180px;
+										}
+

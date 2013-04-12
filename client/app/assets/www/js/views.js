@@ -32,12 +32,14 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 	_name: 'MainView',
 	_width: 0,
 	_templateRaw: ' \
-		<div id="dashboard" style="background:#444; position:fixed; top:0; left:0; height:2000px; width: 200px; overflow-y:auto;">xdfgsdrfg</div> \
-        <div id="footer-global"></div> \
-        <div id="content-wrapper" style="background:black; overflow:hidden; position:absolute; left: 0; top:0px; width:100%; overflow:hidden; z-index:100;"> \
-            <div id="header-global" style="background:#ccc; position:fixed; top:0; left:0; width:100%; height:100px; z-index:101;"></div> \
-            <div id="content" style="background:#999; margin-top:100px; min-height:800px;"> \
-            	<div id="conference-list" style="position:relative; width: 100%;"> \
+		<!-- div id="dashboard">dashboard</div --> \
+        <div id="content-wrapper"> \
+	        <div id="footer-global"></div> \
+            <div id="header-global"></div> \
+            <div id="content"> \
+				<div id="conference-list-header"> \
+				</div> \
+            	<div id="conference-list"> \
             	</div> \
             	<div id="conference-details"> \
             	</div> \
@@ -46,6 +48,7 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 	conferenceListLeft: null,
 	conferenceListCenter: null,
 	conferenceListRight: null,
+	conferenceListHeader: null,
 	header: null,
 
 	render: function() {
@@ -63,9 +66,52 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 			el: '#header-global'
 		});
 
-		this.conferenceListContainer = new conferer.proto.views.conferenceListContainer({
+		var currentDate = new Date(),
+			prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
+			nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+
+		
+		this.conferenceListContainer = new conferer.proto.views.ConferenceListContainer({
 			el: '#conference-list'
 		});
+
+		this.conferenceListHeader = new conferer.proto.views.ConferenceListHeader({
+			el: '#conference-list-header'
+		});
+
+		this._bodyWidth = $('body').width();
+		var shift = this._bodyWidth;
+
+		this.conferenceListLeft = new conferer.proto.views.ConferencesList({
+			el: '#conference-list > .left',
+			shift: -shift,
+			maxShift: shift,
+			model: new conferer.proto.models.ConferencesList({
+				month: prevDate.getMonth()*1 + 1,
+				year: prevDate.getFullYear()
+			}) // {filters: {order: 'date'}})
+		});
+
+		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
+			el: '#conference-list > .center',
+			shift: 0,
+			maxShift: shift,
+			model: new conferer.proto.models.ConferencesList({
+				month: currentDate.getMonth()*1 + 1,
+				year: currentDate.getFullYear()
+			}) // {filters: {order: 'date'}})
+		});
+		
+		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
+			el: '#conference-list > .right',
+			shift: shift,
+			maxShift: shift,
+			model: new conferer.proto.models.ConferencesList({
+				month: nextDate.getMonth()*1 + 1,
+				year: nextDate.getFullYear()
+			}) // {filters: {order: 'date'}})
+		});
+
 	}
 });
 
@@ -76,9 +122,9 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 conferer.proto.views.HeaderGlobal = conferer.proto.views._Base.extend({
 	_name: 'HeaderGlobal',
 	_templateRaw: ' \
-		<a href="#" data-icon="home">Home</a> \
-			<h1>Conferer</h1> \
-		<a href="#" data-icon="bars">Menu</a> \
+		<div id="header-global-search"></div> \
+		<div id="dashboard-button"></div> \
+		<div id="header-global-title">Confere<span>r</span></div> \
 	',
 
     render: function() {
@@ -94,16 +140,40 @@ conferer.proto.views.HeaderGlobal = conferer.proto.views._Base.extend({
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListHeader
+conferer.proto.views.ConferenceListHeader = conferer.proto.views._Base.extend({
+	_name: 'conferenceListHeader',
+	_templateRaw: ' \
+						<div id="conference-list-header-next">January</div> \
+						<div id="conference-list-header-prev">November</div> \
+						<div id="conference-list-header-current"> \
+							<div id="conference-list-header-calendar"> \
+								<div id="conference-list-header-calendar-week">wed</div> \
+								<div id="conference-list-header-calendar-day">17</div> \
+							</div> \
+							<div id="conference-list-header-current-month">December</div> \
+							<div id="conference-list-header-current-year">2013</div> \
+						</div> \
+	',
+
+	initialize: function(var_args) {
+		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		this.render();
+	}
+});
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListContainer
-conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend({
+conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend({
 	_name: 'conferenceListContainer',
 	_templateRaw: ' \
-                	<div class="left" style="background:#D3C2C2; "></div> \
-                	<div class="center" style="background:#C2D3C5; "></div> \
-                	<div class="right" style="background:#BBC8D3;"></div> \
+                	<div class="left"></div> \
+                	<div class="center"></div> \
+                	<div class="right"></div> \
 	',
 	_bodyWidth: 0,
-
 
     bindEvents: function() {
 		$(document).bind('touchmove', function(e) {
@@ -120,13 +190,8 @@ conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend
 			isDraggingNow = false,
 			shift = 0,
 
-			//childWidth = this.$el.find('.center').outerWidth(),
 			childWidth = $('body').width(),
-			minShift = Math.floor(childWidth/2); // half of one of three views;
-
-			//containerWidth = this.$el.width(),
-			//maxShift = child*2//containerWidth,
-			//minShift = Math.floor(containerWidth/2); // half of one of three views
+			minShift = Math.floor(childWidth / 2); // half of the screen
 
 		hammerHandler.on('dragstart', function(e) {
 			shift = 0;
@@ -156,7 +221,6 @@ conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend
 				that.$el.animate({
 					left: (shift < 0 ? -1 : 1) * (childWidth)
 				}, 500, function() {
-
 					if (shift < 0) {
 						console.log('moveRight');
 						conferer.events.conferenceList.trigger('conferenceList-moveRight', {t:11});
@@ -248,12 +312,33 @@ conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListContainer -> ConferencesList -> ConferenceSummary
 conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 	_name: 'ConferenceSummary',
-	_templateRaw: ' \
-                        <li class="conference-summary">  \
-                            <h3><%= this.model.getTitle() %></h3> \
-                            <p><%= this.model.getDates().year + " " + "asdfasdf" %></p> \
-                        </li> \
+	_templateRaw: '\
+    <li class="conference-summary"> \
+		<div class="white"> \
+			<div class="title">QCon empowers software development by facilitating the spread of knowledge</div> \
+			<div class="info"> \
+				<div class="logo"> \
+					<div class="img"> \
+						<img src="/img/default-conference-logo.png"> \
+					</div> \
+					<div class="date">18 dec - 21 dec</div> \
+				</div> \
+				<div class="details"> \
+					<div class="description"> \
+						Organized by Alliance Forum Foundation, \
+						BRAC, JICA. EuroAfrica-P8 \
+						EU/FP7 funded project in the framework \
+						of the EuroAfrica-ICT. \
+					</div> \
+					<div class="location"> \
+						Dhaka, Bangladesh \
+					</div> \
+				</div> \
+			</div> \
+		</div> \
+    </li> \
 	',
+
 	_html: '',
 
     render: function() { return this; },
@@ -276,7 +361,7 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 	events: {
 	},
 	_name: 'ConferencesList',
-	_templateRaw: '<%= this.$el.attr("class") %><div class="loader"></div><ul class="conference-summary-container">conference-list<!-- span class="swipeleft">></span><span class="swiperight"><</span --></ul>',
+	_templateRaw: '<!-- %= this.$el.attr("class") % --><ul class="conference-summary-container"></ul>',
 	_listContainer: null,
 	_listContainerName: '.conference-summary-container',
 	_shift: 0,
