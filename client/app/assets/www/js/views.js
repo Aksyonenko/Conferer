@@ -63,48 +63,9 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 			el: '#header-global'
 		});
 
-		var currentDate = new Date(),
-			prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
-			nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-
-		
 		this.conferenceListContainer = new conferer.proto.views.conferenceListContainer({
 			el: '#conference-list'
 		});
-
-		this._bodyWidth = $('body').width();
-		var shift = this._bodyWidth;
-
-		this.conferenceListLeft = new conferer.proto.views.ConferencesList({
-			el: '#conference-list > .left',
-			shift: -shift,
-			maxShift: shift,
-			model: new conferer.proto.models.ConferencesList({
-				month: prevDate.getMonth()*1 + 1,
-				year: prevDate.getFullYear()
-			}) // {filters: {order: 'date'}})
-		});
-
-		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
-			el: '#conference-list > .center',
-			shift: 0,
-			maxShift: shift,
-			model: new conferer.proto.models.ConferencesList({
-				month: currentDate.getMonth()*1 + 1,
-				year: currentDate.getFullYear()
-			}) // {filters: {order: 'date'}})
-		});
-		
-		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
-			el: '#conference-list > .right',
-			shift: shift,
-			maxShift: shift,
-			model: new conferer.proto.models.ConferencesList({
-				month: nextDate.getMonth()*1 + 1,
-				year: nextDate.getFullYear()
-			}) // {filters: {order: 'date'}})
-		});
-
 	}
 });
 
@@ -137,10 +98,11 @@ conferer.proto.views.HeaderGlobal = conferer.proto.views._Base.extend({
 conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend({
 	_name: 'conferenceListContainer',
 	_templateRaw: ' \
-                	<div class="left" style="background:red; "></div> \
-                	<div class="center" style="background:green; "></div> \
-                	<div class="right" style="background:blue;"></div> \
+                	<div class="left" style="background:#D3C2C2; "></div> \
+                	<div class="center" style="background:#C2D3C5; "></div> \
+                	<div class="right" style="background:#BBC8D3;"></div> \
 	',
+	_bodyWidth: 0,
 
 
     bindEvents: function() {
@@ -150,7 +112,7 @@ conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend
 
 		var that = this,
 			hammerHandler = this.$el.hammer({
-				drag_min_distance: 5,
+				drag_min_distance: 1,
 				stop_browser_behavior : true
 			}),
 			lastHandledDragTime = 0,
@@ -210,12 +172,12 @@ conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend
 		});
 
 		hammerHandler.on('drag', function(e) {
-			if (e.gesture.timestamp - lastHandledDragTime < 30 || !isDraggingNow) {
+			if (e.gesture.timestamp - lastHandledDragTime < 10 || !isDraggingNow) {
 				return;
 			}
 			var currentPosition = e.gesture.center.pageX - e.target.offsetLeft,
 				deltaPosition = currentPosition - lastHandledDragPosition;
-			if (Math.abs(deltaPosition) < 10) {
+			if (Math.abs(deltaPosition) < 5) {
 				return;
 			}
 			lastHandledDragTime = e.gesture.timestamp;
@@ -231,10 +193,52 @@ conferer.proto.views.conferenceListContainer = conferer.proto.views._Base.extend
 
 	},
 
+	createSubViews: function() {
+
+		var currentDate = new Date(),
+			prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
+			nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+
+
+		this._bodyWidth = $('body').width();
+		var shift = this._bodyWidth;
+
+		this.conferenceListLeft = new conferer.proto.views.ConferencesList({
+			el: '#conference-list > .left',
+			shift: -shift,
+			maxShift: shift,
+			model: new conferer.proto.models.ConferencesList({
+				month: prevDate.getMonth()*1 + 1,
+				year: prevDate.getFullYear()
+			})
+		});
+
+		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
+			el: '#conference-list > .center',
+			shift: 0,
+			maxShift: shift,
+			model: new conferer.proto.models.ConferencesList({
+				month: currentDate.getMonth()*1 + 1,
+				year: currentDate.getFullYear()
+			})
+		});
+
+		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
+			el: '#conference-list > .right',
+			shift: shift,
+			maxShift: shift,
+			model: new conferer.proto.models.ConferencesList({
+				month: nextDate.getMonth()*1 + 1,
+				year: nextDate.getFullYear()
+			})
+		});
+	},
+
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
-		_.bind(this, 'bindEvents');
+		_.bind(this, 'bindEvents', 'createSubViews');
 		this.render();
+		this.createSubViews();
 		this.bindEvents();
 	}
 });
@@ -272,11 +276,19 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 	events: {
 	},
 	_name: 'ConferencesList',
-	_templateRaw: '<%= this.$el.attr("class") %><ul class="conference-summary-container">conference-list<!-- span class="swipeleft">></span><span class="swiperight"><</span --></ul>',
+	_templateRaw: '<%= this.$el.attr("class") %><div class="loader"></div><ul class="conference-summary-container">conference-list<!-- span class="swipeleft">></span><span class="swiperight"><</span --></ul>',
 	_listContainer: null,
 	_listContainerName: '.conference-summary-container',
 	_shift: 0,
 	_maxShift: 0,
+
+	showLoader: function() {
+		this.$el.find('.loader').addClass('is-visible-block').removeClass('is-hidden');
+	},
+
+	hideLoader: function() {
+		this.$el.find('.loader').addClass('is-hidden').removeClass('is-visible-block');
+	},
 
     render: function() {
 		conferer.proto.views._Base.prototype.render.call(this);
@@ -285,6 +297,8 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		_.bind(this, 'showLoader', 'hideLoader');
+
 		this._shift = var_args.shift;
 		this._maxShift = var_args.maxShift;
 
@@ -302,6 +316,8 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 			switch (currentClass) {
 				case 'left':
 					that.$el.removeClass(currentClass).addClass('right').css('left', this._maxShift);
+					that.model.changeDate(3);
+					that.model.loadCollections();
 					break;
 				case 'center':
 					that.$el.removeClass(currentClass).addClass('left').css('left', -this._maxShift);
@@ -323,13 +339,15 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 					break;
 				case 'right':
 					that.$el.removeClass(currentClass).addClass('left').css('left', -this._maxShift);
+					that.model.changeDate(-3);
+					that.model.loadCollections();
 					break;
 				default: break;
 			}
 		});
 
 
-
+		this.showLoader();
 		this.listenTo(this.model, 'reset', function() {
 			that.render();
 
@@ -341,6 +359,8 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 				});
 				that._listContainer.append(summaryView.getHtml());
 			});
+
+			setTimeout(function () {that.hideLoader();}, 1500);
 		});
 	}
 });

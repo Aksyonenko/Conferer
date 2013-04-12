@@ -21,6 +21,16 @@ Backbone.sync = function(method, model, options) {
 		params.url = _.result(model, 'url') || urlError();
 	}
 
+	if (options.query !== undefined) {
+		var queryString = '';
+		for (var i in options.query) {
+			queryString += (queryString ? '&' : '?') + i + '=' + options.query[i];
+		}
+
+		params.url += queryString;
+	}
+
+
 	// Ensure that we have the appropriate request data.
 	if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
 		params.contentType = 'application/json';
