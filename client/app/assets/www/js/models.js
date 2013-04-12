@@ -50,8 +50,8 @@ conferer.proto.models.ConferencesList = Backbone.Collection.extend({
 		_.bind(this, 'loadCollections');
 		var_args = var_args || {};
 
-		this.url = 'http://conferer.local/get_cl.php';
-		//this.url = 'http://contacts.cityi.com.ua/conferer/get_cl.php';
+		//this.url = 'http://conferer.local/get_cl.php';
+		this.url = 'http://contacts.cityi.com.ua/akqa/conferer/get_cl.php';
 		// this.url = 'http://10.11.100.25:8080/conferer/conferences?start=1357084800000';
 		//this.url = 'http://ec2-79-125-106-6.eu-west-1.compute.amazonaws.com:8080/conferences?start=1357084800000';
 

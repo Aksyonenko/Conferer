@@ -70,7 +70,7 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 			prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
 			nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
-		
+
 		this.conferenceListContainer = new conferer.proto.views.ConferenceListContainer({
 			el: '#conference-list'
 		});
@@ -78,40 +78,6 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 		this.conferenceListHeader = new conferer.proto.views.ConferenceListHeader({
 			el: '#conference-list-header'
 		});
-
-		this._bodyWidth = $('body').width();
-		var shift = this._bodyWidth;
-
-		this.conferenceListLeft = new conferer.proto.views.ConferencesList({
-			el: '#conference-list > .left',
-			shift: -shift,
-			maxShift: shift,
-			model: new conferer.proto.models.ConferencesList({
-				month: prevDate.getMonth()*1 + 1,
-				year: prevDate.getFullYear()
-			}) // {filters: {order: 'date'}})
-		});
-
-		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
-			el: '#conference-list > .center',
-			shift: 0,
-			maxShift: shift,
-			model: new conferer.proto.models.ConferencesList({
-				month: currentDate.getMonth()*1 + 1,
-				year: currentDate.getFullYear()
-			}) // {filters: {order: 'date'}})
-		});
-		
-		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
-			el: '#conference-list > .right',
-			shift: shift,
-			maxShift: shift,
-			model: new conferer.proto.models.ConferencesList({
-				month: nextDate.getMonth()*1 + 1,
-				year: nextDate.getFullYear()
-			}) // {filters: {order: 'date'}})
-		});
-
 	}
 });
 
@@ -315,7 +281,7 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 	_templateRaw: '\
     <li class="conference-summary"> \
 		<div class="white"> \
-			<div class="title">QCon empowers software development by facilitating the spread of knowledge</div> \
+			<div class="title"><%=this.model.get("title")%></div> \
 			<div class="info"> \
 				<div class="logo"> \
 					<div class="img"> \
@@ -325,10 +291,7 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 				</div> \
 				<div class="details"> \
 					<div class="description"> \
-						Organized by Alliance Forum Foundation, \
-						BRAC, JICA. EuroAfrica-P8 \
-						EU/FP7 funded project in the framework \
-						of the EuroAfrica-ICT. \
+						summary \
 					</div> \
 					<div class="location"> \
 						Dhaka, Bangladesh \
@@ -348,6 +311,7 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
 		_.bind(this, 'getHtml');
+
     	this._html = this._templateParsed((this.model && this.model.attributes) ? this.model.attributes : null);
 	}
 
@@ -402,6 +366,7 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 				case 'left':
 					that.$el.removeClass(currentClass).addClass('right').css('left', this._maxShift);
 					that.model.changeDate(3);
+					console.log('loading next');
 					that.model.loadCollections();
 					break;
 				case 'center':
@@ -425,6 +390,7 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 				case 'right':
 					that.$el.removeClass(currentClass).addClass('left').css('left', -this._maxShift);
 					that.model.changeDate(-3);
+					console.log('loading prev');
 					that.model.loadCollections();
 					break;
 				default: break;
