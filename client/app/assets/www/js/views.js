@@ -360,7 +360,7 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 				that._listContainer.append(summaryView.getHtml());
 			});
 
-			setTimeout(function () {that.hideLoader();}, 1500);
+			that.hideLoader();
 		});
 	}
 });
