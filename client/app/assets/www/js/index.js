@@ -9,7 +9,7 @@ function LOG(text) {
 var coferer = {
     _isLoaded: false,
     mainView: null,
-    
+
     containerSelectors: {
         headerGlobal: '#header-global',
         mainView: '#content' //this.containerSelectors.mainView

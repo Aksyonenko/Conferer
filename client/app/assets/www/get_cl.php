@@ -9,7 +9,7 @@ $y = $_GET['year'];
 die('[ {
   "id" : "51641da6e1fad4fb298dd382",
   "title" : "QCon New York 2013: ----- '.$y.'/'.$m.' -----",
-  "summary" : "QCon empowers software development by facilitating the spread of knowledge and innovation in the developer community. A practitioner-driven conference, QCon is designed for technical team leads, architects, engineering directors, and project managers who influence innovation in their teams.",
+  "summary" : "QCon empowers software development by facilitating the spread of knowledge and innovation in the developer community.",
   "startDate" : 1357084800000,
   "endDate" : 1357344000000,
   "country" : "Japan",

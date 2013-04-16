@@ -286,20 +286,20 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 	_templateRaw: '\
     <li class="conference-summary"> \
 		<div class="white"> \
-			<div class="title"><%=this.model.get("title")%></div> \
+			<div class="title"><%=this.model.getTitle()%></div> \
 			<div class="info"> \
 				<div class="logo"> \
 					<div class="img"> \
-						<img src="/img/default-conference-logo.png"> \
+						<img src="<%=this.model.get("logoURL")%>"> \
 					</div> \
-					<div class="date">18 <span>dec</span> - 21 <span>dec</span></div> \
+					<div class="date"><%=this.model.getStartDay()%> <span><%=this.model.getStartMonth()%></span> - <%=this.model.getEndDay()%> <span><%=this.model.getEndMonth()%></span></div> \
 				</div> \
 				<div class="details"> \
 					<div class="description"> \
-						summary \
+						<%=this.model.get("summary")%> \
 					</div> \
 					<div class="location"> \
-						Dhaka, Bangladesh \
+						<%=this.model.get("city")%><%=(this.model.get("region") ? ", " : "") + this.model.get("region")%>, <%=this.model.get("country")%> \
 					</div> \
 				</div> \
 			</div> \
@@ -409,7 +409,7 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 		this.showLoader();
 		this.listenTo(this.model, 'reset', function() {
 			that.render();
-			
+
 			that.$el.find('ul').css('width', that._maxShift + that._scrollWidth);
 
 			// create and append subViews (ConferenceSummary)
