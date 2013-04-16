@@ -1,7 +1,7 @@
 #ignore folders created by Eclipse
-client/bin/
-client/gen/
+client/app/bin/
+client/app/gen/
 
 #ignore /output for assets
-client/assets/www/output/
-client/assets/www/js/conferer.js
+client/app/assets/www/output/
+client/app/assets/www/js/conferer.js

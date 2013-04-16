@@ -78,6 +78,7 @@ conferer.proto.views.MainView = conferer.proto.views._Base.extend({
 		this.conferenceListHeader = new conferer.proto.views.ConferenceListHeader({
 			el: '#conference-list-header'
 		});
+
 	}
 });
 
@@ -231,12 +232,14 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 
 
 		this._bodyWidth = $('body').width();
-		var shift = this._bodyWidth;
+		var shift = this._bodyWidth,
+			scrollWidth = 17;;
 
 		this.conferenceListLeft = new conferer.proto.views.ConferencesList({
 			el: '#conference-list > .left',
 			shift: -shift,
 			maxShift: shift,
+			scrollWidth: scrollWidth,
 			model: new conferer.proto.models.ConferencesList({
 				month: prevDate.getMonth()*1 + 1,
 				year: prevDate.getFullYear()
@@ -247,6 +250,7 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 			el: '#conference-list > .center',
 			shift: 0,
 			maxShift: shift,
+			scrollWidth: scrollWidth,
 			model: new conferer.proto.models.ConferencesList({
 				month: currentDate.getMonth()*1 + 1,
 				year: currentDate.getFullYear()
@@ -257,6 +261,7 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 			el: '#conference-list > .right',
 			shift: shift,
 			maxShift: shift,
+			scrollWidth: scrollWidth,
 			model: new conferer.proto.models.ConferencesList({
 				month: nextDate.getMonth()*1 + 1,
 				year: nextDate.getFullYear()
@@ -287,7 +292,7 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 					<div class="img"> \
 						<img src="/img/default-conference-logo.png"> \
 					</div> \
-					<div class="date">18 dec - 21 dec</div> \
+					<div class="date">18 <span>dec</span> - 21 <span>dec</span></div> \
 				</div> \
 				<div class="details"> \
 					<div class="description"> \
@@ -330,6 +335,7 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 	_listContainerName: '.conference-summary-container',
 	_shift: 0,
 	_maxShift: 0,
+	_scrollWidth: 0,
 
 	showLoader: function() {
 		this.$el.find('.loader').addClass('is-visible-block').removeClass('is-hidden');
@@ -350,11 +356,13 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 
 		this._shift = var_args.shift;
 		this._maxShift = var_args.maxShift;
+		this._scrollWidth = var_args.scrollWidth;
+
 
 		this.$el.css('left', this._shift);
-// TODO: $('body').width() should become variable
 		this.$el.css('width', this._maxShift);
-		//this.$el.css('width', $('body').width());
+
+
 		var that = this;
 
 
@@ -401,12 +409,15 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 		this.showLoader();
 		this.listenTo(this.model, 'reset', function() {
 			that.render();
+			
+			that.$el.find('ul').css('width', that._maxShift + that._scrollWidth);
 
 			// create and append subViews (ConferenceSummary)
 			var collection = that.model;
 			_.each(collection.models, function(conferenceModel, index) {
 				var summaryView = new conferer.proto.views.ConferenceSummary({
-					model: conferenceModel // {filters: {order: 'date'}})
+					model: conferenceModel, // {filters: {order: 'date'}})
+					scrollWidth: that._scrollWidth,
 				});
 				that._listContainer.append(summaryView.getHtml());
 			});
