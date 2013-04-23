@@ -35,8 +35,8 @@ html {
 	height: 100%;
 }
 body {
-	position: relative; 
-	overflow-x: hidden;	
+	position: relative;
+	overflow-x: hidden;
 	height: 100%;
 	font-family: 'HelveticaLTStd-BoldCond';
 	font-variant: small-caps;
@@ -47,33 +47,32 @@ body {
 }
 
 #dashboard {
-	background: #444; 
-	position: fixed; 
-	top: 0; 
-	left: 0; 
-	height: 2000px; 
-	width: 200px; 
+	background: #444;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 2000px;
+	width: 200px;
 	overflow-y: auto;
 }
 
 #content-wrapper {
-	background: black; 
-	overflow: hidden; 
-	position:absolute; 
-	left: 0; 
-	top: 0; 
-	width: 100%; 
-	overflow: hidden; 
+	background: black;
+	/*overflow: hidden;*/
+	position:absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
 	z-index: 100;
 	height: 100%;
 }
 		#header-global {
-			background: #262626; 
-			position: fixed; 
-			top: 0; 
-			left: 0; 
-			width: 100%; 
-			height: 58px; 
+			background: #262626;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 58px;
 			z-index: 101;
 			border-bottom: 2px solid #d94343;
 			min-width: 320px;
@@ -105,10 +104,11 @@ body {
 				}
 
 		#content {
-			background: #f0f0f0; 
-			margin-top: 60px; 
+			background: #f0f0f0;
+			margin-top: 60px;
 			min-height: 480px;
 			height: 100%;
+			z-index: 100;
 		}
 
 		#footer-global {
@@ -116,9 +116,9 @@ body {
 			position: absolute;
 			bottom: 0;
 			width: 100%;
-			height: 58px; 
+			height: 58px;
 			border-top: 2px solid #d94343;
-			z-index: 100;
+			z-index: 500;
 		}
 
 
@@ -130,11 +130,10 @@ body {
 .left,
 .center,
 .right {
-	position:absolute; 
-	top: 110;	
+	position:absolute;
 	overflow: hidden;
+	height: 100%;
 	/*width: 333px;*/
-	height: 380px;
 }
 
 .loader {

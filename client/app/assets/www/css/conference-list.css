@@ -23,6 +23,8 @@
 			color: #d94343;
 			border-bottom: 1px solid #d94343;
 			position: relative;
+			z-index: 200;
+			background-color: #f0f0f0;
 		}
 				#conference-list-header-prev,
 				#conference-list-header-next {
@@ -64,7 +66,7 @@
 									font-family: 'HelveticaLTStd-Cond';
 									font-size: 15px;
 									width: 46px;
-									line-height: 11px;
+									line-height: 15px;
 								}
 								#conference-list-header-calendar-day {
 									font-size: 24px;
@@ -85,6 +87,9 @@
 						}
 
 
+		#conference-list {
+			z-index: 1;
+		}
 
 		#conference-list .conference-summary-container {
 			overflow: auto;
@@ -95,7 +100,17 @@
 					color: #434343;
     				min-height: 100px;
     				background: #d94343;
-    				margin-right: 16px;
+    				margin-right: 20px;
+    				padding-right: 5px;
+					position: relative;
+				}
+
+				#conference-list .conference-summary:after {
+					content: ">";
+					position: absolute;
+					top: 45%;
+					right: 12px;
+					color: #fff;
 				}
 						#conference-list .conference-summary .white {
 							margin: 10px 23px 0 0;
@@ -107,16 +122,21 @@
 						#conference-list .conference-summary .title {
 							font-size: 13px;
 							margin-bottom: 5px;
+							padding: 2px 0;
 						}
 						#conference-list .conference-summary .info {
 							height: 100%;
 						}
 								#conference-list .conference-summary .logo {
 									position: relative;
-									border: 1px solid #d94343;
+									border-top: 1px solid #d94343;
+									border-right: 1px solid #d94343;
+									border-bottom: 1px solid #d94343;
+									border-left: 1px solid #d94343; /*#d94343;*/
 									width: 100px;
 									float: left;
-									margin: 0 10px 10px 0;
+									margin: 0px 10px 10px 0px;
+
 								}
 										#conference-list .conference-summary .img {
 											text-align: center;

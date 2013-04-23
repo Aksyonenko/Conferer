@@ -91,7 +91,7 @@ conferer.proto.views.HeaderGlobal = conferer.proto.views._Base.extend({
 	_templateRaw: ' \
 		<div id="header-global-search"></div> \
 		<div id="dashboard-button"></div> \
-		<div id="header-global-title">Confere<span>r</span></div> \
+		<div id="header-global-title">Confere<span>r</span> v0.1.119</div> \
 	',
 
     render: function() {
@@ -110,22 +110,53 @@ conferer.proto.views.HeaderGlobal = conferer.proto.views._Base.extend({
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ConferenceListHeader
 conferer.proto.views.ConferenceListHeader = conferer.proto.views._Base.extend({
 	_name: 'conferenceListHeader',
+
+	_currentMonth: 0,
+	_currentYear: 0,
+	getNextMonth: function() { return GetMonthName(this._currentMonth + 1, true); },
+	getPrevMonth: function() { return GetMonthName(this._currentMonth - 1, true); },
+	getCurrentMonth: function() { return GetMonthName(this._currentMonth, true); },
+
 	_templateRaw: ' \
-						<div id="conference-list-header-next">January</div> \
-						<div id="conference-list-header-prev">November</div> \
+						<div id="conference-list-header-next"><%=this.getNextMonth()%></div> \
+						<div id="conference-list-header-prev"><%=this.getPrevMonth()%></div> \
 						<div id="conference-list-header-current"> \
 							<div id="conference-list-header-calendar"> \
-								<div id="conference-list-header-calendar-week">wed</div> \
-								<div id="conference-list-header-calendar-day">17</div> \
+								<div id="conference-list-header-calendar-week">tue</div> \
+								<div id="conference-list-header-calendar-day">16</div> \
 							</div> \
-							<div id="conference-list-header-current-month">December</div> \
-							<div id="conference-list-header-current-year">2013</div> \
+							<div id="conference-list-header-current-month"><%=this.getCurrentMonth()%></div> \
+							<div id="conference-list-header-current-year"><%=this._currentYear%></div> \
 						</div> \
 	',
 
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
+		var curDate = new Date().getDateParams();
+		this._currentMonth = curDate.month;
+		this._currentYear = curDate.year;
+
 		this.render();
+
+		this.listenTo(conferer.events.conferenceList, 'conferenceList-moveRight', function(e) {
+			this._currentMonth++;
+			if (this._currentMonth > 12) {
+				this._currentMonth = 1;
+				this._currentYear++;
+			}
+
+			this.render();
+		});
+
+		this.listenTo(conferer.events.conferenceList, 'conferenceList-moveLeft', function(e) {
+			this._currentMonth--;
+			if (this._currentMonth < 1) {
+				this._currentMonth = 12;
+				this._currentYear--;
+			}
+
+			this.render();
+		});
 	}
 });
 
@@ -141,30 +172,173 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
                 	<div class="right"></div> \
 	',
 	_bodyWidth: 0,
+	_centerColumn: null,
+	_isCenterColumnResized: false,
+
+	onChangedMonth: function() {
+		this._centerColumn = this.$el.find('.center');
+		this._isCenterColumnResized = false;
+		this._centerColumn.css({
+			'top': '0px',
+		});
+/*
+		var totalHeight = 0;
+		console.log($('.conference-summary', this._centerColumn));
+		this._centerColumn.find('.conference-summary-container').find('.conference-summary').each(function(element) {
+			totalHeight += element.outerHeight(true);
+		});
+
+		console.log('totalHeight: ' + totalHeight);
+
+		this._centerColumn.css({
+			'top': '0px',
+			'height': totalHeight + 'px'
+		});
+*/
+	},
 
     bindEvents: function() {
 		$(document).bind('touchmove', function(e) {
 			e.preventDefault();
 		});
 
+		var DRAG_STATUS = {
+			IDLE: 0,
+			WAITING_DIR: 1,
+			HORIZONTAL: 2,
+			VERTICAL: 3
+		}
+
+
+		var that = this,
+			hammerHandler = this.$el.hammer({
+				drag_min_distance: 1,
+				stop_browser_behavior : true
+			}),
+
+			currentDragStatus = DRAG_STATUS.IDLE,
+			shift = 0,
+
+			lastPositions = {x: -1, y: -1},
+			lastHandledDragTime = 0,
+
+			childWidth = $('body').width(),
+
+			horizontalThreshold = Math.floor(childWidth / 3), // half of the screen
+			maxScrollableHeight = 0;
+
+		function DragReset() {
+			currentDragStatus = DRAG_STATUS.IDLE;
+			shift = 0;
+
+			lastPositions = {x: -1, y: -1};
+			lastHandledDragTime = 0;
+
+			childWidth = $('body').width();
+			horizontalThreshold = Math.floor(childWidth / 3);
+		}
+
+
+		hammerHandler.on('dragstart', function(e) {
+			DragReset();
+			lastHandledDragTime = e.gesture.timeStamp;
+			currentDragStatus = DRAG_STATUS.WAITING_DIR;
+
+			lastPositions.x = e.gesture.center.pageX - e.target.offsetLeft;
+			lastPositions.y = e.gesture.center.pageY - e.target.offsetTop;
+
+			if (!that._isCenterColumnResized) {
+
+				maxScrollableHeight = 0;
+				/*var n = 0;
+				that.$el.find('.conference-summary').each(function(index, element) {
+					n++;
+					console.log(n + ' element height ' +  $(element).outerHeight(true));
+					maxScrollableHeight += $(element).outerHeight(true);
+				});
+				*/
+				maxScrollableHeight = 810;
+
+				that._isCenterColumnResized = true;
+				that._centerColumn.css('height', maxScrollableHeight);
+
+				console.log('center column resized to ' + maxScrollableHeight);
+			}
+
+			return true;
+		});
+
+		hammerHandler.on('drag', function(e) {
+			if (e.gesture.timeStamp - lastHandledDragTime < 1) {
+				return true;
+			}
+
+
+			lastHandledDragTime = e.gesture.timeStamp;
+			var deltaX = (e.gesture.center.pageX - e.target.offsetLeft) - lastPositions.x,
+				deltaY = (e.gesture.center.pageY - e.target.offsetTop) - lastPositions.y;
+
+			lastPositions.x = e.gesture.center.pageX - e.target.offsetLeft;
+			lastPositions.y = e.gesture.center.pageY - e.target.offsetTop;
+
+			if (currentDragStatus <= DRAG_STATUS.WAITING_DIR) {
+				if (Math.abs(deltaX) > Math.abs(deltaY)) {
+					currentDragStatus = DRAG_STATUS.HORIZONTAL;
+				} else {
+					currentDragStatus = DRAG_STATUS.VERTICAL;
+					shift = parseInt(that._centerColumn.css('top'));
+				}
+			}
+
+			if (currentDragStatus === DRAG_STATUS.HORIZONTAL) {
+				shift += deltaX;
+				//shift += (Math.abs(shift) + deltaX < childWidth) ? deltaX : 0;
+				that.$el.css('left', shift);
+			}
+
+			if (currentDragStatus === DRAG_STATUS.VERTICAL) {
+				shift += deltaY;
+				//shift += (Math.abs(shift) + deltaY < childWidth) ? deltaY : 0;
+				if (shift < -maxScrollableHeight) {
+					shift = -maxScrollableHeight;
+				}
+
+				if (shift > 0) {
+					shift = 0;
+				}
+
+				that._centerColumn.css('top', shift);
+			}
+		});
+
+		hammerHandler.on('dragend', function(e) {
+			DragReset();
+			currentDragStatus = DRAG_STATUS.IDLE;
+		});
+
+/*
 		var that = this,
 			hammerHandler = this.$el.hammer({
 				drag_min_distance: 1,
 				stop_browser_behavior : true
 			}),
 			lastHandledDragTime = 0,
-			lastHandledDragPosition = -1,
+			lastHandledDragPositionX = -1,
+			lastHandledDragPositionY = -1,
+			isVertical = false,
 			isDraggingNow = false,
 			shift = 0,
 
 			childWidth = $('body').width(),
-			minShift = Math.floor(childWidth / 2); // half of the screen
+			minShift = Math.floor(childWidth / 3); // half of the screen
 
 		hammerHandler.on('dragstart', function(e) {
 			shift = 0;
 			isDraggingNow = true;
+			isVertical = false;
 			lastHandledDragTime = e.gesture.timestamp;
-			lastHandledDragPosition = e.gesture.center.pageX - e.target.offsetLeft;
+			lastHandledDragPositionX = e.gesture.center.pageX - e.target.offsetLeft;
+			lastHandledDragPositionY = e.gesture.center.pageY - e.target.offsetTop;
 		});
 
 		hammerHandler.on('dragend', function(e) {
@@ -173,7 +347,8 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 			}
 
 			lastHandledDragTime = 0;
-			lastHandledDragPosition = -1;
+			lastHandledDragPositionX = -1;
+			lastHandledDragPositionY = -1;
 			isDraggingNow = false;
 
 
@@ -184,48 +359,46 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 
 				shift = 0;
 			} else {
-
 				that.$el.animate({
 					left: (shift < 0 ? -1 : 1) * (childWidth)
 				}, 500, function() {
 					if (shift < 0) {
-						console.log('moveRight');
 						conferer.events.conferenceList.trigger('conferenceList-moveRight', {t:11});
 					} else {
-						console.log('moveLeft');
 						conferer.events.conferenceList.trigger('conferenceList-moveLeft', {t:22});
 					}
 					that.$el.css('left', 0);
 					shift = 0;
 				});
 			}
-
 		});
 
 		hammerHandler.on('drag', function(e) {
 			if (e.gesture.timestamp - lastHandledDragTime < 10 || !isDraggingNow) {
 				return;
 			}
-			var currentPosition = e.gesture.center.pageX - e.target.offsetLeft,
-				deltaPosition = currentPosition - lastHandledDragPosition;
-			if (Math.abs(deltaPosition) < 5) {
+			var currentPositionX = e.gesture.center.pageX - e.target.offsetLeft,
+				currentPositionY = e.gesture.center.pageY - e.target.offsetTop,
+				deltaPositionX = currentPositionX - lastHandledDragPositionX,
+				deltaPositionY = currentPositionY - lastHandledDragPositionY;
+
+			if (Math.abs(deltaPositionX) < 5) {
 				return;
 			}
 			lastHandledDragTime = e.gesture.timestamp;
-			lastHandledDragPosition = currentPosition;
+			lastHandledDragPositionX = currentPositionX;
 
-			shift += (Math.abs(shift) + deltaPosition < childWidth) ? deltaPosition : 0;
+			shift += (Math.abs(shift) + deltaPositionX < childWidth) ? deltaPositionX : 0;
 			that.$el.css('left', shift);
 
 			if (Math.abs(shift) >= minShift) {
 				hammerHandler.trigger('dragend');
 			}
 		});
-
+*/
 	},
 
 	createSubViews: function() {
-
 		var currentDate = new Date(),
 			prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
 			nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
@@ -257,7 +430,7 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 			})
 		});
 
-		this.conferenceListCenter = new conferer.proto.views.ConferencesList({
+		this.conferenceListRight = new conferer.proto.views.ConferencesList({
 			el: '#conference-list > .right',
 			shift: shift,
 			maxShift: shift,
@@ -271,9 +444,10 @@ conferer.proto.views.ConferenceListContainer = conferer.proto.views._Base.extend
 
 	initialize: function(var_args) {
 		conferer.proto.views._Base.prototype.initialize.call(this, var_args);
-		_.bind(this, 'bindEvents', 'createSubViews');
+		_.bind(this, 'bindEvents', 'createSubViews', 'onMonthChanged');
 		this.render();
 		this.createSubViews();
+		this.onChangedMonth();
 		this.bindEvents();
 	}
 });
@@ -299,7 +473,7 @@ conferer.proto.views.ConferenceSummary = conferer.proto.views._Base.extend({
 						<%=this.model.get("summary")%> \
 					</div> \
 					<div class="location"> \
-						<%=this.model.get("city")%><%=(this.model.get("region") ? ", " : "") + this.model.get("region")%>, <%=this.model.get("country")%> \
+						<%=this.model.get("city")%><%=(this.model.get("region") ? (", " + this.model.get("region")) : "")%>, <%=this.model.get("country")%> \
 					</div> \
 				</div> \
 			</div> \
@@ -362,7 +536,9 @@ conferer.proto.views.ConferencesList = conferer.proto.views._Base.extend({
 		this.$el.css('left', this._shift);
 		this.$el.css('width', this._maxShift);
 
-
+		this.$el.css('height',
+			($('body').height() - $('#footer-global').outerHeight(true) - $('#conference-list-header').outerHeight(true) - $('#footer-global').outerHeight(true)) + 'px'
+		);
 		var that = this;
 
 

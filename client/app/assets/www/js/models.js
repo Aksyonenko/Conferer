@@ -2,36 +2,6 @@ var conferer = conferer || {};
 conferer.proto = conferer.proto || {};
 conferer.proto.models = {};
 
-Date.prototype.getDateParams = function() {
-	return {
-		day: this.getDate(),
-		month: this.getMonth() + 1,
-		year: this.getFullYear()
-	}
-};
-
-var monthNames = {
-    '1' : {'short': 'JAN', 'full': 'January'},
-    '2' : {'short': 'FEB', 'full': 'February'},
-    '3' : {'short': 'MAR', 'full': 'March'},
-    '4' : {'short': 'APR', 'full': 'April'},
-    '5' : {'short': 'MAY', 'full': 'May'},
-    '6' : {'short': 'JUN', 'full': 'June'},
-    '7' : {'short': 'JUL', 'full': 'July'},
-    '8' : {'short': 'AUG', 'full': 'August'},
-    '9' : {'short': 'SEP', 'full': 'September'},
-    '10' : {'short': 'OCT', 'full': 'October'},
-    '11' : {'short': 'NOV', 'full': 'November'},
-    '12' : {'short': 'DEC', 'full': 'December'}
-}
-
-function GetMonthNameFull(month) {
-    return monthNames[month].full;
-}
-
-function GetMonthNameShort(month) {
-    return monthNames[month].short;
-}
 
 
 
@@ -54,9 +24,9 @@ conferer.proto.models.ConferenceSummary = Backbone.Model.extend({
 	getTitle: function() { return this.get('title'); },
 
 	getStartDay: function() { return new Date(this.get('startDate')).getDateParams().day; },
-	getStartMonth: function() { return GetMonthNameShort(new Date(this.get('startDate')).getDateParams().month); },
+	getStartMonth: function() { return GetMonthName(new Date(this.get('startDate')).getDateParams().month, false); },
 	getEndDay: function() { return new Date(this.get('endDate')).getDateParams().day; },
-	getEndMonth: function() { return GetMonthNameShort(new Date(this.get('endDate')).getDateParams().month); }
+	getEndMonth: function() { return GetMonthName(new Date(this.get('endDate')).getDateParams().month, false); }
 });
 
 conferer.proto.models.ConferencesList = Backbone.Collection.extend({
@@ -79,9 +49,9 @@ conferer.proto.models.ConferencesList = Backbone.Collection.extend({
 		_.bind(this, 'loadCollections');
 		var_args = var_args || {};
 
-		this.url = 'http://conferer.local/get_cl.php';
-		//this.url = 'http://contacts.cityi.com.ua/akqa/conferer/get_cl.php';
-		// this.url = 'http://10.11.100.25:8080/conferer/conferences?start=1357084800000';
+		//this.url = 'http://conferer.local/get_cl.php';
+		this.url = 'http://contacts.cityi.com.ua/akqa/conferer/get_cl.php';
+		//this.url = 'http://10.11.100.25:8080/conferer/conferences?start=1357084800000';
 		//this.url = 'http://ec2-79-125-106-6.eu-west-1.compute.amazonaws.com:8080/conferences?start=1357084800000';
 
 		this.month = var_args.month || 0;
