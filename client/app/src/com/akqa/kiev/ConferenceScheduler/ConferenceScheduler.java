@@ -20,6 +20,8 @@
 package com.akqa.kiev.ConferenceScheduler;
 
 import android.os.Bundle;
+import android.view.View;
+
 import org.apache.cordova.*;
 
 public class ConferenceScheduler extends DroidGap
@@ -32,6 +34,13 @@ public class ConferenceScheduler extends DroidGap
         // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl());
         //super.loadUrl("file:///android_asset/www/index.html")
+/*
+        // Display vertical scrollbar and hide horizontal scrollBar
+        super.appView.setVerticalScrollBarEnabled(true);
+        super.appView.setHorizontalScrollBarEnabled(false);
+        // set scrollbar style
+        super.appView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+*/
     }
 }
 
