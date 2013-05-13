@@ -1,10 +1,12 @@
 package com.akqa.kiev.conferer;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Conference {
-	private String id;
+	private String conferenceId;
+	private String conferenceUrl;
+	private String logoUrl;
 	private String title;
 	private String summary;
 	private Date startDate;
@@ -12,18 +14,30 @@ public class Conference {
 	private String country;
 	private String region;
 	private String city;
-	
+	private String address;
 	private String details;
-	private List<Session> sessions;
 	
+	private ArrayList<Session> sessions;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getTitle() {
+	public String getConferenceId() {
+        return conferenceId;
+    }
+    public void setConferenceId(String conferenceId) {
+        this.conferenceId = conferenceId;
+    }
+    public String getConferenceUrl() {
+        return conferenceUrl;
+    }
+    public void setConferenceUrl(String conferenceUrl) {
+        this.conferenceUrl = conferenceUrl;
+    }
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+    public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
@@ -71,10 +85,16 @@ public class Conference {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	public List<Session> getSessions() {
+	public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public ArrayList<Session> getSessions() {
 		return sessions;
 	}
-	public void setSessions(List<Session> sessions) {
+	public void setSessions(ArrayList<Session> sessions) {
 		this.sessions = sessions;
 	}
 }
