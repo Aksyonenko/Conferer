@@ -1,11 +1,12 @@
 
-package com.akqa.kiev.conferer;
+package com.akqa.kiev.conferer.server.model;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
-
-public class Speaker {
+@Document(collection = "speakers")
+public class Speaker extends AbstractEntity {
     
-    private String speakerId;
     private String speakerUrl;
     private String firstName;
     private String lastName;
@@ -13,14 +14,6 @@ public class Speaker {
     private String about;
     
     private SocialLinks socialLinks;
-
-    public String getSpeakerId() {
-        return speakerId;
-    }
-    
-    public void setSpeakerId(String speakerId) {
-        this.speakerId = speakerId;
-    }
 
     public String getSpeakerUrl() {
         return speakerUrl;
@@ -69,6 +62,5 @@ public class Speaker {
     public void setSocialLinks(SocialLinks socialLinks) {
         this.socialLinks = socialLinks;
     }
-
 
 }

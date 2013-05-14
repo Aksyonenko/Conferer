@@ -18,6 +18,8 @@ public class WebInitializer implements WebApplicationInitializer {
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		logger.info("Initializating Conferer server application");
 		
+		servletContext.setInitParameter("spring.profiles.default", "local");
+		
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfig.class);
 		

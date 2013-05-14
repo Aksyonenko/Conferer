@@ -1,10 +1,16 @@
-package com.akqa.kiev.conferer;
+package com.akqa.kiev.conferer.server.model;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Conference {
-	private String conferenceId;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.akqa.kiev.conferer.server.dao.json.FullView;
+import com.fasterxml.jackson.annotation.JsonView;
+
+@Document(collection = "conferences")
+public class Conference extends AbstractEntity {
+	
 	private String conferenceUrl;
 	private String logoUrl;
 	private String title;
@@ -15,16 +21,13 @@ public class Conference {
 	private String region;
 	private String city;
 	private String address;
+	
+	@JsonView(FullView.class)
 	private String details;
 	
+	@JsonView(FullView.class)
 	private ArrayList<Session> sessions;
-	
-	public String getConferenceId() {
-        return conferenceId;
-    }
-    public void setConferenceId(String conferenceId) {
-        this.conferenceId = conferenceId;
-    }
+
     public String getConferenceUrl() {
         return conferenceUrl;
     }

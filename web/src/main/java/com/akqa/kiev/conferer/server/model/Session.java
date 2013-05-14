@@ -1,17 +1,20 @@
 
-package com.akqa.kiev.conferer;
+package com.akqa.kiev.conferer.server.model;
 
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Session {
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "sessions")
+public class Session extends AbstractEntity {
 
     public enum Type {
         Tutorial, Workshop, OpenDiscussion, Presentation, Lunch
     }
 
-    private String sessionId;
     private String sessionUrl;
     private String title;
     private Type type;
@@ -20,15 +23,8 @@ public class Session {
     private Date endTime;
     private String details;
 
+    @DBRef
     private ArrayList<Speaker> speakers;
-    
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 
     public String getSessionUrl() {
         return sessionUrl;

@@ -1,4 +1,4 @@
-package com.akqa.kiev.conferer.server.dao;
+package com.akqa.kiev.conferer.server.dao.mongo;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
@@ -11,22 +11,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.context.ApplicationContext;
 
-import com.akqa.kiev.conferer.Conference;
+import com.akqa.kiev.conferer.server.dao.ConferenceDao;
+import com.akqa.kiev.conferer.server.model.Conference;
+import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
+import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
 
-/*
- * Integration test
- */
-@Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MongoConfig.class})
-public class MongoConferenceDaoTest {
+
+@UsingDataSet(locations = "/mongo/integration-testing.js", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
+public class MongoConferenceDaoTest extends AbstractMongoDaoTest {
 
 	private static final DateFormat dateFormat;
 	
@@ -36,7 +32,10 @@ public class MongoConferenceDaoTest {
 	}
 	
 	@Autowired
-	private MongoConferenceDao conferenceDao;
+	private ApplicationContext applicationContext;
+	
+	@Autowired
+	private ConferenceDao conferenceDao;
 	
 	@Test
 	public void getConferencesTest_noConferences() throws ParseException {
@@ -76,7 +75,7 @@ public class MongoConferenceDaoTest {
 		Date from = dateFormat.parse(startDate + " 00:00:00");
 		Date to = dateFormat.parse(endDate + " 00:00:00");
 		
-		List<Conference> conferences = conferenceDao.getConferences(from, to);
+		List<Conference> conferences = conferenceDao.find(from, to);
 		assertThat(conferences, hasSize(expectedSize));
 		
 		for (Conference conference : conferences) {

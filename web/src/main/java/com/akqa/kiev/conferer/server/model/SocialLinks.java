@@ -1,4 +1,4 @@
-package com.akqa.kiev.conferer;
+package com.akqa.kiev.conferer.server.model;
 
 public class SocialLinks {
 
