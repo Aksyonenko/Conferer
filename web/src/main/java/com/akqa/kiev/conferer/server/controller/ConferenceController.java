@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +38,7 @@ public class ConferenceController {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
 	public void conferences(
 			@RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "month", required = false) Integer month,
@@ -52,11 +54,15 @@ public class ConferenceController {
 
 		Calendar endCalendar = (Calendar) startCalendar.clone();
 		endCalendar.add(Calendar.MONTH, 1);
+		endCalendar.add(Calendar.DAY_OF_YEAR, -1);
 
 		List<Conference> conferences = conferenceDao.find(startCalendar.getTime(), endCalendar.getTime());
 		ObjectWriter writer = objectMapper.writerWithView(Object.class);
 		
 		try {
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			response.setCharacterEncoding("UTF-8");
+			
 			writer.writeValue(response.getOutputStream(), conferences);
 		} catch (IOException e) {
 			logger.error("Cannot serialize conference list", e);
@@ -66,7 +72,15 @@ public class ConferenceController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Conference conference(@PathVariable String id) {
-		return conferenceDao.findOne(id);
+		try {
+			Conference conference = conferenceDao.findOne(id);
+			if (conference == null) throw new IncorrectResultSizeDataAccessException(1, 0);
+			
+			return conference;
+			
+		} catch (IncorrectResultSizeDataAccessException e) {
+			throw new ResourceNotFoundException("Conference " + id);
+		}
 	}
 
 	private static void zeroCalendarTime(Calendar calendar) {

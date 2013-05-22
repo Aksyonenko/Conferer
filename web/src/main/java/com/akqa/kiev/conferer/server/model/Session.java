@@ -9,15 +9,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "sessions")
-public class Session extends AbstractEntity {
-
-    public enum Type {
-        Tutorial, Workshop, OpenDiscussion, Presentation, Lunch
-    }
+public class Session extends AbstractEntity<Session> {
 
     private String sessionUrl;
     private String title;
-    private Type type;
+    private String type;
     private String summary;
     private Date startTime;
     private Date endTime;
@@ -42,11 +38,11 @@ public class Session extends AbstractEntity {
         this.title = title;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 

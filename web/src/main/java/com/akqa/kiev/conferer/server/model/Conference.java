@@ -1,7 +1,7 @@
 package com.akqa.kiev.conferer.server.model;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,7 +9,7 @@ import com.akqa.kiev.conferer.server.dao.json.FullView;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Document(collection = "conferences")
-public class Conference extends AbstractEntity {
+public class Conference extends AbstractEntity<Conference> {
 	
 	private String conferenceUrl;
 	private String logoUrl;
@@ -26,7 +26,7 @@ public class Conference extends AbstractEntity {
 	private String details;
 	
 	@JsonView(FullView.class)
-	private ArrayList<Session> sessions;
+	private List<Session> sessions;
 
     public String getConferenceUrl() {
         return conferenceUrl;
@@ -94,10 +94,10 @@ public class Conference extends AbstractEntity {
     public void setAddress(String address) {
         this.address = address;
     }
-    public ArrayList<Session> getSessions() {
+    public List<Session> getSessions() {
 		return sessions;
 	}
-	public void setSessions(ArrayList<Session> sessions) {
+	public void setSessions(List<Session> sessions) {
 		this.sessions = sessions;
 	}
 }

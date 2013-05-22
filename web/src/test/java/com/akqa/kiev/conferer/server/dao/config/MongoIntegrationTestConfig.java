@@ -4,10 +4,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Profile("test")
+@Profile("integration-test")
 @ComponentScan(basePackages = "com.akqa.kiev.conferer.server.dao.mongo")
 @Configuration
-public class MongoTestConfig extends MongoConfig {
+public class MongoIntegrationTestConfig extends MongoConfig {
 	
 	@Override
 	protected String getDatabaseName() {

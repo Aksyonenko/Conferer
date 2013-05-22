@@ -20,12 +20,8 @@ public class ConferenceDaoMongo implements ConferenceCustomDao {
 
     public static final String CONFERENCE_COLLECTION = "conferences";
 
-    private final MongoTemplate template;
-    
     @Autowired
-    public ConferenceDaoMongo(MongoTemplate template) {
-    	this.template = template;
-    }
+    private MongoTemplate template;
     
     @Override
     public List<Conference> find(Date fromDate, Date toDate) {
