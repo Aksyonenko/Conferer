@@ -1,1 +1,0 @@
-coferer.initialize();
