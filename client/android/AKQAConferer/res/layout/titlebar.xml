@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/months_text_color" >
+
+    <com.akqa.kiev.android.conferer.TitleTextView
+        android:id="@+id/confererTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/title_padding"
+        android:layout_weight="1"
+        android:background="@color/titlebar_color"
+        android:drawableLeft="@drawable/ic_launcher"
+        android:padding="@dimen/title_padding"
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:maxWidth="@dimen/search_field_max_width" >
+    </SearchView>
+
+</LinearLayout>

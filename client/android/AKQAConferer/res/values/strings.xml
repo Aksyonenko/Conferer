@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Conferer</string>
+    <string name="action_about">About</string>
+    <string name="filters_btn_label">FILTERS</string>
+    <string name="calendar_view_btn_label">List View</string>
+    <string name="list_view_btn_label">Calendar View</string>
+
+</resources>

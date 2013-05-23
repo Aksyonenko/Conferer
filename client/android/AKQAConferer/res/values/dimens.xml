@@ -1,0 +1,12 @@
+<resources>
+
+    <dimen name="activity_horizontal_margin">2dp</dimen>
+    <dimen name="activity_vertical_margin">2dp</dimen>
+    <dimen name="months_title_padding">5dp</dimen>
+    <dimen name="title_size">50dp</dimen>
+    <dimen name="title_text_size">25sp</dimen>
+    <dimen name="title_padding">5dp</dimen>
+    <dimen name="search_field_max_width">200dp</dimen>
+    <dimen name="filters_btn_padding_left">15dp</dimen>
+
+</resources>

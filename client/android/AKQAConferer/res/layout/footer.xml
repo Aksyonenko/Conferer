@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:background="@color/footer_bg_color" >
+
+    <com.akqa.kiev.android.conferer.ConfererButton
+        android:id="@+id/filtersBtn"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/filters_btn_padding_left"
+        android:text="@string/filters_btn_label"
+        android:textColor="@color/months_text_color" />
+
+    <ImageButton
+        android:id="@+id/calendarViewBtn"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:contentDescription="@string/calendar_view_btn_label"
+        android:src="@drawable/ic_launcher" />
+
+    <ImageButton
+        android:id="@+id/listViewBtn"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:contentDescription="@string/list_view_btn_label"
+        android:src="@drawable/ic_launcher" />
+
+</LinearLayout>
