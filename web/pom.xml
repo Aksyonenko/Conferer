@@ -54,7 +54,7 @@
 				<version>2.1</version>
 
 				<configuration>
-					<url>http://ec2-79-125-106-6.eu-west-1.compute.amazonaws.com:8080/manager/text</url>
+					<url>http://10.11.100.254:8080/manager/text</url>
 					<username>admin</username>
 					<password>admin</password>
 					<path>/</path>
