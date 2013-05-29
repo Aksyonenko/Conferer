@@ -1,4 +1,4 @@
-package com.akqa.kiev.conferer.server.dao.jsonmock.mixin;
+package com.akqa.kiev.conferer.server.dao.jsonsource.mixin;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

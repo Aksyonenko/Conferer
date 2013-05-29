@@ -1,7 +1,4 @@
-package com.akqa.kiev.conferer.server.dao.jsonmock;
-
-import static com.jayway.jsonpath.Criteria.where;
-import static com.jayway.jsonpath.Filter.filter;
+package com.akqa.kiev.conferer.server.dao.jsonsource;
 
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
@@ -17,30 +14,35 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
 
 import com.akqa.kiev.conferer.server.dao.ConferenceDao;
 import com.akqa.kiev.conferer.server.model.Conference;
-import com.akqa.kiev.conferer.server.model.Session;
-import com.akqa.kiev.conferer.server.model.Speaker;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.jayway.jsonpath.JsonPath;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MockConferenceDao extends AbstractMockDao<Conference> implements
-		ConferenceDao {
+public class ConferenceDaoPreloaded extends AbstractDaoPreloaded<Conference> implements ConferenceDao {
 
+	@Autowired
+	private ObjectMapper objectMapper;
+	
 	private final Set<String> findAllFields = new HashSet<>();
 	private boolean includeFields;
+	
+	public ConferenceDaoPreloaded(Map<String, Conference> map) {
+		super(map);
+	}
+
 	
 	@Override
 	public List<Conference> find(Date fromDate, Date toDate) {
 		List<Conference> list = new ArrayList<>();
 		
 		long from = fromDate.getTime();
-		long to = fromDate.getTime();
+		long to = toDate.getTime();
 		
 		for (Conference conference : map.values()) {
 			long start = conference.getStartDate().getTime();
@@ -54,38 +56,14 @@ public class MockConferenceDao extends AbstractMockDao<Conference> implements
 			if (inner || outer || finishing || beginning) list.add(conference); 
 		}
 		
-		return list;
+		return reduceFields(list);
 	}
 
 	@Override
 	public List<Conference> findAll() {
-		List<Conference> conferences = new ArrayList<>(map.values().size());
-
-		for (Conference conference : map.values()) {
-			// conference = conference.clone();
-			BeanWrapper wrapper = new BeanWrapperImpl(conference);
-
-			if (includeFields) {
-				for (PropertyDescriptor descriptor : wrapper
-						.getPropertyDescriptors()) {
-					String property = descriptor.getName();
-					if (property.equals("class") || property.equals("id"))
-						continue;
-
-					if (!findAllFields.contains(property)) {
-						wrapper.setPropertyValue(property, null);
-					}
-				}
-			} else {
-				for (String field : findAllFields) {
-					wrapper.setPropertyValue(field, null);
-				}
-			}
-		}
-
-		return conferences;
+		return reduceFields(map.values());
 	}
-
+	
 	@PostConstruct
 	public void configureFieldSetFromAnnotation() {
 		try {
@@ -109,5 +87,33 @@ public class MockConferenceDao extends AbstractMockDao<Conference> implements
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private List<Conference> reduceFields(Collection<Conference> originalConferences) {
+		List<Conference> conferences = new ArrayList<>(originalConferences.size());
+		
+		for (Conference originalConference : originalConferences) {
+			Conference conference = new Conference();
+			conferences.add(conference);
+			
+			BeanUtils.copyProperties(originalConference, conference);
+			BeanWrapper wrapper = new BeanWrapperImpl(conference);
 
+			if (includeFields) {
+				for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
+					String property = descriptor.getName();
+					if (property.equals("class") || property.equals("id")) continue;
+
+					if (!findAllFields.contains(property)) {
+						wrapper.setPropertyValue(property, null);
+					}
+				}
+			} else {
+				for (String field : findAllFields) {
+					wrapper.setPropertyValue(field, null);
+				}
+			}
+		}
+
+		return conferences;
+	}
 }

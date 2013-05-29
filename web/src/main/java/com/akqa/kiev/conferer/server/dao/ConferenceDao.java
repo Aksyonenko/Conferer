@@ -10,7 +10,7 @@ public interface ConferenceDao extends AbstractDao<Conference>, ConferenceCustom
 	
 	@Query(fields = "{" +
 			"'conferenceID' : 1, " +
-			"'conferenceURL' : 1, " +
+			"'conferenceUrl' : 1, " +
 			"'title' : 1, " +
 			"'startDate' : 1, " +
 			"'endDate' : 1, " +
@@ -19,7 +19,7 @@ public interface ConferenceDao extends AbstractDao<Conference>, ConferenceCustom
 			"'region' : 1, " +
 			"'city' : 1, " +
 			"'address' : 1, " +
-			"'logoURL' : 1" +
+			"'logoUrl' : 1" +
 		"}")
 	List<Conference> findAll();
 }

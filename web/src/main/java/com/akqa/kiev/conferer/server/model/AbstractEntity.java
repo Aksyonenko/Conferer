@@ -2,7 +2,7 @@ package com.akqa.kiev.conferer.server.model;
 
 import org.springframework.data.annotation.Id;
 
-public abstract class AbstractEntity<T> {
+public abstract class AbstractEntity {
 
 	@Id
 	private String id;

@@ -23,7 +23,7 @@ import com.akqa.kiev.conferer.server.dao.SpeakerDao;
 import com.akqa.kiev.conferer.server.model.Conference;
 import com.akqa.kiev.conferer.server.model.Session;
 
-@Profile("test")
+@Profile("mock")
 @Configuration
 public class MockTestConfig {
 	
@@ -55,7 +55,7 @@ public class MockTestConfig {
 			conference.setCity("dummy city");
 			conference.setConferenceUrl("dummy conference url");
 			conference.setCountry("dummy country");
-			conference.setEndDate(new Date(1356998400000L)); // 1st Jan 2013
+			conference.setEndDateTime(new Date(1356998400000L)); // 1st Jan 2013
 			conference.setLogoUrl("dummy logo url");
 			conference.setRegion("dummy region");
 			conference.setStartDate(new Date(1357776000000L)); // 10th Jan 2013
@@ -79,6 +79,9 @@ public class MockTestConfig {
 		logger.info("Mocking ConferenceDao for range [{}, {}]", start.getTime(), end.getTime());
 		when(conferenceDao.find(start.getTime(), end.getTime()))
 			.thenReturn(conferences);
+		
+		logger.info("Mocking ConferenceDao for findAll()");
+		when(conferenceDao.findAll()).thenReturn(conferences);
 		
 		return conferenceDao;
 	}

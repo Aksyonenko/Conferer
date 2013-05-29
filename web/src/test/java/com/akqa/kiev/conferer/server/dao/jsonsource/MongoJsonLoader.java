@@ -1,4 +1,4 @@
-package com.akqa.kiev.conferer.server.dao.config;
+package com.akqa.kiev.conferer.server.dao.jsonsource;
 
 import static com.jayway.jsonpath.Criteria.where;
 import static com.jayway.jsonpath.Filter.filter;
@@ -12,21 +12,14 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import net.minidev.json.JSONArray;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
-import com.akqa.kiev.conferer.server.dao.ConferenceDao;
-import com.akqa.kiev.conferer.server.dao.jsonmock.MockConferenceDao;
-import com.akqa.kiev.conferer.server.dao.jsonmock.mixin.BasicMixin;
-import com.akqa.kiev.conferer.server.dao.jsonmock.mixin.ConferenceMixin;
-import com.akqa.kiev.conferer.server.dao.jsonmock.mixin.SessionMixIn;
+import com.akqa.kiev.conferer.server.dao.jsonsource.mixin.BasicMixin;
+import com.akqa.kiev.conferer.server.dao.jsonsource.mixin.ConferenceMixin;
+import com.akqa.kiev.conferer.server.dao.jsonsource.mixin.SessionMixIn;
 import com.akqa.kiev.conferer.server.model.Conference;
 import com.akqa.kiev.conferer.server.model.Session;
 import com.akqa.kiev.conferer.server.model.Speaker;
@@ -36,38 +29,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 
-@Profile("json-mock")
-@ComponentScan(basePackages = "com.akqa.kiev.conferer.server.dao.mock")
-@Configuration
-public class JsonMockTestConfig {
-	
+@Component
+public class MongoJsonLoader {
+
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	private ObjectMapper objectMapper;
-	
-	@Autowired
-	public void setObjectMapper(ObjectMapper objectMapper) {
-		objectMapper.addMixInAnnotations(Session.class, SessionMixIn.class);
-		objectMapper.addMixInAnnotations(Speaker.class, BasicMixin.class);
-		objectMapper.addMixInAnnotations(Conference.class, ConferenceMixin.class);
-		this.objectMapper = objectMapper;
-	}
-	
-	@Bean
-	public ConferenceDao conferenceDao(Resource resource) {
-		return new MockConferenceDao();
-	}
+	private final Map<String, Conference> conferences = new HashMap<>();
+	private final Map<String, Session> sessions = new HashMap<>();
+	private final Map<String, Speaker> speakers = new HashMap<>();
 	
 	@PostConstruct
 	public void loadFromJson() {
 		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.addMixInAnnotations(Session.class, SessionMixIn.class);
+			objectMapper.addMixInAnnotations(Speaker.class, BasicMixin.class);
+			objectMapper.addMixInAnnotations(Conference.class, ConferenceMixin.class);
+			
 			Resource jsonResource = applicationContext.getResource("classpath:/mongo/integration-testing.js");
 			JsonNode fullJson = objectMapper.readTree(jsonResource.getInputStream());
 			
 			JsonNode speakersNode = fullJson.findValue("speakers");
 			MappingIterator<Speaker> speakersIteration = objectMapper.reader(Speaker.class).readValues(speakersNode.toString());
-			Map<String, Speaker> speakers = new HashMap<>();
 			
 			while (speakersIteration.hasNext()) {
 				Speaker speaker = speakersIteration.next();
@@ -77,18 +61,23 @@ public class JsonMockTestConfig {
 			String conferencesJson = fullJson.findValue("conferences").toString();
 			MappingIterator<Conference> conferencesIteration = objectMapper.reader(Conference.class).readValues(conferencesJson);
 			
-			Map<String, Conference> conferences = new HashMap<>();
 			while (conferencesIteration.hasNext()) {
 				Conference conference = conferencesIteration.next();
 				conferences.put(conference.getId(), conference);
 				
-				conference.setStartDate(parseDate(conferencesJson, "$.[?].startDate['$date']",
+//				Object tz = JsonPath.<Object>read(conferencesJson, "$.[?].timezone",
+//						filter(where("_id").is(conference.getId())));
+//				conference.setTimezone(null);
+				
+				conference.setStartDate(parseDate(conferencesJson, "$[?].startDate['$date']",
 					filter(where("_id").is(conference.getId()))));
 				
-				conference.setEndDate(parseDate(conferencesJson, "$.[?].endDate['$date']",
-						filter(where("_id").is(conference.getId()))));
+				conference.setEndDateTime(parseDate(conferencesJson, "$[?].endDate['$date']",
+					filter(where("_id").is(conference.getId()))));
 				
 				for (Session session : conference.getSessions()) {
+					sessions.put(session.getId(), session);
+					
 					List<String> speakerRefs = JsonPath.<List<String>>read(conferencesJson, "$.[?].sessions[?].speakers[*]['$id']",
 						filter(where("_id").is(conference.getId())),
 						filter(where("_id").is(session.getId())));
@@ -98,7 +87,13 @@ public class JsonMockTestConfig {
 						session.getSpeakers().add(speakers.get(speakerId));
 					}
 					
+					session.setTimezone(conference.getTimezone());
+					
 					session.setStartTime(parseDate(conferencesJson, "$.[?].sessions[?].startTime['$date']", 
+						filter(where("_id").is(conference.getId())),
+						filter(where("_id").is(session.getId()))));
+					
+					session.setEndTime(parseDate(conferencesJson, "$.[?].sessions[?].endTime['$date']", 
 						filter(where("_id").is(conference.getId())),
 						filter(where("_id").is(session.getId()))));
 				}
@@ -109,6 +104,27 @@ public class JsonMockTestConfig {
 		}
 	}
 	
+	/**
+	 * @return the conferences
+	 */
+	public Map<String, Conference> getConferences() {
+		return conferences;
+	}
+
+	/**
+	 * @return the sessions
+	 */
+	public Map<String, Session> getSessions() {
+		return sessions;
+	}
+
+	/**
+	 * @return the speakers
+	 */
+	public Map<String, Speaker> getSpeakers() {
+		return speakers;
+	}
+
 	private static Date parseDate(String json, String jsonPath, Filter<?>... filters) {
 		List<Long> startDate = JsonPath.<List<Long>>read(json, jsonPath, filters);
 		return new Date(startDate.get(0));

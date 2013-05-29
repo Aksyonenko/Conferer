@@ -238,6 +238,7 @@
 			"country"		: "Japan",
 			"region"		: "Kanto",
 			"city"			: "Tokyo",
+			"timezone"		: "Asia/Tokyo",
 			"address"		: "dummy address",
 			"details"		: "QCon empowers software development by facilitating the spread of knowledge and innovation in the developer community. A practitioner-driven conference, QCon is designed for technical team leads, architects, engineering directors, and project managers who influence innovation in their teams. QCon highlights the most important development topics driving innovation - things you should be doing now or researching for your next project - presented by the doers in our community. Our conferences bring practitioners together with attendees who influence innovation in their teams: over half of conferences attendees, for example, have team lead or higher job titles. Additionally, QCons are staged in an intimate environment that promotes high-quality learning, peer-sharing, fun, and inspiration! QCon starts with 2 days of tutorials on Monday and Tuesday, June 10-11 followed by the full 3-day conference from Wednesday, June 12-14. The conference will feature over 100 speakers in 6 concurrent tracks daily covering the most timely and innovative topics driving the evolution of enterprise software development today. The setting is the beautiful, centrally-located Marriott at Brooklyn Bridge in New York City.",
 			"sessions"		: [

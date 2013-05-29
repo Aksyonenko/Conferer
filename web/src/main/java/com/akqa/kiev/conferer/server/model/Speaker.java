@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document(collection = "speakers")
-public class Speaker extends AbstractEntity<Speaker> {
+public class Speaker extends AbstractEntity {
     
     private String speakerUrl;
     private String firstName;

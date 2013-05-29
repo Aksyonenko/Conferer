@@ -1,8 +1,12 @@
 package com.akqa.kiev.conferer.server.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
@@ -81,6 +85,46 @@ public class ConferenceController {
 		} catch (IncorrectResultSizeDataAccessException e) {
 			throw new ResourceNotFoundException("Conference " + id);
 		}
+	}
+	
+	@RequestMapping("/months")
+	@ResponseBody
+	public List<Long> months() {
+		List<Conference> conferences = conferenceDao.findAll();
+		Set<Long> dates = new HashSet<>();
+		
+		for (Conference conference : conferences) {
+			/*for (Date date : new Date[] {conference.getStartDate(), conference.getEndDate()}) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				
+				for (int field : new int[] {Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND}) {
+					calendar.set(field, 0);
+				}
+				
+				dates.add(calendar.getTimeInMillis());
+			}*/
+			
+			Calendar startCalendar = Calendar.getInstance();
+			startCalendar.setTime(conference.getStartDate());
+			
+			Calendar endCalendar = Calendar.getInstance();
+			endCalendar.setTime(conference.getEndDate());
+			
+			for (int field : new int[] {Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND}) {
+				startCalendar.set(field, 0);
+			}
+			
+			do {
+				dates.add(startCalendar.getTimeInMillis());
+				startCalendar.add(Calendar.MONTH, 1);
+			} while (startCalendar.before(endCalendar));
+		}
+		
+		List<Long> sortedDates = new ArrayList<>(dates);
+		Collections.sort(sortedDates);
+		
+		return sortedDates;
 	}
 
 	private static void zeroCalendarTime(Calendar calendar) {

@@ -9,8 +9,8 @@ import org.hamcrest.Description;
 
 public class IsoDateFormatMatcher extends BaseMatcher<String> {
 
-	private static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-	private static final DateFormat DATE_FORMATTER = new SimpleDateFormat(ISO_FORMAT);
+	public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+	public static final DateFormat DATE_FORMATTER = new SimpleDateFormat(ISO_FORMAT);
 	
 	@Override
 	public boolean matches(Object item) {
