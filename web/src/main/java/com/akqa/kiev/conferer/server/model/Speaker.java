@@ -1,10 +1,5 @@
-
 package com.akqa.kiev.conferer.server.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-
-@Document(collection = "speakers")
 public class Speaker extends AbstractEntity {
     
     private String speakerUrl;

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+
+	<persistence-unit-metadata>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+
+	<mapped-superclass class="com.akqa.kiev.conferer.server.model.AbstractEntity">
+		<attributes>
+			<id name="id">
+				<column scale="20" precision="0" />
+				<generated-value strategy="IDENTITY" />
+			</id>
+		</attributes>
+	</mapped-superclass>
+	
+	<entity class="com.akqa.kiev.conferer.server.model.Conference" name="conferences">
+		<named-query name="Conference.findByMonthAndYear">
+			<query>SELECT c FROM conferences AS c WHERE (month(c.startDate) = ?1 AND year(c.startDate) = ?2) OR (month(c.endDate) = ?1 AND year(c.endDate) = ?2)</query>
+		</named-query>
+		
+		<named-native-query name="Conference.findActiveMonths">
+			<query>SELECT 1</query>
+		</named-native-query>
+		
+		<attributes>
+			<basic name="conferenceUrl" >
+				<column length="1024" />
+			</basic>
+			
+			<basic name="logoUrl" >
+				<column length="1024" />
+			</basic>
+			
+			<basic name="title" >
+				<column length="255" nullable="false" />
+			</basic>
+		
+			<basic name="summary" >
+				<column length="1024" />
+			</basic>
+			
+			<basic name="startDate">
+				<column nullable="false" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+		
+			<basic name="endDate">
+				<column nullable="false" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			
+			<basic name="summary" >
+				<column length="1024" />
+			</basic>
+			
+			<basic name="country" >
+				<column length="64" nullable="false" />
+			</basic>
+			
+			<basic name="region" >
+				<column length="64" />
+			</basic>
+			
+			<basic name="city" >
+				<column length="64" nullable="false" />
+			</basic>
+			
+			<basic name="address" >
+				<column length="128" nullable="false" />
+			</basic>
+			
+			<basic name="details" >
+				<column length="4096" />
+			</basic>
+			
+			<one-to-many name="sessions" target-entity="com.akqa.kiev.conferer.server.model.Session" fetch="EAGER">
+				<join-table name="conferences_sessions">
+					<join-column name="conference_id" referenced-column-name="id" nullable="false" unique="false"/>
+					<inverse-join-column name="session_id" referenced-column-name="id" nullable="false" unique="true" />
+				</join-table>
+			</one-to-many>
+		</attributes>
+	</entity>
+	
+	<entity class="com.akqa.kiev.conferer.server.model.Session" name="sessions">
+		<attributes>
+			<basic name="sessionUrl">
+				<column length="1024" />
+			</basic>
+
+			<basic name="title">
+				<column nullable="false" />
+			</basic>
+			
+			<basic name="type">
+				<column length="16" />
+			</basic>
+			
+			<basic name="summary" >
+				<column length="4096" />
+			</basic>
+			
+			<basic name="startTime">
+				<column nullable="false" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+		
+			<basic name="endTime">
+				<column nullable="false" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+		
+			<basic name="details" >
+				<column length="16384" />
+			</basic>
+		
+			<many-to-many name="speakers">
+				<join-table name="sessions_speakers">
+					<join-column name="session_id" referenced-column-name="id" nullable="false" unique="false" />
+					<inverse-join-column name="speaker_id" referenced-column-name="id" nullable="false" unique="false" />
+				</join-table>
+			</many-to-many>
+		</attributes>
+	</entity>
+	
+	<entity class="com.akqa.kiev.conferer.server.model.Speaker" name="speakers">
+		<attributes>
+			<basic name="about">
+				<column length="4096" />
+			</basic>
+			
+			<embedded name="socialLinks" />
+		</attributes>
+	</entity>
+	
+	<embeddable class="com.akqa.kiev.conferer.server.model.SocialLinks" />
+</entity-mappings>

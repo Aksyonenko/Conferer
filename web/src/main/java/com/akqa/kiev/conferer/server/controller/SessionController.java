@@ -1,5 +1,7 @@
 package com.akqa.kiev.conferer.server.controller;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +22,7 @@ public class SessionController {
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Session speakerDetails(@PathVariable("id") String id) {
+    public Session speakerDetails(@PathVariable("id") BigInteger id) {
         return sessionDao.findOne(id);
     }
 }

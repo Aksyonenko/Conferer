@@ -4,8 +4,9 @@ import static com.jayway.jsonpath.Criteria.where;
 import static com.jayway.jsonpath.Filter.filter;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,9 @@ public class MongoJsonLoader {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	private final Map<String, Conference> conferences = new HashMap<>();
-	private final Map<String, Session> sessions = new HashMap<>();
-	private final Map<String, Speaker> speakers = new HashMap<>();
+	private final Map<BigInteger, Conference> conferences = new HashMap<>();
+	private final Map<BigInteger, Session> sessions = new HashMap<>();
+	private final Map<BigInteger, Speaker> speakers = new HashMap<>();
 	
 	@PostConstruct
 	public void loadFromJson() {
@@ -72,7 +73,7 @@ public class MongoJsonLoader {
 				conference.setStartDate(parseDate(conferencesJson, "$[?].startDate['$date']",
 					filter(where("_id").is(conference.getId()))));
 				
-				conference.setEndDateTime(parseDate(conferencesJson, "$[?].endDate['$date']",
+				conference.setEndDate(parseDate(conferencesJson, "$[?].endDate['$date']",
 					filter(where("_id").is(conference.getId()))));
 				
 				for (Session session : conference.getSessions()) {
@@ -87,7 +88,7 @@ public class MongoJsonLoader {
 						session.getSpeakers().add(speakers.get(speakerId));
 					}
 					
-					session.setTimezone(conference.getTimezone());
+					// session.setTimezone(conference.getTimezone());
 					
 					session.setStartTime(parseDate(conferencesJson, "$.[?].sessions[?].startTime['$date']", 
 						filter(where("_id").is(conference.getId())),
@@ -107,26 +108,29 @@ public class MongoJsonLoader {
 	/**
 	 * @return the conferences
 	 */
-	public Map<String, Conference> getConferences() {
+	public Map<BigInteger, Conference> getConferences() {
 		return conferences;
 	}
 
 	/**
 	 * @return the sessions
 	 */
-	public Map<String, Session> getSessions() {
+	public Map<BigInteger, Session> getSessions() {
 		return sessions;
 	}
 
 	/**
 	 * @return the speakers
 	 */
-	public Map<String, Speaker> getSpeakers() {
+	public Map<BigInteger, Speaker> getSpeakers() {
 		return speakers;
 	}
 
-	private static Date parseDate(String json, String jsonPath, Filter<?>... filters) {
+	private static Calendar parseDate(String json, String jsonPath, Filter<?>... filters) {
 		List<Long> startDate = JsonPath.<List<Long>>read(json, jsonPath, filters);
-		return new Date(startDate.get(0));
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(startDate.get(0));
+		
+		return calendar;
 	}
 }

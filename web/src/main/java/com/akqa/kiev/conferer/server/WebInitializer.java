@@ -7,6 +7,7 @@ import javax.servlet.ServletRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -23,9 +24,11 @@ public class WebInitializer implements WebApplicationInitializer {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfig.class);
 		
+		servletContext.addListener(new ContextLoaderListener(context));
+		
 		ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
-        registration.setLoadOnStartup(1);
-        registration.addMapping("/");
+		registration.setLoadOnStartup(1);
+		registration.addMapping("/");
 	}
 
 }

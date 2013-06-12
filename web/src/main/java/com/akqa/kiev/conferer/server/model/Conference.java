@@ -1,21 +1,13 @@
 package com.akqa.kiev.conferer.server.model;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.akqa.kiev.conferer.server.dao.json.IsoDateSerializer;
 import com.akqa.kiev.conferer.server.dao.json.FullView;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.akqa.kiev.conferer.server.dao.json.IsoDateSerializer;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@Document(collection = "conferences")
-@JsonAutoDetect(getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
 public class Conference extends AbstractEntity {
 	
 	private String conferenceUrl;
@@ -23,11 +15,10 @@ public class Conference extends AbstractEntity {
 	private String title;
 	private String summary;
 	
-	@JsonSerialize(using = IsoDateSerializer.class)
+//	@JsonSerialize(using = IsoDateSerializer.class)
 	private Calendar startDate = Calendar.getInstance();
 	
-	@JsonSerialize(using = IsoDateSerializer.class)
-	
+//	@JsonSerialize(using = IsoDateSerializer.class)
 	private Calendar endDate = Calendar.getInstance();
 	
 	private String country;
@@ -65,28 +56,18 @@ public class Conference extends AbstractEntity {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	
-	public Date getStartDate() {
-		return startDate.getTime();
+	public Calendar getStartDate() {
+		return startDate;
 	}
-	public void setStartDate(Date startDate) {
-		this.startDate.setTime(startDate);
+	public void setStartDate(Calendar startDate) {
+		this.startDate = startDate;
 	}
-	public Date getEndDate() {
-		return endDate.getTime();
+	public Calendar getEndDate() {
+		return endDate;
 	}
-	public void setEndDateTime(Date endDate) {
-		this.endDate.setTime(endDate);
+	public void setEndDate(Calendar endDate) {
+		this.endDate = endDate;
 	}
-	public String getTimezone() {
-		return startDate.getTimeZone().getDisplayName();
-	}
-	public void setTimezone(String timezone) {
-		TimeZone zone = TimeZone.getTimeZone(timezone);
-		startDate.setTimeZone(zone);
-		endDate.setTimeZone(zone);
-	}
-	
 	public String getCountry() {
 		return country;
 	}

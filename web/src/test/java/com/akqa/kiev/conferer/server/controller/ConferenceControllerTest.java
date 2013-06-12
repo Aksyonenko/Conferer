@@ -17,7 +17,7 @@ public class ConferenceControllerTest extends AbstractControllerTest {
 	public void conferences_existingConferences() throws Exception {
 		preCheckJsonResponse("/conferences?year=2013&month=1")
 			.andExpect(jsonPath("$[*]", hasSize(3)))
-			.andExpect(jsonPath("$[*].id", contains("CONF_1", "CONF_2", "CONF_3")))
+			.andExpect(jsonPath("$[*].id", contains(1, 2, 3)))
 			.andExpect(jsonPath("$[*].conferenceUrl", everyItem(is("dummy conference url"))))
 			.andExpect(jsonPath("$[*].title", everyItem(not(isEmptyOrNullString()))))
 			.andExpect(jsonPath("$[*].startDate", everyItem(new IsoDateFormatMatcher())))
@@ -40,8 +40,8 @@ public class ConferenceControllerTest extends AbstractControllerTest {
 	
 	@Test
 	public void conference_existingConference() throws Exception {
-		preCheckJsonResponse("/conferences/CONF_1")
-			.andExpect(jsonPath("$.id", is("CONF_1")))
+		preCheckJsonResponse("/conferences/1")
+			.andExpect(jsonPath("$.id", is(1)))
 			.andExpect(jsonPath("$.conferenceUrl", is("dummy conference url")))
 			.andExpect(jsonPath("$.title", is("QCon New York 2013")))
 			.andExpect(jsonPath("$.startDate", new IsoDateFormatMatcher()))
@@ -59,6 +59,10 @@ public class ConferenceControllerTest extends AbstractControllerTest {
 	@Test
 	public void conference_months() throws Exception {
 		preCheckJsonResponse("/conferences/months")
-			.andExpect(jsonPath("$[*]", contains("")));
+			.andExpect(jsonPath("$[*]", contains(
+				1356998400000L, // Jan 2013
+				1362096000000L, // Mar 2013
+				1364774400000L  // Apr 2013
+			)));
 	}
 }

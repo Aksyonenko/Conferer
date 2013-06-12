@@ -1,28 +1,19 @@
 package com.akqa.kiev.conferer.server.model;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Document(collection = "sessions")
 public class Session extends AbstractEntity {
 
 	private String sessionUrl;
 	private String title;
 	private String type;
 	private String summary;
-	final private Calendar startTime = Calendar.getInstance();
-	final private Calendar endTime = Calendar.getInstance();
+	private Calendar startTime;
+	private Calendar endTime;
 	private String details;
 
-	@DBRef
-	private ArrayList<Speaker> speakers;
+	private List<Speaker> speakers;
 
 	public String getSessionUrl() {
 		return sessionUrl;
@@ -56,27 +47,27 @@ public class Session extends AbstractEntity {
 		this.summary = summary;
 	}
 
-	public Date getStartTime() {
-		return startTime.getTime();
+	public Calendar getStartTime() {
+		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
-		this.startTime.setTime(startTime);
+	public void setStartTime(Calendar startTime) {
+		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
-		return endTime.getTime();
+	public Calendar getEndTime() {
+		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
-		this.endTime.setTime(endTime);
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
 	}
 
-	public ArrayList<Speaker> getSpeakers() {
+	public List<Speaker> getSpeakers() {
 		return speakers;
 	}
 
-	public void setSpeakers(ArrayList<Speaker> speakers) {
+	public void setSpeakers(List<Speaker> speakers) {
 		this.speakers = speakers;
 	}
 
@@ -87,22 +78,4 @@ public class Session extends AbstractEntity {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	
-	/**
-	 * @return the timezone
-	 */
-	@JsonIgnore
-	public String getTimezone() {
-		return startTime.getTimeZone().getDisplayName();
-	}
-	
-	/**
-	 * @param timezone the timezone to set
-	 */
-	public void setTimezone(String timezone) {
-		TimeZone zone = TimeZone.getTimeZone(timezone);
-		startTime.setTimeZone(zone);
-		endTime.setTimeZone(zone);
-	}
-
 }

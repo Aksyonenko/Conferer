@@ -6,5 +6,7 @@ import java.util.List;
 import com.akqa.kiev.conferer.server.model.Conference;
 
 public interface ConferenceCustomDao {
-	List<Conference> find(Date fromDate, Date toDate);
+//	List<Conference> find(Date fromDate, Date toDate);
+	List<Conference> findByMonthAndYear(int year, int month);
+	List<Long> findActiveMonths();
 }

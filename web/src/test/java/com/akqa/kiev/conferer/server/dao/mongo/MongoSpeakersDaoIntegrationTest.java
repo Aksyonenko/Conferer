@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.math.BigInteger;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,7 +27,7 @@ public class MongoSpeakersDaoIntegrationTest extends AbstractMongoDaoIntegration
 
 	@Test
 	public void findOne_existingSpeaker() {
-		Speaker speaker = speakerDao.findOne("SP_1");
+		Speaker speaker = speakerDao.findOne(BigInteger.valueOf(1));
 		assertThat(speaker, notNullValue());
 
 		assertThat(speaker.getFirstName(), is("Adam"));
@@ -37,7 +39,7 @@ public class MongoSpeakersDaoIntegrationTest extends AbstractMongoDaoIntegration
 		assertThat(speaker.getSocialLinks().getTwitter(), is("twitter link"));
 
 		for (int i = 2; i <= 15; i++) {
-			speaker = speakerDao.findOne("SP_" + i);
+			speaker = speakerDao.findOne(BigInteger.valueOf(i));
 			assertThat(speaker, notNullValue());
 			assertThat(speaker.getFirstName(), notNullValue());
 			assertThat(speaker.getLastName(), notNullValue());
@@ -48,7 +50,7 @@ public class MongoSpeakersDaoIntegrationTest extends AbstractMongoDaoIntegration
 
 	@Test
 	public void findOne_notExistingSpeaker() {
-		Speaker speaker = speakerDao.findOne("not_exist");
+		Speaker speaker = speakerDao.findOne(BigInteger.valueOf(-1));
 		assertThat(speaker, nullValue());
 	}
 }

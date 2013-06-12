@@ -13,7 +13,7 @@ import com.akqa.kiev.conferer.server.dao.SessionDao;
 import com.mongodb.Mongo;
 
 @Configuration
-@Profile({"local", "prod"})
+@Profile({"mongo-local", "mongo-prod"})
 @ComponentScan(basePackages = "com.akqa.kiev.conferer.server.dao.mongo")
 @EnableMongoRepositories(
 	value = "com.akqa.kiev.conferer.server.dao",

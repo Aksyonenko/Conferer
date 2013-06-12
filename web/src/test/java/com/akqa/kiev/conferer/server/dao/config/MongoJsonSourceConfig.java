@@ -13,10 +13,10 @@ import com.akqa.kiev.conferer.server.dao.jsonsource.MongoJsonLoader;
 import com.akqa.kiev.conferer.server.dao.jsonsource.SessionDaoPreloaded;
 import com.akqa.kiev.conferer.server.dao.jsonsource.SpeakerDaoPreloaded;
 
-@Profile("test")
+@Profile("mongo-test")
 @ComponentScan(basePackages = "com.akqa.kiev.conferer.server.dao.jsonsource")
 @Configuration
-public class JsonSourceConfig {
+public class MongoJsonSourceConfig {
 	
 	@Bean
 	public ConferenceDao conferenceDao(MongoJsonLoader loader) {

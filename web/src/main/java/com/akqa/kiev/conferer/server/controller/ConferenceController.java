@@ -1,6 +1,7 @@
 package com.akqa.kiev.conferer.server.controller;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.akqa.kiev.conferer.server.dao.ConferenceDao;
 import com.akqa.kiev.conferer.server.model.Conference;
+import com.akqa.kiev.conferer.server.model.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -48,19 +51,13 @@ public class ConferenceController {
 			@RequestParam(value = "month", required = false) Integer month,
 			HttpServletResponse response) {
 
-		Calendar startCalendar = Calendar.getInstance(UTC_TZ);
-		zeroCalendarTime(startCalendar);
-
-		if (year != null && month != null) {
-			startCalendar.set(Calendar.YEAR, year);
-			startCalendar.set(Calendar.MONTH, month - 1);
+		if (year == null || month == null) {
+			Calendar calendar = Calendar.getInstance();
+			if (year == null) year = calendar.get(Calendar.YEAR);
+			if (month == null) month = calendar.get(Calendar.MONTH) + 1;
 		}
-
-		Calendar endCalendar = (Calendar) startCalendar.clone();
-		endCalendar.add(Calendar.MONTH, 1);
-		endCalendar.add(Calendar.DAY_OF_YEAR, -1);
-
-		List<Conference> conferences = conferenceDao.find(startCalendar.getTime(), endCalendar.getTime());
+		
+		List<Conference> conferences = conferenceDao.findByMonthAndYear(month, year);
 		ObjectWriter writer = objectMapper.writerWithView(Object.class);
 		
 		try {
@@ -75,11 +72,13 @@ public class ConferenceController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Conference conference(@PathVariable String id) {
+	@Transactional(readOnly = true)
+	public Conference conference(@PathVariable BigInteger id) {
 		try {
 			Conference conference = conferenceDao.findOne(id);
 			if (conference == null) throw new IncorrectResultSizeDataAccessException(1, 0);
 			
+			for (Session session : conference.getSessions()) session.getSpeakers().size();
 			return conference;
 			
 		} catch (IncorrectResultSizeDataAccessException e) {
@@ -93,25 +92,16 @@ public class ConferenceController {
 		List<Conference> conferences = conferenceDao.findAll();
 		Set<Long> dates = new HashSet<>();
 		
-		for (Conference conference : conferences) {
-			/*for (Date date : new Date[] {conference.getStartDate(), conference.getEndDate()}) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				
-				for (int field : new int[] {Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND}) {
-					calendar.set(field, 0);
-				}
-				
-				dates.add(calendar.getTimeInMillis());
-			}*/
+		for (Conference conference : conferences) {			
+			Calendar startCalendar = (Calendar) conference.getStartDate().clone();
+			Calendar endCalendar = (Calendar) conference.getEndDate().clone();
 			
-			Calendar startCalendar = Calendar.getInstance();
-			startCalendar.setTime(conference.getStartDate());
+			startCalendar.setTimeZone(UTC_TZ);
+			endCalendar.setTimeZone(UTC_TZ);
 			
-			Calendar endCalendar = Calendar.getInstance();
-			endCalendar.setTime(conference.getEndDate());
+			startCalendar.set(Calendar.DAY_OF_MONTH, 1);
 			
-			for (int field : new int[] {Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND}) {
+			for (int field : new int[] {Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND}) {
 				startCalendar.set(field, 0);
 			}
 			
@@ -126,13 +116,4 @@ public class ConferenceController {
 		
 		return sortedDates;
 	}
-
-	private static void zeroCalendarTime(Calendar calendar) {
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	}
-
 }

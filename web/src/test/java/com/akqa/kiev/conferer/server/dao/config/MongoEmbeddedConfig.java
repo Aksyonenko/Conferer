@@ -18,7 +18,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 
 @Configuration
 @Profile("embedded")
-public class EmbeddedMongoConfig extends MongoConfig {
+public class MongoEmbeddedConfig extends MongoConfig {
 
 	@Override
 	@Bean

@@ -3,10 +3,10 @@ package com.akqa.kiev.conferer.server.dao.config;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -25,9 +25,9 @@ import com.akqa.kiev.conferer.server.model.Session;
 
 @Profile("mock")
 @Configuration
-public class MockTestConfig {
+public class MongoMockConfig {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MockTestConfig.class);
+	private static final Logger logger = LoggerFactory.getLogger(MongoMockConfig.class);
 	
 	@Bean
 	public ConferenceDao conferenceDao() {
@@ -49,16 +49,28 @@ public class MockTestConfig {
 		List<Conference> conferences = new ArrayList<>(3);
 		for (int i = 0; i < 3; i++) {
 			Conference conference = new Conference();
-			conference.setId("CONF_" + (i + 1));
+			conference.setId(BigInteger.valueOf(i + 1));
 			
 			conference.setAddress("dummy address");
 			conference.setCity("dummy city");
 			conference.setConferenceUrl("dummy conference url");
 			conference.setCountry("dummy country");
-			conference.setEndDateTime(new Date(1356998400000L)); // 1st Jan 2013
+			
+			{
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(1356998400000L); // 1st Jan 2013
+				conference.setEndDate(calendar);
+			}
+			
 			conference.setLogoUrl("dummy logo url");
 			conference.setRegion("dummy region");
-			conference.setStartDate(new Date(1357776000000L)); // 10th Jan 2013
+			
+			{
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(1357776000000L); // 10th Jan 2013
+				conference.setEndDate(calendar);
+			}
+			
 			conference.setSummary("dummy summary");
 			conference.setTitle("dummy title");
 			
@@ -77,8 +89,8 @@ public class MockTestConfig {
 		//	.thenThrow(new IllegalArgumentException("Mock ConferenceDao doesn't support supplied arguments"));
 		
 		logger.info("Mocking ConferenceDao for range [{}, {}]", start.getTime(), end.getTime());
-		when(conferenceDao.find(start.getTime(), end.getTime()))
-			.thenReturn(conferences);
+		// when(conferenceDao.find(start.getTime(), end.getTime()))
+		//	.thenReturn(conferences);
 		
 		logger.info("Mocking ConferenceDao for findAll()");
 		when(conferenceDao.findAll()).thenReturn(conferences);

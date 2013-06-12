@@ -3,6 +3,7 @@ package com.akqa.kiev.conferer.server.dao.jsonsource;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -32,12 +33,12 @@ public class ConferenceDaoPreloaded extends AbstractDaoPreloaded<Conference> imp
 	private final Set<String> findAllFields = new HashSet<>();
 	private boolean includeFields;
 	
-	public ConferenceDaoPreloaded(Map<String, Conference> map) {
+	public ConferenceDaoPreloaded(Map<BigInteger, Conference> map) {
 		super(map);
 	}
 
 	
-	@Override
+	// @Override
 	public List<Conference> find(Date fromDate, Date toDate) {
 		List<Conference> list = new ArrayList<>();
 		
@@ -45,8 +46,8 @@ public class ConferenceDaoPreloaded extends AbstractDaoPreloaded<Conference> imp
 		long to = toDate.getTime();
 		
 		for (Conference conference : map.values()) {
-			long start = conference.getStartDate().getTime();
-			long end = conference.getEndDate().getTime();
+			long start = conference.getStartDate().getTime().getTime();
+			long end = conference.getEndDate().getTime().getTime();
 			
 			boolean inner = (start >= from) && (end <= to);
 			boolean outer = (start <= from) && (end >= to);
@@ -115,5 +116,19 @@ public class ConferenceDaoPreloaded extends AbstractDaoPreloaded<Conference> imp
 		}
 
 		return conferences;
+	}
+
+
+	@Override
+	public List<Conference> findByMonthAndYear(int year, int month) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Long> findActiveMonths() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

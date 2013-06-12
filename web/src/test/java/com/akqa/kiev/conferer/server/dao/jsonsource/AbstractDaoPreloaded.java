@@ -1,5 +1,6 @@
 package com.akqa.kiev.conferer.server.dao.jsonsource;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -11,9 +12,9 @@ import com.akqa.kiev.conferer.server.model.AbstractEntity;
 @Component
 public abstract class AbstractDaoPreloaded<T extends AbstractEntity> implements AbstractDao<T> {
 	
-	protected final Map<String, T> map;
+	protected final Map<BigInteger, T> map;
 	
-	protected AbstractDaoPreloaded(Map<String, T> map) {
+	protected AbstractDaoPreloaded(Map<BigInteger, T> map) {
 		this.map = map;
 	}
 
@@ -21,7 +22,7 @@ public abstract class AbstractDaoPreloaded<T extends AbstractEntity> implements 
 	 * @see com.akqa.kiev.conferer.server.dao.AbstractDao#findOne(java.lang.String)
 	 */
 	@Override
-	public T findOne(String id) throws IncorrectResultSizeDataAccessException {
+	public T findOne(BigInteger id) throws IncorrectResultSizeDataAccessException {
 		return map.get(id);
 	}
 }

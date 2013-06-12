@@ -3,6 +3,8 @@ package com.akqa.kiev.conferer.server.dao.mongo;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,7 +23,7 @@ public class SessionDaoMongo implements SessionDao {
 	private MongoTemplate template;
 	
 	@Override
-	public Session findOne(String id) throws IncorrectResultSizeDataAccessException {
+	public Session findOne(BigInteger id) throws IncorrectResultSizeDataAccessException {
 		Criteria criteria = where("sessions").elemMatch(where("_id").is(id));
 		CustomSpringQuery query = new CustomSpringQuery(criteria);
 		query.fields().project(criteria.getCriteriaObject());

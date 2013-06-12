@@ -23,9 +23,10 @@ public class ConferenceDaoMongo implements ConferenceCustomDao {
     @Autowired
     private MongoTemplate template;
     
-    @Override
+    // @Override
     public List<Conference> find(Date fromDate, Date toDate) {
-        Criteria innerConference = where("startDate").gte(fromDate).and("endDate").lte(toDate);
+    	throw new UnsupportedOperationException();
+        /*Criteria innerConference = where("startDate").gte(fromDate).and("endDate").lte(toDate);
         Criteria outerConference = where("startDate").lte(fromDate).and("endDate").gte(toDate);
         Criteria finishingConference = where("startDate").lte(fromDate).and("endDate").gte(fromDate).lte(toDate);
         Criteria beginningConference = where("startDate").gte(fromDate).lte(toDate).and("endDate").gte(toDate);
@@ -39,7 +40,17 @@ public class ConferenceDaoMongo implements ConferenceCustomDao {
         	mongoQuery.fields().include(field);
         }
         
-        return template.find(mongoQuery, Conference.class);
+        return template.find(mongoQuery, Conference.class);*/
     }
+
+	@Override
+	public List<Conference> findByMonthAndYear(int year, int month) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<Long> findActiveMonths() {
+		throw new UnsupportedOperationException();
+	}
 
 }
