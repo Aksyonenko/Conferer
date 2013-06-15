@@ -1,7 +1,9 @@
 package com.akqa.kiev.conferer.server.dao.config.sql;
 
 import java.io.File;
+import java.sql.SQLException;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcDataSource;
@@ -14,6 +16,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
+import com.akqa.kiev.conferer.server.dao.jpa.h2.H2ConfererDialect;
+import com.akqa.kiev.conferer.server.dao.jpa.h2.StoredFunction;
+
 @Configuration
 @Profile({"local", "prod"})
 public class H2EmbeddedConfig {
@@ -21,7 +26,7 @@ public class H2EmbeddedConfig {
 	private static final Logger log = LoggerFactory.getLogger(H2EmbeddedConfig.class);
 	
 	@Bean
-	public DataSource dataSource() {
+	public DataSource dataSource() throws SQLException {
 		String databasePath = System.getProperty("user.home") + File.separator + ".conferer" + File.separator + "database";
 		String url;
 		
@@ -42,12 +47,23 @@ public class H2EmbeddedConfig {
 		ds.setUser("sa");
 		ds.setPassword("sa");
 		
+		registerStoredProcedure();
+		
 		return ds;
+	}
+	
+	protected void registerStoredProcedure() throws SQLException {
+		log.info("Registering custom H2 stored procedure {}", StoredFunction.SQL_NAME);
+		
+		DataSource dataSource = this.dataSource();
+		dataSource.getConnection().createStatement().execute("CREATE ALIAS " + StoredFunction.SQL_NAME + " FOR \"com.akqa.kiev.conferer.server.dao.jpa.h2.StoredFunction." + StoredFunction.JAVA_NAME + "\"");
 	}
 	
 	@Autowired
 	public void configureJpaVendor(HibernateJpaVendorAdapter jpaVendorAdapter) {
+		String dialect = H2ConfererDialect.class.getCanonicalName();
+		log.info("Configuring Hibernate JPA adapter to use H2 database with custom dialect of {}", dialect);
 		jpaVendorAdapter.setDatabase(Database.H2);
-		jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
+		jpaVendorAdapter.setDatabasePlatform(dialect);
 	}
 }

@@ -10,6 +10,10 @@
 		<appender-ref ref="console" />
 	</logger>
 
+	<logger name="org.springframework" level="TRACE" additivity="false">
+		<appender-ref ref="console" />
+	</logger>
+
 	<logger name="org.hibernate.tool.hbm2ddl" level="TRACE" additivity="false">
 		<appender-ref ref="console" />
 	</logger>

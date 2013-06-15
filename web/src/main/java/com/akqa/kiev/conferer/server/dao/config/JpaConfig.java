@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,8 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"com.akqa.kiev.conferer.server.dao.config.sql"})
 @EnableTransactionManagement
 @EnableJpaRepositories(
-	value = "com.akqa.kiev.conferer.server.dao",
-	repositoryImplementationPostfix = "Jpa"
+	value = "com.akqa.kiev.conferer.server.dao"
 )
 public class JpaConfig {
 
@@ -32,28 +32,28 @@ public class JpaConfig {
 	}
 	
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter, Properties jpaProperties) {
 		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setPersistenceUnitName("conferer");
 		emf.setDataSource(dataSource);
 		emf.setJpaVendorAdapter(jpaVendorAdapter);
-		
-		Properties properties = new Properties();
-		// properties.setProperty("hibernate.hbm2ddl.auto", "create");
-		properties.setProperty("hibernate.show_sql", "true");
-		emf.setJpaProperties(properties);
+		emf.setJpaProperties(jpaProperties);
 		
 		return emf;
 	}
 	
 	@Bean
 	public HibernateJpaVendorAdapter jpaVendorAdapter() {
-		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-		return jpaVendorAdapter;
+		return new HibernateJpaVendorAdapter();
 	}
 	
-	@Bean 
-    public HibernateExceptionTranslator hibernateExceptionTranslator(){ 
-      return new HibernateExceptionTranslator(); 
-    }
+	@Bean
+	public PersistenceExceptionTranslator hibernateExceptionTranslator() {
+		return new HibernateExceptionTranslator();
+	}
+	
+	@Bean
+	public Properties jpaProperties() {
+		return new Properties();
+	}
 }

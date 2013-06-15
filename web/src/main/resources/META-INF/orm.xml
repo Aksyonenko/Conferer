@@ -20,7 +20,7 @@
 	
 	<entity class="com.akqa.kiev.conferer.server.model.Conference" name="conferences">
 		<named-query name="Conference.findByMonthAndYear">
-			<query>SELECT c FROM conferences AS c WHERE (month(c.startDate) = ?1 AND year(c.startDate) = ?2) OR (month(c.endDate) = ?1 AND year(c.endDate) = ?2)</query>
+			<query>SELECT c FROM conferences AS c WHERE happens_in_month_year(?1, ?2, c.startDate, c.endDate, c.timezone) = TRUE</query>
 		</named-query>
 		
 		<named-native-query name="Conference.findActiveMonths">

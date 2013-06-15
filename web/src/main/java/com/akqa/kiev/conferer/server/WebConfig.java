@@ -11,9 +11,11 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.akqa.kiev.conferer.server.dao.json.IsoDateSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @Configuration
 @EnableWebMvc
@@ -39,6 +41,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
 		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		
+		SimpleModule calendarModule = new SimpleModule("CalendarSerialization");
+		calendarModule.addSerializer(new IsoDateSerializer());
+		mapper.registerModule(calendarModule);
 		
 		return mapper;
 	}

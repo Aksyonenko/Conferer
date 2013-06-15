@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 @Controller
 @RequestMapping("/conferences")
-public class ConferenceController {
+public class ConferenceController extends AbstractConfererController<Conference> {
 
 	private static Logger logger = LoggerFactory.getLogger(ConferenceController.class);
 	
@@ -45,16 +44,31 @@ public class ConferenceController {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Override
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public Conference findOne(@PathVariable BigInteger id) {
+		Conference conference = super.findOne(id);
+		for (Session session : conference.getSessions()) session.getSpeakers().size();
+		return conference;
+	}
+
 	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
 	public void conferences(
 			@RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "month", required = false) Integer month,
 			HttpServletResponse response) {
 
-		if (year == null || month == null) {
+		if (year == null && month == null) {
 			Calendar calendar = Calendar.getInstance();
-			if (year == null) year = calendar.get(Calendar.YEAR);
-			if (month == null) month = calendar.get(Calendar.MONTH) + 1;
+			year = calendar.get(Calendar.YEAR);
+			month = calendar.get(Calendar.MONTH) + 1;
+		} else if (year == null || month == null) {
+			throw new BadRequestParametersException("setting only parameter (year or month) is not permitted.");
+		} else {
+			if (year < 1900 || year > 2050) throw new BadRequestParametersException("parameter 'year' is out of range: " + year);
+			if (month < 1 || month > 12)  throw new BadRequestParametersException("parameter 'month' is out of range: " + month);
 		}
 		
 		List<Conference> conferences = conferenceDao.findByMonthAndYear(month, year);
@@ -67,22 +81,6 @@ public class ConferenceController {
 			writer.writeValue(response.getOutputStream(), conferences);
 		} catch (IOException e) {
 			logger.error("Cannot serialize conference list", e);
-		}
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	@Transactional(readOnly = true)
-	public Conference conference(@PathVariable BigInteger id) {
-		try {
-			Conference conference = conferenceDao.findOne(id);
-			if (conference == null) throw new IncorrectResultSizeDataAccessException(1, 0);
-			
-			for (Session session : conference.getSessions()) session.getSpeakers().size();
-			return conference;
-			
-		} catch (IncorrectResultSizeDataAccessException e) {
-			throw new ResourceNotFoundException("Conference " + id);
 		}
 	}
 	
@@ -115,5 +113,10 @@ public class ConferenceController {
 		Collections.sort(sortedDates);
 		
 		return sortedDates;
+	}
+
+	@Override
+	protected ConferenceDao getDao() {
+		return conferenceDao;
 	}
 }
