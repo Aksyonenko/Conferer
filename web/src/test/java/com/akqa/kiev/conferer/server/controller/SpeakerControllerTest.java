@@ -23,8 +23,7 @@ public class SpeakerControllerTest extends AbstractControllerTest {
 			.andExpect(jsonPath("$.about", not(isEmptyOrNullString())))
 			.andExpect(jsonPath("$.socialLinks.facebook", is("facebook link")))
 			.andExpect(jsonPath("$.socialLinks.twitter", is("@tcoupland")))
-			.andExpect(jsonPath("$.socialLinks.linkedin", is("linkedin link")))
-			;
+			.andExpect(jsonPath("$.socialLinks.linkedin", is("linkedin link")));
 	}
 	
 	@Test

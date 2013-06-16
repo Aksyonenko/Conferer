@@ -15,16 +15,12 @@ public class SessionControllerTest extends AbstractControllerTest {
 	@Test
 	public void session_existing() throws Exception {
 		preCheckJsonResponse("/sessions/1")
-			.andExpect(jsonPath("$.id", is(2)))
-			.andExpect(jsonPath("$.speakerUrl", is("some url")))
-			.andExpect(jsonPath("$.firstName", is("Alain")))
-			.andExpect(jsonPath("$.lastName", is("Hélaïli")))
-			.andExpect(jsonPath("$.photoUrl", is("some photo url")))
-			.andExpect(jsonPath("$.about", not(isEmptyOrNullString())))
-			.andExpect(jsonPath("$.socialLinks.facebook", is("facebook link")))
-			.andExpect(jsonPath("$.socialLinks.twitter", is("@tcoupland")))
-			.andExpect(jsonPath("$.socialLinks.linkedin", is("linkedin link")))
-			;
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.title", is("Avoiding Invisible Impediments to High Performance")))
+			.andExpect(jsonPath("$.summary", not(isEmptyOrNullString())))
+			.andExpect(jsonPath("$.startTime", is("02-01-2013T09:00:00.000+0900")))
+			.andExpect(jsonPath("$.endTime", is("02-01-2013T11:00:00.000+0900")))
+			.andExpect(jsonPath("$.type", is("Workshop")));
 	}
 	
 	@Test

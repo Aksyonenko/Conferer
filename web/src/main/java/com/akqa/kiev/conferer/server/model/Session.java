@@ -2,6 +2,11 @@ package com.akqa.kiev.conferer.server.model;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
+
+import javax.persistence.PostLoad;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Session extends AbstractEntity {
 
@@ -9,12 +14,23 @@ public class Session extends AbstractEntity {
 	private String title;
 	private String type;
 	private String summary;
+	
 	private Calendar startTime;
 	private Calendar endTime;
+	
+	@JsonIgnore
+	private String timezone;
+	
 	private String details;
 
 	private List<Speaker> speakers;
 
+	@PostLoad
+	public void postLoad() {
+		startTime.setTimeZone(TimeZone.getTimeZone(timezone));
+		endTime.setTimeZone(TimeZone.getTimeZone(timezone));
+	}
+	
 	public String getSessionUrl() {
 		return sessionUrl;
 	}
@@ -61,6 +77,14 @@ public class Session extends AbstractEntity {
 
 	public void setEndTime(Calendar endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 
 	public List<Speaker> getSpeakers() {

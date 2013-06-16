@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import javax.persistence.PostLoad;
 
 import com.akqa.kiev.conferer.server.dao.json.FullView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class Conference extends AbstractEntity {
@@ -18,6 +19,8 @@ public class Conference extends AbstractEntity {
 
 	private Calendar startDate;
 	private Calendar endDate;
+	
+	@JsonIgnore
 	private String timezone;
 
 	private String country;

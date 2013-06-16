@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,7 +32,7 @@ public abstract class AbstractControllerTest {
 	
 	@Before
 	public void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext).addFilter(new OpenEntityManagerInViewFilter(), "/*").build();
+		mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext).build();
 	}
 	
 	protected ResultActions preCheckJsonResponse(String uri) throws Exception {
