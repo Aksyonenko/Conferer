@@ -1,61 +1,78 @@
 package com.akqa.kiev.conferer.server.model;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "speakers")
 public class Speaker extends AbstractEntity {
-    
-    private String speakerUrl;
-    private String firstName;
-    private String lastName;
-    private String photoUrl;
-    private String about;
-    
-    private SocialLinks socialLinks;
 
-    public String getSpeakerUrl() {
-        return speakerUrl;
-    }
+	@Column(length = 1024)
+	private String speakerUrl;
+	
+	@Column(length = 64)
+	private String firstName;
+	
+	@Column(length = 64)
+	private String lastName;
+	
+	@Column(length = 1024)
+	private String photoUrl;
+	
+	@Column(length = 4096)
+	private String about;
 
-    public void setSpeakerUrl(String speakerUrl) {
-        this.speakerUrl = speakerUrl;
-    }
+	@Embedded
+	private SocialLinks socialLinks;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getSpeakerUrl() {
+		return speakerUrl;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void setSpeakerUrl(String speakerUrl) {
+		this.speakerUrl = speakerUrl;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public String getAbout() {
-        return about;
-    }
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
 
-    public void setAbout(String about) {
-        this.about = about;
-    }
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
 
-    public SocialLinks getSocialLinks() {
-        return socialLinks;
-    }
+	public String getAbout() {
+		return about;
+	}
 
-    public void setSocialLinks(SocialLinks socialLinks) {
-        this.socialLinks = socialLinks;
-    }
+	public void setAbout(String about) {
+		this.about = about;
+	}
+
+	public SocialLinks getSocialLinks() {
+		return socialLinks;
+	}
+
+	public void setSocialLinks(SocialLinks socialLinks) {
+		this.socialLinks = socialLinks;
+	}
 
 }

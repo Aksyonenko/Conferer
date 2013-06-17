@@ -40,6 +40,7 @@ public class JpaConfig {
 		emf.setDataSource(dataSource);
 		emf.setJpaVendorAdapter(jpaVendorAdapter);
 		emf.setJpaProperties(jpaProperties);
+		emf.setPackagesToScan("com.akqa.kiev.conferer.server.model");
 		
 		return emf;
 	}
