@@ -1,12 +1,18 @@
 package com.akqa.kiev.conferer.server.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class SocialLinks {
 
+	@Column(length = 128)
 	private String facebook;
+	
+	@Column(length = 32)
 	private String twitter;
+	
+	@Column(length = 255)
 	private String linkedin;
 
 	public String getFacebook() {
