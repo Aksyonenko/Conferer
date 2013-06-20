@@ -10,7 +10,6 @@
 		<appender-ref ref="console" />
 	</logger>
 
-	<!--
 	<logger name="org.springframework.transaction" level="TRACE" additivity="false">
 		<appender-ref ref="console" />
 	</logger>
@@ -18,7 +17,6 @@
 	<logger name="org.springframework.orm" level="TRACE" additivity="false">
 		<appender-ref ref="console" />
 	</logger>
-	-->
 
 	<logger name="org.springframework" level="WARN" additivity="false">
 		<appender-ref ref="console" />

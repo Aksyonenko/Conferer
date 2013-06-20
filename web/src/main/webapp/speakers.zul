@@ -1,0 +1,72 @@
+<?page title="Speaker list"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<idspace apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.akqa.kiev.conferer.server.dao.zk.SpeakerViewModel')">
+
+	<window form="@id('form') @load(vm.editedEntity) @save(vm.editedEntity, before='save-entity')" onClose="@command('close-edit-window')"
+		visible="@bind(vm.editWindowVisible)" mode="modal" closable="true" border="normal" title="Add a new Speaker">
+		<vlayout>
+			<hlayout><label value="First name:" /><textbox /></hlayout>
+			<hlayout><label value="Last name:" /><textbox /></hlayout>
+			<hlayout>
+				<button label="Create" onClick="@command('save-entity')"/>
+				<button label="Cancel" onClick="@command('close-edit-window')"/>
+			</hlayout>
+		</vlayout>
+	</window>
+
+<vlayout style="margin-top: 5px">
+	<hlayout>
+		<button label="Add speaker" onClick="@command('show-edit-window')" />
+		<button label="Remove speaker"/>
+	</hlayout>
+	<hlayout>
+		<listbox model="@load(vm.items)" selectedItem="@save(vm.selected)" hflex="min">
+			<auxhead>
+				<auxheader label="" />
+				<auxheader>
+					<image src="/img/icons/funnel.png" />
+					<longbox cols="2" instant="true" />
+				</auxheader>
+				<auxheader>
+					<image src="/img/icons/funnel.png" />
+					<longbox instant="true" />
+				</auxheader>
+				<auxheader>
+					<image src="/img/icons/funnel.png" />
+					<longbox instant="true" />
+				</auxheader>
+				<auxheader label="" />
+			</auxhead>
+			<listhead>
+				<listheader label="Photo" width="60px" />
+				<listheader label="Id" sort="auto" width="70px" />
+				<listheader label="First name" sort="auto" width="150px" />
+				<listheader label="Last name" sort="auto" width="175px" />
+				<listheader label="Social links" />
+			</listhead>
+			<template name="model" var="speaker">
+				<listitem>
+					<listcell>
+						<!-- @load(not empty speaker.photoUrl? speaker.photoUrl : '/img/icons/speaker_gray.png') -->
+						<image src="/img/icons/speaker_gray.png" width="48" height="48" />
+					</listcell>
+					<listcell label="@load(speaker.id)" />
+					<listcell label="@load(speaker.firstName)" />
+					<listcell label="@load(speaker.lastName)" />
+					<listcell style="white-space: nowrap">
+						<a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty speaker.speakerUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
+						<a href="@load(speaker.socialLinks.facebook)" target="_blank" image="/img/icons/social_facebook_box_blue_24.png" />
+						<a href="@load(speaker.socialLinks.twitter)" target="_blank" image="/img/icons/social_twitter_box_blue_24.png" />
+						<a href="@load(speaker.socialLinks.linkedin)" target="_blank" image="/img/icons/social_linkedin_box_blue_24.png" />
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+		
+		<vlayout vflex="true" hflex="min">
+			<image src="http://suvenirov.com.ua/wp-content/uploads/2012/08/Kovrik-kruglyiy-Logo-Dota-2.png" />
+			<label value="@load(vm.selected.about)" />
+		</vlayout>
+	</hlayout>
+</vlayout>
+</idspace>
