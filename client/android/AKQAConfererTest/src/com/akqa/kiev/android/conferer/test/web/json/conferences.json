@@ -16,15 +16,15 @@
   "conferenceId" : "CONF_2",
   "conferenceUrl" : "dummy conference url",
   "logoUrl" : "dummy logo url",
-  "title" : "QCon S„o Paulo: 2 dias, 50 palestras de alto nÌvel tÈcnico",
-  "summary" : "O QCon SP traz, dias 4 e 5 de agosto, Ìcones internacionais e nacionais de diversas ·reas, com apresentaÁıes aprofundadas de alto nÌvel tÈcnico.",
+  "title" : "QCon S√£o Paulo: 2 dias, 50 palestras de alto n√≠vel t√©cnico",
+  "summary" : "O QCon SP traz, dias 4 e 5 de agosto, √≠cones internacionais e nacionais de diversas √°reas, com apresenta√ß√µes aprofundadas de alto n√≠vel t√©cnico.",
   "startDate" : 1357257600000,
   "endDate" : 1357776000000,
   "country" : "China",
   "region" : "North China",
   "city" : "Beijing",
   "address" : "dummy address",
-  "details" : "A Caelum e o InfoQ organizam, pela terceira vez no Brasil, o principal evento de arquitetos e desenvolvedores do mundo. O QCon SP traz, dias 4 e 5 de agosto, Ìcones internacionais e nacionais de diversas ·reas, com apresentaÁıes aprofundadas de alto nÌvel tÈcnico. O QCon aborda n„o apenas uma ˙nica tecnologia ou aspecto: passa por Arquitetura, Linguagens Funcionais, Mobile, Agile, Pr·ticas de Engenharia ¡gil e outros. Dentre os keynotes desse ano teremos Tom Soderstrom, CTO do laboratÛrio de propuls„o da NASA, Martin Fowler, chief scientist da ThoughtWorks e Zach Holman, arquiteto do GitHub.",
+  "details" : "A Caelum e o InfoQ organizam, pela terceira vez no Brasil, o principal evento de arquitetos e desenvolvedores do mundo. O QCon SP traz, dias 4 e 5 de agosto, √≠cones internacionais e nacionais de diversas √°reas, com apresenta√ß√µes aprofundadas de alto n√≠vel t√©cnico. O QCon aborda n√£o apenas uma √∫nica tecnologia ou aspecto: passa por Arquitetura, Linguagens Funcionais, Mobile, Agile, Pr√°ticas de Engenharia √Ågil e outros. Dentre os keynotes desse ano teremos Tom Soderstrom, CTO do laborat√≥rio de propuls√£o da NASA, Martin Fowler, chief scientist da ThoughtWorks e Zach Holman, arquiteto do GitHub.",
   "sessions" : null
 }, {
   "conferenceId" : "CONF_3",

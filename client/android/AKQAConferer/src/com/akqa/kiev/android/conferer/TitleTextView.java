@@ -1,9 +1,13 @@
 package com.akqa.kiev.android.conferer;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -27,10 +31,13 @@ public class TitleTextView extends TextView {
 	private void initTypefaceAndText(Context context) {
 		setTypeface(TypefaceRegistry.getTypeFace(context,
 				"HelveticaLTStd-BoldCond.otf"));
-		SpannableString title = new SpannableString(
-				context.getString(R.string.app_name));
+
+		SpannableString title = new SpannableString(context.getString(
+				R.string.app_name).toUpperCase(Locale.getDefault()));
+
+		title.setSpan(new RelativeSizeSpan(1.2f), 0, 1,
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		title.setSpan(new ForegroundColorSpan(Color.WHITE), 7, 8, 0);
 		setText(title, BufferType.SPANNABLE);
 	}
-
 }

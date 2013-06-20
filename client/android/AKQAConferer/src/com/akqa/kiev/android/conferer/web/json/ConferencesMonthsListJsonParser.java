@@ -5,29 +5,28 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.web.json.exception.JsonParseException;
 
 /**
- * Json parser for list of conferences.
+ * Json parser for list of months that have at least 1 conference.
  * 
  * @author Yuriy.Belelya
  * 
  */
-public class ConferencesJsonParser extends AbstractJsonParser<ConferenceData> {
+public class ConferencesMonthsListJsonParser extends AbstractJsonParser<Long> {
 
-	public List<ConferenceData> parseConferences(String jsonString)
+	public List<Long> parseConferencesMonths(String jsonString)
 			throws JsonParseException {
 		if (jsonString == null) {
 			return null;
 		}
-		List<ConferenceData> conferences = null;
+		List<Long> months = null;
 		try {
 			JSONArray jsonArray = new JSONArray(jsonString);
-			conferences = parseJsonListObjects(jsonArray);
+			months = parseJsonListObjects(jsonArray);
 		} catch (JSONException e) {
 			throw new JsonParseException(e);
 		}
-		return conferences;
+		return months;
 	}
 }

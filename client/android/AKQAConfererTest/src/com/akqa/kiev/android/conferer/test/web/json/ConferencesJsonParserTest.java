@@ -52,7 +52,7 @@ public class ConferencesJsonParserTest extends TestCase {
 	public void testParseExceptionThrownOnInvalidInput() {
 		try {
 			conferencesJsonParser.parseConferences("invalid JSON!!!");
-			fail("Expected Exception MyException");
+			fail("Expected Exception JsonParseException");
 		} catch (JsonParseException e) {
 			// do nothing, it's OK
 		}

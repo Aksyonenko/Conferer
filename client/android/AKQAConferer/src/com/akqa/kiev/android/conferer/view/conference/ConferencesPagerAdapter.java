@@ -1,21 +1,49 @@
 package com.akqa.kiev.android.conferer.view.conference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+
+import com.akqa.kiev.android.conferer.web.client.ConfererWebClient;
+import com.akqa.kiev.android.conferer.web.json.ConferencesMonthsListJsonParser;
+import com.akqa.kiev.android.conferer.web.json.exception.JsonParseException;
 
 public class ConferencesPagerAdapter extends FragmentPagerAdapter {
 
 	private List<ConferencesFragment> conferenceFragments;
 
+	private ConfererWebClient webClient = new ConfererWebClient();
+
+	private ConferencesMonthsListJsonParser conferencesMonthsListJsonParser = new ConferencesMonthsListJsonParser();
+
+	private SimpleDateFormat simpleDateFormat;
+
 	public ConferencesPagerAdapter(FragmentManager fm) {
 		super(fm);
-		conferenceFragments = new ArrayList<ConferencesFragment>();
-		for (int i = 0; i < 6; i++) {
-			conferenceFragments.add(new ConferencesFragment());
+
+		simpleDateFormat = new SimpleDateFormat("MMM ''yy", Locale.ENGLISH);
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+		List<Long> conferencesMonths = loadConferencesMonths();
+		if (conferencesMonths != null && !conferencesMonths.isEmpty()) {
+			conferenceFragments = new ArrayList<ConferencesFragment>(
+					conferencesMonths.size());
+			for (int i = 0; i < conferencesMonths.size(); i++) {
+				ConferencesFragment conferenceFragment = new ConferencesFragment();
+				Bundle args = new Bundle();
+				args.putLong(ConferencesFragment.MONTH_ARG,
+						conferencesMonths.get(i));
+				conferenceFragment.setArguments(args);
+				conferenceFragments.add(conferenceFragment);
+			}
 		}
 	}
 
@@ -26,24 +54,26 @@ public class ConferencesPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 6;
+		return conferenceFragments != null ? conferenceFragments.size() : 0;
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		switch (position) {
-		case 0:
-			return "January 2013";
-		case 1:
-			return "February 2013";
-		case 2:
-			return "March 2013";
-		case 3:
-			return "April 2013";
-		case 4:
-			return "May 2013";
-		case 5:
-			return "December 2013";
+		if (position >= 0 && position < conferenceFragments.size()) {
+			Long month = conferenceFragments.get(position).getArguments()
+					.getLong(ConferencesFragment.MONTH_ARG);
+			return simpleDateFormat.format(month);
+		}
+		return null;
+	}
+
+	private List<Long> loadConferencesMonths() {
+		String allConfMonths = webClient.getAllconferencesMonths();
+		try {
+			return conferencesMonthsListJsonParser
+					.parseConferencesMonths(allConfMonths);
+		} catch (JsonParseException e) {
+			Log.e(getClass().getName(), e.getMessage());
 		}
 		return null;
 	}

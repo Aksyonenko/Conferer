@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="@dimen/footer_height"
     android:layout_alignParentBottom="true"
     android:background="@color/footer_bg_color" >
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:contentDescription="@string/calendar_view_btn_label"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/conferer_logo" />
 
     <ImageButton
         android:id="@+id/listViewBtn"
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:contentDescription="@string/list_view_btn_label"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/conferer_logo" />
 
 </LinearLayout>

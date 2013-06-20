@@ -29,7 +29,7 @@
         <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:padding">@dimen/title_padding</item>
         <item name="android:textColor">@color/title_color</item>
-        <item name="android:drawableLeft">@drawable/ic_launcher</item>
+        <item name="android:drawableLeft">@drawable/conferer_logo</item>
         <item name="android:textStyle">bold</item>
     </style>
 

@@ -16,14 +16,16 @@ import com.akqa.kiev.android.conferer.utils.IoUtils;
 
 /**
  * Web client for Conferer App.
+ * 
  * @author Yuriy.Belelya
- *
+ * 
  */
 public class ConfererWebClient {
 
-	private static final String CONFERENCES_URL = "http://localhost:8080/conferer/conferences";
+	private static final String CONFERENCES_URL = "http://10.11.100.254/conferences";
 	private static final String CONFERENCES_YEAR_PARAM = "year";
 	private static final String CONFERENCES_MONTH_PARAM = "month";
+	private static final String CONFERENCES_MONTHS_URL = "http://10.11.100.254/conferences/months";
 
 	private DefaultHttpClient httpClient;
 
@@ -33,6 +35,10 @@ public class ConfererWebClient {
 
 	public String getCurrentMonthConferences() {
 		return simpleGetRequest(CONFERENCES_URL);
+	}
+
+	public String getAllconferencesMonths() {
+		return simpleGetRequest(CONFERENCES_MONTHS_URL);
 	}
 
 	public String getConferences(int year, int month) {
@@ -50,8 +56,7 @@ public class ConfererWebClient {
 			HttpResponse response = httpClient.execute(homeRequest);
 			return getHtmlAnswer(response);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(getClass().getSimpleName(), e.getMessage());
+			Log.e(getClass().getName(), e.getMessage());
 		} finally {
 			releaseConnection(homeRequest);
 		}

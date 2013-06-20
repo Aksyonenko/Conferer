@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -26,8 +27,7 @@ import com.akqa.kiev.android.conferer.task.DownloadImageTask;
  */
 public class ConferenceView extends TableLayout {
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM",
-			Locale.getDefault());
+	private SimpleDateFormat dateFormat;
 
 	List<AsyncTask<?, ?, ?>> asyncTasks = new ArrayList<AsyncTask<?, ?, ?>>();
 
@@ -37,47 +37,41 @@ public class ConferenceView extends TableLayout {
 
 	public ConferenceView(Context context, ConferenceData conferenceData) {
 		super(context);
+		dateFormat = new SimpleDateFormat("dd MMM", Locale.ENGLISH);
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		init(context, conferenceData);
 	}
 
 	private void init(Context context, ConferenceData data) {
-		// if (data != null) {
-		setPadding(10, 10, 10, 10);
-		setStretchAllColumns(true);
-		setColumnShrinkable(1, true);
-		setGravity(Gravity.CENTER);
+		if (data != null) {
+			setPadding(10, 10, 10, 10);
+			setStretchAllColumns(true);
+			setColumnShrinkable(1, true);
+			setGravity(Gravity.CENTER);
 
-		TableRow titleRow = new TableRow(context);
+			TableRow titleRow = new TableRow(context);
 
-		// TODO stub, will be removed later
-		titleRow.addView(createTitle(context, "Dota 2 International 2013"));
+			titleRow.addView(createTitle(context, data.getTitle()));
 
-		TableRow imgAndDescRow = new TableRow(context);
+			TableRow imgAndDescRow = new TableRow(context);
 
-		// TODO stub, will be removed later
-		imgAndDescRow
-				.addView(createcConferenceLogo(context,
-						"http://prodota.ru/forum/uploads/profile/photo-59266.png?_r=1354107901"));
+			imgAndDescRow.addView(createcConferenceLogo(context,
+					data.getLogoUrl()));
 
-		// TODO stub, will be removed later
-		imgAndDescRow
-				.addView(createSummary(
-						context,
-						"The International is an annual electronic sports Dota 2 championship tournament hosted by the American video game developer Valve Corporation, in which sixteen teams are personally invited to compete."));
+			imgAndDescRow.addView(createSummary(context, data.getSummary()));
 
-		TableRow datesAndLocationRow = new TableRow(context);
-		// TODO stub, will be removed later
+			TableRow datesAndLocationRow = new TableRow(context);
 
-		datesAndLocationRow
-				.addView(createDates(context, new Date(), new Date()));
+			datesAndLocationRow.addView(createDates(context,
+					data.getStartDate(), data.getEndDate()));
 
-		// TODO stub, will be removed later
-		datesAndLocationRow.addView(createLocation(context, "Ukraine", "Kiev"));
+			datesAndLocationRow.addView(createLocation(context,
+					data.getCountry(), data.getCity()));
 
-		addView(titleRow);
-		addView(imgAndDescRow);
-		addView(datesAndLocationRow);
-		// }
+			addView(titleRow);
+			addView(imgAndDescRow);
+			addView(datesAndLocationRow);
+		}
 	}
 
 	private TextView createTitle(Context context, String title) {

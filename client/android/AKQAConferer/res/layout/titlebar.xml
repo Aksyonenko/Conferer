@@ -9,13 +9,15 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/title_padding"
+        android:drawablePadding="@dimen/title_padding"
         android:layout_weight="1"
         android:background="@color/titlebar_color"
-        android:drawableLeft="@drawable/ic_launcher"
+        android:drawableLeft="@drawable/conferer_logo"
         android:padding="@dimen/title_padding"
         android:textColor="@color/title_color"
         android:textSize="@dimen/title_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold" 
+        android:gravity="center_vertical"/>
 
     <SearchView
         android:id="@+id/searchView"
