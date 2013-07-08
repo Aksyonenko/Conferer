@@ -5,8 +5,16 @@
 	<window form="@id('form') @load(vm.editedEntity) @save(vm.editedEntity, before='save-entity')" onClose="@command('close-edit-window')"
 		visible="@bind(vm.editWindowVisible)" mode="modal" closable="true" border="normal" title="Add a new Speaker">
 		<vlayout>
-			<hlayout><label value="First name:" /><textbox /></hlayout>
-			<hlayout><label value="Last name:" /><textbox /></hlayout>
+			<hlayout><label value="First name:" /><textbox value="@bind(form.firstName)" /></hlayout>
+			<hlayout><label value="Last name:" /><textbox value="@bind(form.lastName)" /></hlayout>
+			
+			<groupbox>
+				<caption label="Social links" />
+				<hlayout><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" /></hlayout>
+				<hlayout><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" /></hlayout>
+				<hlayout><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" /></hlayout>
+			</groupbox>
+			
 			<hlayout>
 				<button label="Create" onClick="@command('save-entity')"/>
 				<button label="Cancel" onClick="@command('close-edit-window')"/>

@@ -27,6 +27,10 @@ public class Speaker extends AbstractEntity {
 	@Embedded
 	private SocialLinks socialLinks;
 
+	public Speaker() {
+		
+	}
+	
 	public String getSpeakerUrl() {
 		return speakerUrl;
 	}

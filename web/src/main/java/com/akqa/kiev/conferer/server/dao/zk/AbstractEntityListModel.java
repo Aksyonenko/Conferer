@@ -2,17 +2,9 @@ package com.akqa.kiev.conferer.server.dao.zk;
 
 import java.lang.reflect.ParameterizedType;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
@@ -32,8 +24,9 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 	private ListModelList<E> items;
 	
 	private boolean editWindowVisible = false;
-	private E editedEntity;
+	protected E editedEntity;
 
+	@SuppressWarnings("unchecked")
 	protected AbstractEntityListModel(Class<? extends AbstractDao<E>> daoClass) {
 		logger.debug("Instantiating {}", this.getClass().getSimpleName());
 		dao = SpringUtil.getApplicationContext().getBean(daoClass);
@@ -45,25 +38,14 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 	@Init
 	public void init() {
 		items = new ListModelList<>(dao.findAll());
+		editedEntity = BeanUtils.instantiate(entityClass);
 	}
 	
 	@Command("save-entity")
 	@NotifyChange({"editWindowVisible", "items"})
 	public void saveEntity() {
+		dao.save(editedEntity);
 		editWindowVisible = false;
-		
-		final EntityManager entityManager = SpringUtil.getApplicationContext().getBean(EntityManagerFactory.class).createEntityManager();
-		TransactionTemplate template = new TransactionTemplate(SpringUtil.getApplicationContext().getBean(PlatformTransactionManager.class));
-		template.execute(new TransactionCallbackWithoutResult() {
-			
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-//				dao.save(editedEntity);
-				entityManager.getTransaction().begin();
-				entityManager.persist(editedEntity);
-				entityManager.getTransaction().commit();
-			}
-		});
 	}
 	
 	@Command("close-edit-window")
@@ -76,6 +58,7 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 	@NotifyChange("editWindowVisible")
 	public void showEditWindow() {
 		editedEntity = BeanUtils.instantiate(entityClass);
+		
 		editWindowVisible = true;
 	}
 
@@ -102,7 +85,7 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 	public void setEditWindowVisible(boolean editWindowVisible) {
 		this.editWindowVisible = editWindowVisible;
 	}
-
+	
 	public E getEditedEntity() {
 		return editedEntity;
 	}
