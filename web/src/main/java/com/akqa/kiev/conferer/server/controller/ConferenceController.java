@@ -87,10 +87,9 @@ public class ConferenceController extends AbstractConfererController<Conference>
 	@RequestMapping("/months")
 	@ResponseBody
 	public List<Long> months() {
-		List<Conference> conferences = conferenceDao.findAll();
 		Set<Long> dates = new HashSet<>();
 		
-		for (Conference conference : conferences) {			
+		for (Conference conference : conferenceDao.findAll()) {			
 			Calendar startCalendar = (Calendar) conference.getStartDate().clone();
 			Calendar endCalendar = (Calendar) conference.getEndDate().clone();
 			

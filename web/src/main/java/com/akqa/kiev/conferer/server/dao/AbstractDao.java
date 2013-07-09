@@ -13,8 +13,8 @@ import com.akqa.kiev.conferer.server.model.AbstractEntity;
 @Transactional(readOnly = true)
 public interface AbstractDao<T extends AbstractEntity> extends CrudRepository<T, BigInteger>, QueryDslPredicateExecutor<T> {
 
-	T findOne(BigInteger id) throws IncorrectResultSizeDataAccessException;
-	List<T> findAll();
+	//T findOne(BigInteger id) throws IncorrectResultSizeDataAccessException;
+	//List<T> findAll();
 	
-	T save(T entity);
+	//T save(T entity);
 }

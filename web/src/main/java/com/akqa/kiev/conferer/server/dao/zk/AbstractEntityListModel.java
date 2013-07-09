@@ -1,6 +1,8 @@
 package com.akqa.kiev.conferer.server.dao.zk;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +39,10 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 	
 	@Init
 	public void init() {
-		items = new ListModelList<>(dao.findAll());
+		LinkedList<E> list = new LinkedList<>();
+		for (E e : dao.findAll()) list.add(e);
+		
+		items = new ListModelList<>(list);
 		editedEntity = BeanUtils.instantiate(entityClass);
 	}
 	
