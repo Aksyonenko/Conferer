@@ -86,14 +86,16 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 );
 
 DELETE FROM sessions;
-INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VALUES (
+INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone, location, sessionLogoUrl) VALUES (
 	1,
 	'Avoiding Invisible Impediments to High Performance',
 	'This tutorial assumes the following hypothesis: Learning is the Bottleneck of Software Development and Delivery, and asks the question "what is keeping us from learning effectively?" There are some things that are visible such as the length of the release cycle, the clarity of the goal, learning from mistakes and difficulties, etc.... This is valuable, but not what this tutorial is about.',
 	PARSEDATETIME('02-01-2013T09:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('02-01-2013T11:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Workshop',
-	'Asia/Tokyo'
+	'Asia/Tokyo',
+	'Shinjuku',
+	'http://shinjukuus.com/assets/images/shinjuku-logo-3.png'
 ), (
 	2,
 	'Continuous Delivery',
@@ -101,7 +103,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('03-01-2013T09:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('03-01-2013T11:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Presentation',
-	'Asia/Tokyo'
+	'Asia/Tokyo',
+	'Shinjuku',
+	'http://shinjukuus.com/assets/images/shinjuku-logo-3.png'
 ), (
 	3,
 	'Creating iOS Apps in Objective-C',
@@ -109,7 +113,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('04-01-2013T09:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('04-01-2013T11:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),	
 	'Tutorial',
-	'Asia/Tokyo'
+	'Asia/Tokyo',
+	'Shinjuku',
+	'http://shinjukuus.com/assets/images/shinjuku-logo-3.png'
 ), (
 	4,
 	'Building Web Applications with WebSockets',
@@ -117,7 +123,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('04-01-2013T09:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('04-01-2013T11:00:00.000+0900', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Workshop',
-	'Asia/Tokyo'
+	'Asia/Tokyo',
+	'Shinjuku',
+	'http://shinjukuus.com/assets/images/shinjuku-logo-3.png'
 ), (
 	5,
 	'Testable JavaScript',
@@ -125,7 +133,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-01-04T09:00:00.000+0800', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-01-04T11:00:00.000+0800', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Workshop',
-	'Asia/Shanghai'
+	'Asia/Shanghai',
+	'Shinjuku',
+	'http://shinjukuus.com/assets/images/shinjuku-logo-3.png'
 ), (
 	6,
 	'Presentation Patterns for Better Technical Talks',
@@ -133,7 +143,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-01-04T10:30:00.000+0800', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-01-04T12:00:00.000+0800', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Presentation',
-	'Asia/Shanghai'
+	'Asia/Shanghai',
+	'Shinjuku',
+	'http://shinjukuus.com/assets/images/shinjuku-logo-3.png'
 ), (
 	7,
 	'Designing and Implementing Hypermedia APIs',
@@ -141,7 +153,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-01-04T13:00:00.000+0800', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-01-04T14:00:00.000+0800', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Tutorial',
-	'Asia/Shanghai'
+	'Asia/Shanghai',
+	'Tangzhen',
+	'http://payload.cargocollective.com/1/0/21755/1978415/Shanghai_Logo_Color_v01_950.png'
 ), (
 	8,
 	'RESTful Web APIs',
@@ -149,7 +163,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-01-14T09:00:00.000+0200', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-01-14T11:00:00.000+0200', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Tutorial',
-	'Europe/Helsinki'
+	'Europe/Helsinki',
+	'Holiday Inn',
+	'http://www.youragent.fi/files/youragent.auttaa.fi/helsinki_logo.jpg'
 ), (
 	9,
 	'Get Good with Git and GitHub',
@@ -157,7 +173,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-01-14T09:00:00.000+0200', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-01-14T11:00:00.000+0200', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Presentation',
-	'Europe/Helsinki'
+	'Europe/Helsinki',
+	'Holiday Inn',
+	'http://www.youragent.fi/files/youragent.auttaa.fi/helsinki_logo.jpg'
 ), (
 	10,
 	'Responsive Web Design',
@@ -165,7 +183,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-03-12T10:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-03-12T12:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Tutorial',
-	'GMT'
+	'GMT',
+	'Forenom Hotel Matinlahti',
+    'http://con-j.com/wp-content/uploads/2011/04/GMT-Logo-2010-Blau1.jpg'
 ), (
 	11,
 	'Creating Android Apps in Java',
@@ -173,7 +193,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-03-12T14:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-03-12T16:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Presentation',
-	'GMT'
+	'GMT',
+	'Forenom Hotel Matinlahti',
+    'http://con-j.com/wp-content/uploads/2011/04/GMT-Logo-2010-Blau1.jpg'
 ), (
 	12,
 	'Building Windows Store Apps with XAML/C# for Windows 8/RT',
@@ -181,7 +203,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-03-12T10:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-03-12T12:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Tutorial',
-	'PST'
+	'PST',
+	'Koulutus Oy',
+    'http://upload.wikimedia.org/wikipedia/ru/4/4c/Pst_logo.JPG'
 ), (
 	13,
 	'Hot Technology for Financial Services',
@@ -189,7 +213,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-22T11:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-22T12:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Open Discussion',
-	'PST'
+	'PST',
+	'Koulutus Oy',
+    'http://upload.wikimedia.org/wikipedia/ru/4/4c/Pst_logo.JPG'
 ), (
 	14,
 	'Applied Data Science',
@@ -197,7 +223,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-22T14:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-22T16:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Open Discussion',
-	'PST'
+	'PST',
+	'Koulutus Oy',
+    'http://upload.wikimedia.org/wikipedia/ru/4/4c/Pst_logo.JPG'
 ), (
 	15,
 	'Architectures You''ve Always Wondered about',
@@ -205,7 +233,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-23T10:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-23T12:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Workshop',
-	'PST'
+	'PST',
+	'Koulutus Oy',
+    'http://upload.wikimedia.org/wikipedia/ru/4/4c/Pst_logo.JPG'
 ), (
 	16,
 	'Polyglot Architectures',
@@ -213,7 +243,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-23T14:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-23T16:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Workshop',
-	'PST'
+	'PST',
+	'Koulutus Oy',
+    'http://upload.wikimedia.org/wikipedia/ru/4/4c/Pst_logo.JPG'
 ), (
 	17,
 	'HTML5 and Modern Web Languages',
@@ -221,7 +253,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-23T10:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-23T12:00:00.000-0700', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Open Discussion',
-	'PST'
+	'PST',
+	'Koulutus Oy',
+    'http://upload.wikimedia.org/wikipedia/ru/4/4c/Pst_logo.JPG'
 ), (
 	18,
 	'The JavaScript Ecosystem',
@@ -229,7 +263,9 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-22T15:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-22T16:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Presentation',
-	'GMT'
+	'GMT',
+	'Forenom Hotel Matinlahti',
+    'http://con-j.com/wp-content/uploads/2011/04/GMT-Logo-2010-Blau1.jpg'
 ), (
 	19,
 	'Lean Startup Applied',
@@ -237,11 +273,13 @@ INSERT INTO sessions (id, title, summary, startTime, endTime, type, timezone) VA
 	PARSEDATETIME('2013-04-23T13:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	PARSEDATETIME('2013-04-23T16:00:00.000+0000', 'dd-MM-yyyy''T''HH:mm:ss.SSSZ'),
 	'Presentation',
-	'GMT'
+	'GMT',
+	'Forenom Hotel Matinlahti',
+    'http://con-j.com/wp-content/uploads/2011/04/GMT-Logo-2010-Blau1.jpg'
 );
 
 DELETE FROM speakers;
-INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, facebook, twitter, linkedin) VALUES (
+INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, facebook, twitter, linkedin, competence) VALUES (
 	1,
 	'some url',
 	'Adam',
@@ -251,6 +289,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Game development'
 ), (
 	2,
 	'some url',
@@ -261,6 +300,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'@tcoupland',
 	'linkedin link',
+	'Engineering'
 ), (
 	3,
 	'some url',
@@ -271,6 +311,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Researching'
 ), (
 	4,
 	'some url',
@@ -281,6 +322,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Engineering'
 ), (
 	5,
 	'some url',
@@ -291,6 +333,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Engineering'
 ), (
 	6,
 	'some url',
@@ -301,6 +344,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Web development'
 ), (
 	7,
 	'some url',
@@ -311,6 +355,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Engineering'
 ), (
 	8,
 	'some url',
@@ -321,6 +366,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Researching'
 ), (
 	9,
 	'some url',
@@ -331,6 +377,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Researching'
 ), (
 	10,
 	'some url',
@@ -341,6 +388,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Web development'
 ), (
 	11,
 	'some url',
@@ -351,6 +399,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Engineering'
 ), (
 	12,
 	'some url',
@@ -361,6 +410,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Consulting'
 ), (
 	13,
 	'some url',
@@ -371,6 +421,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Web development'
 ), (
 	14,
 	'some url',
@@ -381,6 +432,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Researching'
 ), (
 	15,
 	'some url',
@@ -391,6 +443,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
+	'Consulting'
 );
 
 INSERT INTO conferences_sessions (CONFERENCE_ID, SESSION_ID) VALUES

@@ -17,6 +17,9 @@ public class Speaker extends AbstractEntity {
 	
 	@Column(length = 64)
 	private String lastName;
+
+    @Column(length = 64)
+    private String competence;
 	
 	@Column(length = 1024)
 	private String photoUrl;
@@ -54,6 +57,14 @@ public class Speaker extends AbstractEntity {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+    public String getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(String competence) {
+        this.competence = competence;
+    }
 
 	public String getPhotoUrl() {
 		return photoUrl;

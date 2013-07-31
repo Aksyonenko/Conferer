@@ -22,8 +22,14 @@ public class Session extends AbstractEntity {
 	
 	@Column(length = 1024, nullable = false)
 	private String sessionUrl;
-	
-	@Column(length = 512, nullable = false)
+
+    @Column(length = 1024)
+    private String sessionLogoUrl;
+
+    @Column(length = 64)
+    private String location;
+
+    @Column(length = 512, nullable = false)
 	private String title;
 	
 	@Column(length = 32)
@@ -68,6 +74,22 @@ public class Session extends AbstractEntity {
 	public void setSessionUrl(String sessionUrl) {
 		this.sessionUrl = sessionUrl;
 	}
+
+    public String getSessionLogoUrl() {
+        return sessionLogoUrl;
+    }
+
+    public void setSessionLogoUrl(String sessionLogoUrl) {
+        this.sessionLogoUrl = sessionLogoUrl;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
 	public String getTitle() {
 		return title;
