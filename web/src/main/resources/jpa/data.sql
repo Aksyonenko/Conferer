@@ -289,7 +289,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Game development'
+	'Game Developer'
 ), (
 	2,
 	'some url',
@@ -300,7 +300,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'@tcoupland',
 	'linkedin link',
-	'Engineering'
+	'Senior Software Developer'
 ), (
 	3,
 	'some url',
@@ -311,7 +311,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Researching'
+	'Research Manager'
 ), (
 	4,
 	'some url',
@@ -322,7 +322,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Engineering'
+	'Senior Software Developer'
 ), (
 	5,
 	'some url',
@@ -333,7 +333,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Engineering'
+	'Senior Software Developer'
 ), (
 	6,
 	'some url',
@@ -344,7 +344,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Web development'
+	'Web Developer'
 ), (
 	7,
 	'some url',
@@ -355,7 +355,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Engineering'
+	'Senior Software Developer'
 ), (
 	8,
 	'some url',
@@ -366,7 +366,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Researching'
+	'RnD Manager'
 ), (
 	9,
 	'some url',
@@ -377,7 +377,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Researching'
+	'Agile Coach'
 ), (
 	10,
 	'some url',
@@ -388,7 +388,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Web development'
+	'Web Developer'
 ), (
 	11,
 	'some url',
@@ -399,7 +399,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Engineering'
+	'Senior Software Developer'
 ), (
 	12,
 	'some url',
@@ -410,7 +410,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Consulting'
+	'Chief Architect'
 ), (
 	13,
 	'some url',
@@ -421,7 +421,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Web development'
+	'Chief Architect'
 ), (
 	14,
 	'some url',
@@ -432,7 +432,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Researching'
+	'RnD Manager'
 ), (
 	15,
 	'some url',
@@ -443,7 +443,7 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'facebook link',
 	'twitter link',
 	'linkedin link',
-	'Consulting'
+	'Agile Coach'
 );
 
 INSERT INTO conferences_sessions (CONFERENCE_ID, SESSION_ID) VALUES
