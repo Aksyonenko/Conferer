@@ -20,7 +20,7 @@ public class SpeakerControllerTest extends AbstractControllerTest {
 			.andExpect(jsonPath("$.firstName", is("Alain")))
 			// FIXME: Fix Unicode issue
 			// .andExpect(jsonPath("$.lastName", is("Hélaïli")))
-			.andExpect(jsonPath("$.photoUrl", is("some photo url")))
+			.andExpect(jsonPath("$.photoUrl", is("http://www.bicompetenceforum.com/wp-content/uploads/2013/04/fabriziodepetris.jpg")))
 			.andExpect(jsonPath("$.about", not(isEmptyOrNullString())))
 			.andExpect(jsonPath("$.socialLinks.facebook", is("facebook link")))
 			.andExpect(jsonPath("$.socialLinks.twitter", is("@tcoupland")))
