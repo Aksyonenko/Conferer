@@ -55,26 +55,25 @@
 			<template name="model" var="speaker">
 				<listitem>
 					<listcell>
-						<!-- @load(not empty speaker.photoUrl? speaker.photoUrl : '/img/icons/speaker_gray.png') -->
-						<image src="/img/icons/speaker_gray.png" width="48" height="48" />
-					</listcell>
-					<listcell label="@load(speaker.id)" />
-					<listcell label="@load(speaker.firstName)" />
-					<listcell label="@load(speaker.lastName)" />
-					<listcell style="white-space: nowrap">
-						<a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty speaker.speakerUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
-						<a href="@load(speaker.socialLinks.facebook)" target="_blank" image="/img/icons/social_facebook_box_blue_24.png" />
-						<a href="@load(speaker.socialLinks.twitter)" target="_blank" image="/img/icons/social_twitter_box_blue_24.png" />
-						<a href="@load(speaker.socialLinks.linkedin)" target="_blank" image="/img/icons/social_linkedin_box_blue_24.png" />
-					</listcell>
-				</listitem>
-			</template>
-		</listbox>
-		
-		<vlayout vflex="true" hflex="min">
-			<image src="http://suvenirov.com.ua/wp-content/uploads/2012/08/Kovrik-kruglyiy-Logo-Dota-2.png" />
-			<label value="@load(vm.selected.about)" />
-		</vlayout>
-	</hlayout>
+                        <image src="@load(not empty speaker.photoUrl? speaker.photoUrl : '/img/icons/speaker_gray.png')" />
+                    </listcell>
+                    <listcell label="@load(speaker.id)" />
+                    <listcell label="@load(speaker.firstName)" />
+                    <listcell label="@load(speaker.lastName)" />
+                    <listcell style="white-space: nowrap">
+                        <a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty speaker.speakerUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
+                        <a href="@load(speaker.socialLinks.facebook)" target="_blank" image="/img/icons/social_facebook_box_blue_24.png" />
+                        <a href="@load(speaker.socialLinks.twitter)" target="_blank" image="/img/icons/social_twitter_box_blue_24.png" />
+                        <a href="@load(speaker.socialLinks.linkedin)" target="_blank" image="/img/icons/social_linkedin_box_blue_24.png" />
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+
+        <vlayout vflex="true" hflex="min">
+            <image src="http://suvenirov.com.ua/wp-content/uploads/2012/08/Kovrik-kruglyiy-Logo-Dota-2.png" />
+            <label value="@load(vm.selected.about)" />
+        </vlayout>
+    </hlayout>
 </vlayout>
 </idspace>

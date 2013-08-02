@@ -32,7 +32,9 @@ public class ConferenceControllerTest extends AbstractControllerTest {
 			.andExpect(jsonPath("$[*].region", contains("Kanto", "North China", null)))
 			.andExpect(jsonPath("$[*].city", contains("Tokyo", "Beijing", "Kiev")))
 			.andExpect(jsonPath("$[*].address", everyItem(is("dummy address"))))
-			.andExpect(jsonPath("$[*].logoUrl", everyItem(is("dummy logo url"))))
+			.andExpect(jsonPath("$[*].logoUrl", contains("https://qconnewyork.com/sites/all/themes/qcon_master/images/logo.jpg",
+                    "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRLiqx5l8ys8sQu-gcXfCcUCQivPwKjBIRFXf0WKYGtsKaAG6KTg5oPbjE6",
+                    "https://qconnewyork.com/sites/all/themes/qcon_master/images/logo.jpg")))
 			.andExpect(jsonPath("$[*].details").doesNotExist())
 			.andExpect(jsonPath("$[*].sessions").doesNotExist());
 	}
@@ -89,7 +91,7 @@ public class ConferenceControllerTest extends AbstractControllerTest {
 			.andExpect(jsonPath("$.region", is("Kanto")))
 			.andExpect(jsonPath("$.city", is("Tokyo")))
 			.andExpect(jsonPath("$.address", is("dummy address")))
-			.andExpect(jsonPath("$.logoUrl", is("dummy logo url")))
+			.andExpect(jsonPath("$.logoUrl", is("https://qconnewyork.com/sites/all/themes/qcon_master/images/logo.jpg")))
 			.andExpect(jsonPath("$.details", not(isEmptyOrNullString())))
 			.andExpect(jsonPath("$.sessions", not(empty())));
 	}
