@@ -1,0 +1,128 @@
+{
+  "id" : 1,
+  "conferenceUrl" : "dummy conference url",
+  "logoUrl" : "https://qconnewyork.com/sites/all/themes/qcon_master/images/logo.jpg",
+  "title" : "QCon New York 2013",
+  "summary" : "QCon empowers software development by facilitating the spread of knowledge and innovation in the developer community. A practitioner-driven conference, QCon is designed for technical team leads, architects, engineering directors, and project managers who influence innovation in their teams.",
+  "startDate" : "02-01-2013T00:00:00.000+0900",
+  "endDate" : "05-01-2013T00:00:00.000+0900",
+  "country" : "Japan",
+  "region" : "Kanto",
+  "city" : "Tokyo",
+  "address" : "dummy address",
+  "details" : "QCon empowers software development by facilitating the spread of knowledge and innovation in the developer community. A practitioner-driven conference, QCon is designed for technical team leads, architects, engineering directors, and project managers who influence innovation in their teams. QCon highlights the most important development topics driving innovation - things you should be doing now or researching for your next project - presented by the doers in our community. Our conferences bring practitioners together with attendees who influence innovation in their teams: over half of conferences attendees, for example, have team lead or higher job titles. Additionally, QCons are staged in an intimate environment that promotes high-quality learning, peer-sharing, fun, and inspiration! QCon starts with 2 days of tutorials on Monday and Tuesday, June 10-11 followed by the full 3-day conference from Wednesday, June 12-14. The conference will feature over 100 speakers in 6 concurrent tracks daily covering the most timely and innovative topics driving the evolution of enterprise software development today. The setting is the beautiful, centrally-located Marriott at Brooklyn Bridge in New York City.",
+  "sessions" : [ {
+    "id" : 1,
+    "sessionUrl" : null,
+    "sessionLogoUrl" : "http://shinjukuus.com/assets/images/shinjuku-logo-3.png",
+    "location" : "Shinjuku",
+    "title" : "Avoiding Invisible Impediments to High Performance",
+    "type" : "Workshop",
+    "summary" : "This tutorial assumes the following hypothesis: Learning is the Bottleneck of Software Development and Delivery, and asks the question \"what is keeping us from learning effectively?\" There are some things that are visible such as the length of the release cycle, the clarity of the goal, learning from mistakes and difficulties, etc.... This is valuable, but not what this tutorial is about.",
+    "startTime" : "02-01-2013T09:00:00.000+0900",
+    "endTime" : "02-01-2013T11:00:00.000+0900",
+    "details" : null,
+    "speakers" : [ {
+      "id" : 1,
+      "speakerUrl" : "some url",
+      "firstName" : "Adam",
+      "lastName" : "Blum",
+      "competence" : "Game Developer",
+      "photoUrl" : "http://www.bicompetenceforum.com/wp-content/uploads/2013/04/ruudhasselerharm.jpg",
+      "about" : "Toby O'Rourke is a Technical Architect at Gamesys, a London based soft-gaming company. With a background as a Java guy, he considers himself lucky to rove around the tech landscape at Gamesys combining architecture and hands on development with exposure to a fairly eclectic mix of client, server and native mobile technologies. He believes an excited team, plenty of domain modelling and a beady eye on the details are decent starting point for delivering just about anything.",
+      "socialLinks" : {
+        "facebook" : "facebook link",
+        "twitter" : "twitter link",
+        "linkedin" : "linkedin link"
+      }
+    } ]
+  }, {
+    "id" : 2,
+    "sessionUrl" : null,
+    "sessionLogoUrl" : "http://shinjukuus.com/assets/images/shinjuku-logo-3.png",
+    "location" : "Shinjuku",
+    "title" : "Continuous Delivery",
+    "type" : "Presentation",
+    "summary" : "This tutorial will be delivered as an in-depth, interactive talk. It will describe the ideas of Continuous Delivery as a practical everyday process, highlighting some of the techniques developed while working on a complex real world CD project. It will provide an overview of the key process details: describing deployment pipelining as a technique to structure automation, pipeline monitoring to gain insight into progress and status, approaches to configuration management, automated acceptance testing and automated deployment as well as many other aspects of the CD approach to software delivery.",
+    "startTime" : "03-01-2013T09:00:00.000+0900",
+    "endTime" : "03-01-2013T11:00:00.000+0900",
+    "details" : null,
+    "speakers" : [ {
+      "id" : 2,
+      "speakerUrl" : "some url",
+      "firstName" : "Alain",
+      "lastName" : "Hélaïli",
+      "competence" : "Senior Software Developer",
+      "photoUrl" : "http://www.bicompetenceforum.com/wp-content/uploads/2013/04/fabriziodepetris.jpg",
+      "about" : "Tom Coupland is a Senior Engineer at Nokia Entertainment Bristol. Having worked with transaction processing monoliths, producing one of his own, he's now enjoying the world of SOA and the freedoms it can bring. After years of Java, he set out to find more productive and elegant tools, currently very much enjoying spending time with Clojure. When not trying to make his bit of the world of software a better place, he can be found out in the real one, running, preferably in the mud, wind and rain. Twitter: @tcoupland",
+      "socialLinks" : {
+        "facebook" : "facebook link",
+        "twitter" : "@tcoupland",
+        "linkedin" : "linkedin link"
+      }
+    } ]
+  }, {
+    "id" : 3,
+    "sessionUrl" : null,
+    "sessionLogoUrl" : "http://shinjukuus.com/assets/images/shinjuku-logo-3.png",
+    "location" : "Shinjuku",
+    "title" : "Creating iOS Apps in Objective-C",
+    "type" : "Tutorial",
+    "summary" : "This is a one-day tutorial in writing iOS apps with the application Xcode. An iPhone or iPad app is made of objects that communicate with each other. Learn to create objects and send them messages in the language Objective-C. Use them to draw text and graphics on the screen, detect and respond to a touch, perform simple animations, display controls such as buttons and sliders, and play background music. Special topics include \"collections\"",
+    "startTime" : "04-01-2013T09:00:00.000+0900",
+    "endTime" : "04-01-2013T11:00:00.000+0900",
+    "details" : null,
+    "speakers" : [ {
+      "id" : 2,
+      "speakerUrl" : "some url",
+      "firstName" : "Alain",
+      "lastName" : "Hélaïli",
+      "competence" : "Senior Software Developer",
+      "photoUrl" : "http://www.bicompetenceforum.com/wp-content/uploads/2013/04/fabriziodepetris.jpg",
+      "about" : "Tom Coupland is a Senior Engineer at Nokia Entertainment Bristol. Having worked with transaction processing monoliths, producing one of his own, he's now enjoying the world of SOA and the freedoms it can bring. After years of Java, he set out to find more productive and elegant tools, currently very much enjoying spending time with Clojure. When not trying to make his bit of the world of software a better place, he can be found out in the real one, running, preferably in the mud, wind and rain. Twitter: @tcoupland",
+      "socialLinks" : {
+        "facebook" : "facebook link",
+        "twitter" : "@tcoupland",
+        "linkedin" : "linkedin link"
+      }
+    }, {
+      "id" : 3,
+      "speakerUrl" : "some url",
+      "firstName" : "Andrew",
+      "lastName" : "Elmore",
+      "competence" : "Research Manager",
+      "photoUrl" : "http://www.bicompetenceforum.com/wp-content/uploads/2013/03/tomforman.jpg",
+      "about" : "Torben Hoffmann is Product & Research Manager for Erlang Solutions. He has been active in the Erlang community for several years and has spoken at conferences world-wide. His first big Erlang related project was the introduction of Erlang as a technology to write a gateway in for Motorola Solutions in Denmark. Torben studied Engineering at the Technical University of Denmark. Twitter: @LeHoff",
+      "socialLinks" : {
+        "facebook" : "facebook link",
+        "twitter" : "twitter link",
+        "linkedin" : "linkedin link"
+      }
+    } ]
+  }, {
+    "id" : 4,
+    "sessionUrl" : null,
+    "sessionLogoUrl" : "http://shinjukuus.com/assets/images/shinjuku-logo-3.png",
+    "location" : "Shinjuku",
+    "title" : "Building Web Applications with WebSockets",
+    "type" : "Workshop",
+    "summary" : "WebSockets brings new capabilities to the web ? reliable, low-latency, low-overhead web communications ? but also requires new skills and ways of looking at development. Developers and security professionals have been struggling to fit this new technology into their existing models of the web. It's time to look at the fundamentals of WebSocket communication and web development, then use these to build a new way of understanding web development. In this session, we'll look deeply at the WebSocket protocol, see how to apply it to common design patterns (broadcast, request-response, and mediated peer-to-peer), then apply this knowledge to building HTML5 WebSocket clients. We'll also look at how to make this work on the desktop and mobile devices. We'll also cover the testing issues that arise when developing on multiple platforms and provide real-world strategies for efficient testing. You'll take home pointers to resources, roadmaps for learning the client-side technologies, and a copy of the finished application source code to jump-start your own development efforts.",
+    "startTime" : "04-01-2013T09:00:00.000+0900",
+    "endTime" : "04-01-2013T11:00:00.000+0900",
+    "details" : null,
+    "speakers" : [ {
+      "id" : 3,
+      "speakerUrl" : "some url",
+      "firstName" : "Andrew",
+      "lastName" : "Elmore",
+      "competence" : "Research Manager",
+      "photoUrl" : "http://www.bicompetenceforum.com/wp-content/uploads/2013/03/tomforman.jpg",
+      "about" : "Torben Hoffmann is Product & Research Manager for Erlang Solutions. He has been active in the Erlang community for several years and has spoken at conferences world-wide. His first big Erlang related project was the introduction of Erlang as a technology to write a gateway in for Motorola Solutions in Denmark. Torben studied Engineering at the Technical University of Denmark. Twitter: @LeHoff",
+      "socialLinks" : {
+        "facebook" : "facebook link",
+        "twitter" : "twitter link",
+        "linkedin" : "linkedin link"
+      }
+    } ]
+  } ]
+}

@@ -30,7 +30,7 @@ public class TitleTextView extends TextView {
 
 	private void initTypefaceAndText(Context context) {
 		setTypeface(TypefaceRegistry.getTypeFace(context,
-				"HelveticaLTStd-BoldCond.otf"));
+				TypefaceRegistry.BOLD_COND));
 
 		SpannableString title = new SpannableString(context.getString(
 				R.string.app_name).toUpperCase(Locale.getDefault()));

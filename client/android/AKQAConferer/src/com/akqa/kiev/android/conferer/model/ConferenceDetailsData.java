@@ -1,16 +1,12 @@
 package com.akqa.kiev.android.conferer.model;
 
 import java.util.Date;
+import java.util.List;
 
-/**
- * Conference model.
- * 
- * @author Yuriy.Belelya
- * 
- */
-public class ConferenceData {
+public class ConferenceDetailsData {
 
 	private Long id;
+	private String conferenceUrl;
 	private String logoUrl;
 	private String title;
 	private String summary;
@@ -19,6 +15,8 @@ public class ConferenceData {
 	private String country;
 	private String region;
 	private String city;
+	private String address;
+	private List<SessionData> sessions;
 
 	public Long getId() {
 		return id;
@@ -26,6 +24,14 @@ public class ConferenceData {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getConferenceUrl() {
+		return conferenceUrl;
+	}
+
+	public void setConferenceUrl(String conferenceUrl) {
+		this.conferenceUrl = conferenceUrl;
 	}
 
 	public String getLogoUrl() {
@@ -90,6 +96,22 @@ public class ConferenceData {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public List<SessionData> getSessions() {
+		return sessions;
+	}
+
+	public void setSessions(List<SessionData> sessions) {
+		this.sessions = sessions;
 	}
 
 }

@@ -1,0 +1,26 @@
+{
+  "id" : 1,
+  "sessionUrl" : null,
+  "sessionLogoUrl" : "http://shinjukuus.com/assets/images/shinjuku-logo-3.png",
+  "location" : "Shinjuku",
+  "title" : "Avoiding Invisible Impediments to High Performance",
+  "type" : "Workshop",
+  "summary" : "This tutorial assumes the following hypothesis: Learning is the Bottleneck of Software Development and Delivery, and asks the question \"what is keeping us from learning effectively?\" There are some things that are visible such as the length of the release cycle, the clarity of the goal, learning from mistakes and difficulties, etc.... This is valuable, but not what this tutorial is about.",
+  "startTime" : "02-01-2013T09:00:00.000+0900",
+  "endTime" : "02-01-2013T11:00:00.000+0900",
+  "details" : null,
+  "speakers" : [ {
+    "id" : 1,
+    "speakerUrl" : "some url",
+    "firstName" : "Adam",
+    "lastName" : "Blum",
+    "competence" : "Game Developer",
+    "photoUrl" : "http://www.bicompetenceforum.com/wp-content/uploads/2013/04/ruudhasselerharm.jpg",
+    "about" : "Toby O'Rourke is a Technical Architect at Gamesys, a London based soft-gaming company. With a background as a Java guy, he considers himself lucky to rove around the tech landscape at Gamesys combining architecture and hands on development with exposure to a fairly eclectic mix of client, server and native mobile technologies. He believes an excited team, plenty of domain modelling and a beady eye on the details are decent starting point for delivering just about anything.",
+    "socialLinks" : {
+      "facebook" : "facebook link",
+      "twitter" : "twitter link",
+      "linkedin" : "linkedin link"
+    }
+  } ]
+}

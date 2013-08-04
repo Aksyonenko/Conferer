@@ -5,8 +5,9 @@ import java.io.InputStream;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
+
+import com.akqa.kiev.android.conferer.utils.LogUtils;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 	ImageView image;
@@ -22,7 +23,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 			InputStream in = new java.net.URL(url).openStream();
 			icon = BitmapFactory.decodeStream(in);
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Error occured durning loading image");
+			LogUtils.logE(getClass().getName(), e);
 		}
 		return icon;
 	}

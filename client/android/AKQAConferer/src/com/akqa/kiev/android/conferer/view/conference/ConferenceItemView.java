@@ -8,13 +8,18 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.akqa.kiev.android.conferer.ConferenceDetailsActivity;
 import com.akqa.kiev.android.conferer.TypefaceRegistry;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.task.DownloadImageTask;
@@ -25,24 +30,31 @@ import com.akqa.kiev.android.conferer.task.DownloadImageTask;
  * @author Yuriy.Belelya
  * 
  */
-public class ConferenceView extends TableLayout {
+public class ConferenceItemView extends TableLayout implements OnClickListener {
+
+	private ConferenceData data;
 
 	private SimpleDateFormat dateFormat;
 
 	List<AsyncTask<?, ?, ?>> asyncTasks = new ArrayList<AsyncTask<?, ?, ?>>();
 
-	public ConferenceView(Context context) {
+	private static final int IMG_WIDTH = 150;
+	private static final int IMG_HEIGHT = 100;
+
+	public ConferenceItemView(Context context) {
 		this(context, null);
 	}
 
-	public ConferenceView(Context context, ConferenceData conferenceData) {
+	public ConferenceItemView(Context context, ConferenceData conferenceData) {
 		super(context);
 		dateFormat = new SimpleDateFormat("dd MMM", Locale.ENGLISH);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		init(context, conferenceData);
+		this.data = conferenceData;
+		init(context);
+		setOnClickListener(this);
 	}
 
-	private void init(Context context, ConferenceData data) {
+	private void init(Context context) {
 		if (data != null) {
 			setPadding(10, 10, 10, 10);
 			setStretchAllColumns(true);
@@ -81,16 +93,16 @@ public class ConferenceView extends TableLayout {
 		params.span = 2;
 		titleView.setLayoutParams(params);
 		titleView.setTypeface(TypefaceRegistry.getTypeFace(context,
-				"HelveticaLTStd-BoldCond.otf"));
+				TypefaceRegistry.BOLD_COND));
 		return titleView;
 	}
 
 	private ImageView createcConferenceLogo(Context context, String url) {
 		ImageView conferenceLogo = new ImageView(context);
-		conferenceLogo.setMaxHeight(100);
-		conferenceLogo.setMaxWidth(150);
-		conferenceLogo.setMinimumHeight(100);
-		conferenceLogo.setMinimumWidth(150);
+		conferenceLogo.setMaxHeight(IMG_HEIGHT);
+		conferenceLogo.setMaxWidth(IMG_WIDTH);
+		conferenceLogo.setMinimumHeight(IMG_HEIGHT);
+		conferenceLogo.setMinimumWidth(IMG_WIDTH);
 		conferenceLogo.setAdjustViewBounds(true);
 		asyncTasks.add(new DownloadImageTask(conferenceLogo).execute(url));
 		return conferenceLogo;
@@ -102,7 +114,7 @@ public class ConferenceView extends TableLayout {
 		summaryView.setText(summary);
 		summaryView.setMaxLines(4);
 		summaryView.setTypeface(TypefaceRegistry.getTypeFace(context,
-				"HelveticaLTStd-Cond.otf"));
+				TypefaceRegistry.COND));
 		return summaryView;
 	}
 
@@ -112,7 +124,7 @@ public class ConferenceView extends TableLayout {
 		TextView datesView = new TextView(context);
 		datesView.setText(start + " - " + end);
 		datesView.setTypeface(TypefaceRegistry.getTypeFace(context,
-				"HelveticaLTStd-BoldCond.otf"));
+				TypefaceRegistry.BOLD_COND));
 		return datesView;
 	}
 
@@ -121,7 +133,7 @@ public class ConferenceView extends TableLayout {
 		locationView.setText(country + ", " + city);
 		locationView.setPadding(10, 10, 10, 10);
 		locationView.setTypeface(TypefaceRegistry.getTypeFace(context,
-				"HelveticaLTStd-BoldCond.otf"));
+				TypefaceRegistry.BOLD_COND));
 		return locationView;
 	}
 
@@ -136,4 +148,14 @@ public class ConferenceView extends TableLayout {
 		asyncTasks.clear();
 	}
 
+	@Override
+	public void onClick(View v) {
+		Context context = getContext();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(ConferenceDetailsActivity.CONFERENCE_ID_ARG,
+				data.getId());
+		Intent intent = new Intent(context, ConferenceDetailsActivity.class);
+		intent.putExtras(bundle);
+		context.startActivity(intent);
+	}
 }

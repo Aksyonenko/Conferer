@@ -5,7 +5,7 @@
     android:background="@color/months_text_color" >
 
     <com.akqa.kiev.android.conferer.TitleTextView
-        android:id="@+id/confererTitle"
+        android:id="@+id/conferer_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/title_padding"
@@ -20,7 +20,7 @@
         android:gravity="center_vertical"/>
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/search_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"

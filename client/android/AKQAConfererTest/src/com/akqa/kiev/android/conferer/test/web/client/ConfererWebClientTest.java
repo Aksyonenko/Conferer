@@ -19,4 +19,15 @@ public class ConfererWebClientTest extends TestCase {
 		String conferences = client.getConferences(2013, 1);
 		Assert.assertNotNull(conferences);
 	}
+
+	public void testGetAllconferencesMonths() {
+		String confMonths = client.getAllconferencesMonths();
+		Assert.assertNotNull(confMonths);
+	}
+	
+	public void testGetConferenceDetails() {
+		String confDetails = client.getConferenceDetails(1);
+		Assert.assertNotNull(confDetails);
+	}
+	
 }

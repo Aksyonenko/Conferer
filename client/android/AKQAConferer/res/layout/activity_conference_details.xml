@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/conference_details_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/conference_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/conference_panel_title_height"
+            android:background="@color/conference_title_bg_color"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/conference_title_color"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/conference_title_text_size" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/conf_details_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/conference_panel_title_height"
+        tools:context=".ConferenceDetailsActivity" >
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/conf_details_pager_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/conference_days_bar_color"
+            android:padding="@dimen/conference_days_title_padding"
+            android:textColor="@color/conference_days_color" />
+    </android.support.v4.view.ViewPager>
+
+    <!-- <include layout="@layout/footer" /> -->
+
+</RelativeLayout>

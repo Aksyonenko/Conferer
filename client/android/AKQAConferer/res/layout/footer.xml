@@ -6,7 +6,7 @@
     android:background="@color/footer_bg_color" >
 
     <com.akqa.kiev.android.conferer.ConfererButton
-        android:id="@+id/filtersBtn"
+        android:id="@+id/filters_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="@color/months_text_color" />
 
     <ImageButton
-        android:id="@+id/calendarViewBtn"
+        android:id="@+id/calendar_view_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:src="@drawable/conferer_logo" />
 
     <ImageButton
-        android:id="@+id/listViewBtn"
+        android:id="@+id/list_view_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

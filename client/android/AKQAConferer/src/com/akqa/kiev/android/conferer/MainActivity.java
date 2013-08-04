@@ -1,14 +1,17 @@
 package com.akqa.kiev.android.conferer;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.Window;
-import android.widget.ImageButton;
 
+import com.akqa.kiev.android.conferer.utils.DateUtils;
 import com.akqa.kiev.android.conferer.view.conference.ConferencesPagerAdapter;
+import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class MainActivity extends FragmentActivity {
 
@@ -16,13 +19,16 @@ public class MainActivity extends FragmentActivity {
 
 	private ViewPager viewPager;
 
+	private ConfererService confererService;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().detectNetwork().build();
+
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.detectNetwork().build();
 		StrictMode.setThreadPolicy(policy);
-		
+
 		final boolean customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
 		setContentView(R.layout.activity_main);
@@ -32,20 +38,23 @@ public class MainActivity extends FragmentActivity {
 					R.layout.titlebar);
 		}
 
+		confererService = new ConfererService();
+		List<Long> conferencesMonths = confererService.loadConferencesMonths();
 		conferencePagerAdapter = new ConferencesPagerAdapter(
-				getSupportFragmentManager());
+				getSupportFragmentManager(), conferencesMonths);
 
-		viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager = (ViewPager) findViewById(R.id.conferences_pager);
 		viewPager.setAdapter(conferencePagerAdapter);
-		ImageButton listViewBtn = (ImageButton) findViewById(R.id.listViewBtn);
-		listViewBtn.setEnabled(false);
+		viewPager.setCurrentItem(DateUtils
+				.getNearestToCurrentDateIndex(conferencesMonths));
+		// ImageButton listViewBtn = (ImageButton)
+		// findViewById(R.id.listViewBtn);
+		// listViewBtn.setEnabled(false);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-//		Intent intent = new Intent(this, ConferenceDetailsActivity.class);
-//		startActivity(intent);
 		return true;
 	}
 

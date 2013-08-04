@@ -10,9 +10,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.util.Log;
-
 import com.akqa.kiev.android.conferer.utils.IoUtils;
+import com.akqa.kiev.android.conferer.utils.LogUtils;
 
 /**
  * Web client for Conferer App.
@@ -34,11 +33,15 @@ public class ConfererWebClient {
 	}
 
 	public String getCurrentMonthConferences() {
-		return simpleGetRequest(CONFERENCES_URL);
+		return getRequest(CONFERENCES_URL);
 	}
 
 	public String getAllconferencesMonths() {
-		return simpleGetRequest(CONFERENCES_MONTHS_URL);
+		return getRequest(CONFERENCES_MONTHS_URL);
+	}
+
+	public String getConferenceDetails(long id) {
+		return getRequest(CONFERENCES_URL + "/" + id);
 	}
 
 	public String getConferences(int year, int month) {
@@ -46,17 +49,17 @@ public class ConfererWebClient {
 		url.append("?").append(CONFERENCES_YEAR_PARAM).append("=").append(year);
 		url.append("&").append(CONFERENCES_MONTH_PARAM).append("=")
 				.append(month);
-		return simpleGetRequest(url.toString());
+		return getRequest(url.toString());
 	}
 
-	private String simpleGetRequest(String url) {
+	private String getRequest(String url) {
 		String answer = null;
 		HttpGet homeRequest = new HttpGet(url);
 		try {
 			HttpResponse response = httpClient.execute(homeRequest);
 			return getHtmlAnswer(response);
 		} catch (Exception e) {
-			Log.e(getClass().getName(), e.getMessage());
+			LogUtils.logE(getClass().getName(), e);
 		} finally {
 			releaseConnection(homeRequest);
 		}

@@ -22,7 +22,7 @@ public class ConfererButton extends Button {
 
 	private void initTypeface(Context context) {
 		setTypeface(TypefaceRegistry.getTypeFace(context,
-				"HelveticaLTStd-BoldCond.otf"));
+				TypefaceRegistry.BOLD_COND));
 
 	}
 }

@@ -1,27 +1,58 @@
 package com.akqa.kiev.android.conferer;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class ConferenceDetailsActivity extends Activity {
+import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
+import com.akqa.kiev.android.conferer.view.conference.details.ConferenceDetailsPagerAdapter;
+import com.akqa.kiev.android.conferer.web.ConfererService;
+
+public class ConferenceDetailsActivity extends FragmentActivity {
+
+	private ConferenceDetailsPagerAdapter conferenceDetailsPagerAdapter;
+
+	private ViewPager viewPager;
+
+	private ConfererService confererService;
+
+	public static String CONFERENCE_ID_ARG = "conferenceId";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		final boolean customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.conference_details);
+		setContentView(R.layout.activity_conference_details);
 		if (customTitleSupported) {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 					R.layout.titlebar);
 		}
+		confererService = new ConfererService();
 		initView();
 	}
 
 	private void initView() {
-		
+		Long conferenceId = (Long) getIntent().getSerializableExtra(
+				CONFERENCE_ID_ARG);
+
+		ConferenceDetailsData conferenceDetails = confererService
+				.loadConferenceDetails(conferenceId);
+
+		LinearLayout confPanel = (LinearLayout) findViewById(R.id.conference_details_panel);
+		TextView titleView = (TextView) confPanel
+				.findViewById(R.id.conference_title);
+		titleView.setText(conferenceDetails.getTitle());
+
+		conferenceDetailsPagerAdapter = new ConferenceDetailsPagerAdapter(
+				getSupportFragmentManager(), conferenceDetails);
+
+		viewPager = (ViewPager) findViewById(R.id.conf_details_pager);
+		viewPager.setAdapter(conferenceDetailsPagerAdapter);
 	}
 
 	@Override
