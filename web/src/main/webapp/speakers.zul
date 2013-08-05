@@ -4,17 +4,35 @@
 
 	<window form="@id('form') @load(vm.editedEntity) @save(vm.editedEntity, before='save-entity')" onClose="@command('close-edit-window')"
 		visible="@bind(vm.editWindowVisible)" mode="modal" closable="true" border="normal" title="Add a new Speaker">
-		<vlayout>
-			<hlayout><label value="First name:" /><textbox value="@bind(form.firstName)" /></hlayout>
-			<hlayout><label value="Last name:" /><textbox value="@bind(form.lastName)" /></hlayout>
-			
-			<groupbox>
-				<caption label="Social links" />
-				<hlayout><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" /></hlayout>
-				<hlayout><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" /></hlayout>
-				<hlayout><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" /></hlayout>
-			</groupbox>
-			
+
+        <vlayout width="345px">
+            <grid>
+                <columns>
+                    <column width="90px" />
+                    <column width="250px" />
+                </columns>
+                <rows>
+                    <row><label value="First name:" /><textbox value="@bind(form.firstName)" width="250px" /></row>
+                    <row><label value="Last name:" /><textbox value="@bind(form.lastName)" width="250px" /></row>
+                    <row><label width="150px" value="Competence:" /><textbox value="@bind(form.competence)" width="250px" /></row>
+                    <row><label width="150px" value="Speaker url:" /><textbox value="@bind(form.speakerUrl)" width="250px" /></row>
+                    <row>
+                        <cell colspan="2">
+                        <groupbox>
+                            <caption label="Social links" />
+                            <vlayout>
+                                <hlayout><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" width="250px" /></hlayout>
+                                <hlayout><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" width="250px" /></hlayout>
+                                <hlayout><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" width="250px" /></hlayout>
+                            </vlayout>
+                        </groupbox>
+                        </cell>
+                    </row>
+                    <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
+                    <row><label width="200px" value="About:" /><textbox value="@bind(form.about)" width="250px" rows = "5"/></row>
+                </rows>
+            </grid>
+
 			<hlayout>
 				<button label="Create" onClick="@command('save-entity')"/>
 				<button label="Cancel" onClick="@command('close-edit-window')"/>
@@ -25,7 +43,7 @@
 <vlayout style="margin-top: 5px">
 	<hlayout>
 		<button label="Add speaker" onClick="@command('show-edit-window')" />
-		<button label="Remove speaker"/>
+		<button label="Remove speaker" onClick="@command('delete-entity')"/>
 	</hlayout>
 	<hlayout>
 		<listbox model="@load(vm.items)" selectedItem="@save(vm.selected)" hflex="min">
@@ -46,11 +64,11 @@
 				<auxheader label="" />
 			</auxhead>
 			<listhead>
-				<listheader label="Photo" width="60px" />
+				<listheader label="Photo" width="80px" />
 				<listheader label="Id" sort="auto" width="70px" />
 				<listheader label="First name" sort="auto" width="150px" />
 				<listheader label="Last name" sort="auto" width="175px" />
-				<listheader label="Social links" />
+				<listheader label="Social links" width="120px"/>
 			</listhead>
 			<template name="model" var="speaker">
 				<listitem>
@@ -70,9 +88,8 @@
             </template>
         </listbox>
 
-        <vlayout vflex="true" hflex="min">
-            <image src="http://suvenirov.com.ua/wp-content/uploads/2012/08/Kovrik-kruglyiy-Logo-Dota-2.png" />
-            <label value="@load(vm.selected.about)" />
+        <vlayout vflex="true" hflex="1">
+            <label value="@load(vm.selected.about)"/>
         </vlayout>
     </hlayout>
 </vlayout>

@@ -52,6 +52,13 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 		dao.save(editedEntity);
 		editWindowVisible = false;
 	}
+
+    @Command("delete-entity")
+    @NotifyChange({"editWindowVisible", "items"})
+    public void deleteEntity() {
+        dao.delete(selected);
+        editWindowVisible = false;
+    }
 	
 	@Command("close-edit-window")
 	@NotifyChange("editWindowVisible")
@@ -68,7 +75,9 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 	}
 
 	public ListModelList<E> getItems() {
-		return items;
+        LinkedList<E> list = new LinkedList<>();
+        for (E e : dao.findAll()) list.add(e);
+        return new ListModelList<>(list);
 	}
 
 	public void setItems(ListModelList<E> items) {
