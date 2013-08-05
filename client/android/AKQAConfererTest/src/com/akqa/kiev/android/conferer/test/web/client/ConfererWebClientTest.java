@@ -24,10 +24,20 @@ public class ConfererWebClientTest extends TestCase {
 		String confMonths = client.getAllconferencesMonths();
 		Assert.assertNotNull(confMonths);
 	}
-	
+
 	public void testGetConferenceDetails() {
 		String confDetails = client.getConferenceDetails(1);
 		Assert.assertNotNull(confDetails);
 	}
-	
+
+	public void testGetSessioneDetails() {
+		String confDetails = client.getSessionDetails(1);
+		Assert.assertNotNull(confDetails);
+	}
+
+	public void testGetSpeakerDetails() {
+		String confDetails = client.getSpeakerDetails(1);
+		Assert.assertNotNull(confDetails);
+	}
+
 }

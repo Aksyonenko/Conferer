@@ -12,5 +12,11 @@
     <dimen name="footer_height">50dp</dimen>
     <dimen name="conference_panel_title_height">30dp</dimen>
     <dimen name="conference_title_text_size">16sp</dimen>
+    <dimen name="session_panel_title_height">40dp</dimen>
+    <dimen name="session_title_text_size">16sp</dimen>
+    <dimen name="session_view_padding">15dp</dimen>
+    <dimen name="speaker_view_margin">15dp</dimen>
+    <dimen name="speaker_title_text_size">18sp</dimen>
+    <dimen name="speaker_photo_padding_top">10dp</dimen>
 
 </resources>

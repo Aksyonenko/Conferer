@@ -8,30 +8,37 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.RelativeSizeSpan;
-import android.text.style.UnderlineSpan;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.SessionDetailsActivity;
+import com.akqa.kiev.android.conferer.SpeakerDetailsActivity;
 import com.akqa.kiev.android.conferer.TypefaceRegistry;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 import com.akqa.kiev.android.conferer.task.DownloadImageTask;
 
-public class SessionItemView extends TableLayout {
+public class SessionItemView extends TableLayout implements OnClickListener {
+
+	private SessionData data;
 
 	private SimpleDateFormat dateFormat;
 
-	List<AsyncTask<?, ?, ?>> asyncTasks = new ArrayList<AsyncTask<?, ?, ?>>();
+	private List<AsyncTask<?, ?, ?>> asyncTasks = new ArrayList<AsyncTask<?, ?, ?>>();
 
 	private static final int IMG_WIDTH = 150;
 	private static final int IMG_HEIGHT = 100;
@@ -44,10 +51,13 @@ public class SessionItemView extends TableLayout {
 		super(context);
 		dateFormat = new SimpleDateFormat("hh.mm a", Locale.ENGLISH);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		init(context, session);
+		this.data = session;
+
+		init(context);
+		setOnClickListener(this);
 	}
 
-	private void init(Context context, SessionData data) {
+	private void init(Context context) {
 		if (data != null) {
 			setPadding(10, 10, 10, 10);
 			setStretchAllColumns(true);
@@ -105,25 +115,44 @@ public class SessionItemView extends TableLayout {
 		TextView overviewView = new TextView(context);
 		overviewView.setPadding(10, 0, 10, 0);
 		String lineSeparator = System.getProperty("line.separator");
+		StringBuilder sb = new StringBuilder();
+
 		for (SpeakerData speakerData : speakers) {
-			SpannableString text = new SpannableString(
-					speakerData.getFirstName() + " "
-							+ speakerData.getLastName() + lineSeparator
-							+ speakerData.getCompetence());
-
-			int length = speakerData.getFirstName().length()
-					+ +speakerData.getLastName().length() + 1;
-
-			text.setSpan(new RelativeSizeSpan(1.2f), 0, length,
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			text.setSpan(new ForegroundColorSpan(context.getResources()
-					.getColor(R.color.speaker_name_color)), 0, length,
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			text.setSpan(new UnderlineSpan(), 0, length,
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			overviewView.setText(text, BufferType.SPANNABLE);
-
+			sb.append(speakerData.getFirstName()).append(" ")
+					.append(speakerData.getLastName()).append(lineSeparator)
+					.append(speakerData.getCompetence()).append(lineSeparator);
 		}
+		String text = sb.toString();
+		SpannableString spannableString = new SpannableString(text);
+
+		int start = 0;
+		for (final SpeakerData speakerData : speakers) {
+			int length = speakerData.getFirstName().length()
+					+ speakerData.getLastName().length() + 1;
+			spannableString.setSpan(new RelativeSizeSpan(1.2f), start, start
+					+ length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			spannableString.setSpan(new ClickableSpan() {
+
+				@Override
+				public void onClick(View widget) {
+					Context context = getContext();
+					Bundle bundle = new Bundle();
+					bundle.putSerializable(
+							SpeakerDetailsActivity.SPEAKER_ID_ARG,
+							speakerData.getId());
+					Intent intent = new Intent(context,
+							SpeakerDetailsActivity.class);
+					intent.putExtras(bundle);
+					context.startActivity(intent);
+
+				}
+			}, start, start + length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			overviewView.setText(spannableString, BufferType.SPANNABLE);
+			start += length + speakerData.getCompetence().length() + 2;
+		}
+		overviewView.setMovementMethod(LinkMovementMethod.getInstance());
 		overviewView.setMaxLines(4);
 		overviewView.setTypeface(TypefaceRegistry.getTypeFace(context,
 				TypefaceRegistry.COND));
@@ -158,6 +187,17 @@ public class SessionItemView extends TableLayout {
 			}
 		}
 		asyncTasks.clear();
+	}
+
+	@Override
+	public void onClick(View v) {
+		Context context = getContext();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(SessionDetailsActivity.SESSION_ID_ARG,
+				data.getId());
+		Intent intent = new Intent(context, SessionDetailsActivity.class);
+		intent.putExtras(bundle);
+		context.startActivity(intent);
 	}
 
 }

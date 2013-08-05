@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
@@ -43,9 +42,9 @@ public class ConferenceDetailsActivity extends FragmentActivity {
 		ConferenceDetailsData conferenceDetails = confererService
 				.loadConferenceDetails(conferenceId);
 
-		LinearLayout confPanel = (LinearLayout) findViewById(R.id.conference_details_panel);
-		TextView titleView = (TextView) confPanel
-				.findViewById(R.id.conference_title);
+		TextView titleView = (TextView) findViewById(R.id.conference_title);
+		titleView.setTypeface(TypefaceRegistry.getTypeFace(
+				getApplicationContext(), TypefaceRegistry.BOLD_COND));
 		titleView.setText(conferenceDetails.getTitle());
 
 		conferenceDetailsPagerAdapter = new ConferenceDetailsPagerAdapter(

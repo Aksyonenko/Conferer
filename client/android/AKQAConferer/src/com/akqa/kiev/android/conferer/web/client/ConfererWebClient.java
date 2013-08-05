@@ -25,6 +25,8 @@ public class ConfererWebClient {
 	private static final String CONFERENCES_YEAR_PARAM = "year";
 	private static final String CONFERENCES_MONTH_PARAM = "month";
 	private static final String CONFERENCES_MONTHS_URL = "http://10.11.100.254/conferences/months";
+	private static final String SESSIONS_URL = "http://10.11.100.254/sessions";
+	private static final String SPEAKERS_URL = "http://10.11.100.254/speakers";
 
 	private DefaultHttpClient httpClient;
 
@@ -42,6 +44,14 @@ public class ConfererWebClient {
 
 	public String getConferenceDetails(long id) {
 		return getRequest(CONFERENCES_URL + "/" + id);
+	}
+
+	public String getSessionDetails(long id) {
+		return getRequest(SESSIONS_URL + "/" + id);
+	}
+
+	public String getSpeakerDetails(long id) {
+		return getRequest(SPEAKERS_URL + "/" + id);
 	}
 
 	public String getConferences(int year, int month) {

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -27,6 +27,11 @@
         <activity
             android:name="com.akqa.kiev.android.conferer.ConferenceDetailsActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name="com.akqa.kiev.android.conferer.SessionDetailsActivity"
+            android:label="@string/app_name" />
+         <activity
+            android:name="com.akqa.kiev.android.conferer.SpeakerDetailsActivity"
+            android:label="@string/app_name" />
     </application>
-
-</manifest>
+</manifest>

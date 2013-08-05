@@ -36,7 +36,7 @@ public class ConferenceItemView extends TableLayout implements OnClickListener {
 
 	private SimpleDateFormat dateFormat;
 
-	List<AsyncTask<?, ?, ?>> asyncTasks = new ArrayList<AsyncTask<?, ?, ?>>();
+	private List<AsyncTask<?, ?, ?>> asyncTasks = new ArrayList<AsyncTask<?, ?, ?>>();
 
 	private static final int IMG_WIDTH = 150;
 	private static final int IMG_HEIGHT = 100;
