@@ -28,7 +28,7 @@ public class Speaker extends AbstractEntity {
 	private String about;
 
 	@Embedded
-	private SocialLinks socialLinks;
+	private SocialLinks socialLinks = new SocialLinks();
 
 	public Speaker() {
 		

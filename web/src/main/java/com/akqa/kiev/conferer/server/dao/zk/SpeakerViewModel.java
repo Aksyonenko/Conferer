@@ -16,7 +16,6 @@ public class SpeakerViewModel extends AbstractEntityListModel<Speaker> {
 	@Init
 	public void init() {
 		super.init();
-		editedEntity.setSocialLinks(new SocialLinks());
 	}
 
 }
