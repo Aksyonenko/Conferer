@@ -20,23 +20,31 @@
                         <cell colspan="2">
                         <groupbox>
                             <caption label="Social links" />
-                            <vlayout>
-                                <hlayout><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" width="250px" /></hlayout>
-                                <hlayout><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" width="250px" /></hlayout>
-                                <hlayout><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" width="250px" /></hlayout>
-                            </vlayout>
+                            <grid style="border:0px">
+                                <columns>
+                                    <column width="77px" />
+                                    <column width="235px" />
+                                </columns>
+                                <rows>
+                                    <row><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" width="235px"/></row>
+                                    <row><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" width="235px"/></row>
+                                    <row><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" width="235px"/></row>
+                                </rows>
+                            </grid>
                         </groupbox>
                         </cell>
                     </row>
                     <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
                     <row><label width="200px" value="About:" /><textbox value="@bind(form.about)" width="250px" rows = "5"/></row>
+                    <row>
+                        <cell colspan="2" style="text-align:center">
+                            <hlayout><button label="Create" onClick="@command('save-entity')" width="100px" height="30px"/>
+                                     <button label="Cancel" onClick="@command('close-edit-window')" width="100px" height="30px"/>
+                            </hlayout>
+                        </cell>
+                    </row>
                 </rows>
             </grid>
-
-			<hlayout>
-				<button label="Create" onClick="@command('save-entity')"/>
-				<button label="Cancel" onClick="@command('close-edit-window')"/>
-			</hlayout>
 		</vlayout>
 	</window>
 
