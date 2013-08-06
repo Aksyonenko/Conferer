@@ -1,4 +1,4 @@
-<?page title="Speaker list"?>
+<?page title="Speakers list"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <idspace apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.akqa.kiev.conferer.server.dao.zk.SpeakerViewModel')">
 
@@ -35,6 +35,37 @@
                         </cell>
                     </row>
                     <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
+                    <row>
+                        <cell colspan="2">
+                        <vlayout>
+                            <button label="Upload photo" upload="true">
+                                <attribute name="onUpload">
+                                    org.zkoss.util.media.Media media = event.getMedia();
+                                    if (media instanceof org.zkoss.image.Image) {
+                                        org.zkoss.image.Image img = (org.zkoss.image.Image) media;
+                                        if (img.getWidth() > img.getHeight()){
+                                            if (img.getHeight() > 300) {
+                                                pics.setHeight("300px");
+                                                pics.setWidth(img.getWidth() * 300 / img.getHeight() + "px");
+                                            }
+                                        }
+                                        if (img.getHeight() > img.getWidth()){
+                                            if (img.getWidth() > 400) {
+                                                pics.setWidth("400px");
+                                                pics.setHeight(img.getHeight() * 400 / img.getWidth() + "px");
+                                            }
+                                        }
+                                    pics.setContent(img);
+                                    } else {
+                                        Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                        break; //not to show too many errors
+                                    }
+                                </attribute>
+                            </button>
+                            <image id="pics" />
+                        </vlayout>
+                        </cell>
+                    </row>
                     <row><label width="200px" value="About:" /><textbox value="@bind(form.about)" width="250px" rows = "5"/></row>
                     <row>
                         <cell colspan="2" style="text-align:center">
@@ -50,8 +81,8 @@
 
 <vlayout style="margin-top: 5px">
 	<hlayout>
-		<button label="Add speaker" onClick="@command('show-edit-window')" />
-		<button label="Remove speaker" onClick="@command('delete-entity')"/>
+		<button label="Add speaker" onClick="@command('show-edit-window')" width="120px" height="30px"/>
+		<button label="Remove speaker" onClick="@command('delete-entity')" width="120px" height="30px"/>
 	</hlayout>
 	<hlayout>
 		<listbox model="@load(vm.items)" selectedItem="@save(vm.selected)" hflex="min">
