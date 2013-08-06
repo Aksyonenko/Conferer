@@ -1,0 +1,44 @@
+<?page title="Conferences list"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<idspace apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.akqa.kiev.conferer.server.dao.zk.ConferenceViewModel')">
+    <vlayout style="margin-top: 5px">
+        <hlayout>
+            <button label="Add conference" onClick="@command('show-edit-window')" width="130px" height="30px"/>
+            <button label="Remove conference" onClick="@command('delete-entity')" width="130px" height="30px"/>
+        </hlayout>
+        <grid model="@load(vm.items)" selectedItem="@save(vm.selected)">
+            <columns>
+                <column width="240px">Logo</column>
+                <column width="50px">Id</column>
+                <column width="200px">Title</column>
+                <column width="40px">Link</column>
+                <column width="300px">Summary</column>
+                <column width="120px">Start date</column>
+                <column width="120px">End date</column>
+                <column width="120px">Time zone</column>
+                <column width="120px">Country</column>
+                <column width="120px">Region</column>
+                <column width="120px">City</column>
+                <column width="120px">Address</column>
+                <column width="400px">Details</column>
+            </columns>
+            <template name="model" var="conf">
+                <row>
+                    <image src="@load(conf.logoUrl)" />
+                    <label value="@load(conf.id)" />
+                    <label value="@load(conf.title)" />
+                    <a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty conf.conferenceUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
+                    <label value="@load(conf.summary)" />
+                    <label value="@load(conf.startDate)" />
+                    <label value="@load(conf.endDate)" />
+                    <label value="@load(conf.timezone)" />
+                    <label value="@load(conf.country)" />
+                    <label value="@load(conf.region)" />
+                    <label value="@load(conf.city)" />
+                    <label value="@load(conf.address)" />
+                    <label value="@load(conf.details)" />
+                </row>
+            </template>
+        </grid>
+    </vlayout>
+</idspace>
