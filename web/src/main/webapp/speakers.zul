@@ -34,36 +34,49 @@
                         </groupbox>
                         </cell>
                     </row>
-                    <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
                     <row>
                         <cell colspan="2">
-                        <vlayout>
-                            <button label="Upload photo" upload="true">
-                                <attribute name="onUpload">
-                                    org.zkoss.util.media.Media media = event.getMedia();
-                                    if (media instanceof org.zkoss.image.Image) {
-                                        org.zkoss.image.Image img = (org.zkoss.image.Image) media;
-                                        if (img.getWidth() > img.getHeight()){
-                                            if (img.getHeight() > 300) {
-                                                pics.setHeight("300px");
-                                                pics.setWidth(img.getWidth() * 300 / img.getHeight() + "px");
-                                            }
-                                        }
-                                        if (img.getHeight() > img.getWidth()){
-                                            if (img.getWidth() > 400) {
-                                                pics.setWidth("400px");
-                                                pics.setHeight(img.getHeight() * 400 / img.getWidth() + "px");
-                                            }
-                                        }
-                                    pics.setContent(img);
-                                    } else {
-                                        Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                        break; //not to show too many errors
-                                    }
-                                </attribute>
-                            </button>
-                            <image id="pics" />
-                        </vlayout>
+                            <groupbox>
+                                <caption label="Photo" />
+                                <grid style="border:0px">
+                                    <columns>
+                                        <column width="77px" />
+                                        <column width="235px" />
+                                    </columns>
+                                    <rows>
+                                        <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
+                                        <row>
+                                            <cell colspan="2" align="center">
+                                                <button label="Upload photo" upload="true">
+                                                    <attribute name="onUpload">
+                                                        org.zkoss.util.media.Media media = event.getMedia();
+                                                        if (media instanceof org.zkoss.image.Image) {
+                                                            org.zkoss.image.Image img = (org.zkoss.image.Image) media;
+                                                            if (img.getWidth() > img.getHeight()){
+                                                                if (img.getHeight() > 300) {
+                                                                    pics.setHeight("300px");
+                                                                    pics.setWidth(img.getWidth() * 300 / img.getHeight() + "px");
+                                                                }
+                                                            }
+                                                            if (img.getHeight() > img.getWidth()){
+                                                                if (img.getWidth() > 400) {
+                                                                    pics.setWidth("400px");
+                                                                    pics.setHeight(img.getHeight() * 400 / img.getWidth() + "px");
+                                                                }
+                                                            }
+                                                        pics.setContent(img);
+                                                        } else {
+                                                            Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                            break; //not to show too many errors
+                                                        }
+                                                    </attribute>
+                                                </button>
+                                                <image id="pics" />
+                                            </cell>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </groupbox>
                         </cell>
                     </row>
                     <row><label width="200px" value="About:" /><textbox value="@bind(form.about)" width="250px" rows = "5"/></row>
@@ -103,11 +116,11 @@
 				<auxheader label="" />
 			</auxhead>
 			<listhead>
-				<listheader label="Photo" width="80px" />
-				<listheader label="Id" sort="auto" width="70px" />
-				<listheader label="First name" sort="auto" width="150px" />
-				<listheader label="Last name" sort="auto" width="175px" />
-				<listheader label="Social links" width="120px"/>
+				<listheader label="Photo" width="80px" align="center"/>
+				<listheader label="Id" sort="auto" width="70px" align="center"/>
+				<listheader label="First name" sort="auto" width="150px" align="center"/>
+				<listheader label="Last name" sort="auto" width="175px" align="center"/>
+				<listheader label="Social links" width="120px" align="center"/>
 			</listhead>
 			<template name="model" var="speaker">
 				<listitem>
