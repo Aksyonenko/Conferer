@@ -3,7 +3,7 @@
 <idspace apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.akqa.kiev.conferer.server.dao.zk.SpeakerViewModel')">
 
 	<window form="@id('form') @load(vm.editedEntity) @save(vm.editedEntity, before='save-entity')" onClose="@command('close-edit-window')"
-		visible="@bind(vm.editWindowVisible)" mode="modal" closable="true" border="normal" title="Add a new Speaker">
+		visible="@bind(vm.editWindowVisible)" mode="modal" closable="false" border="normal" title="Add a new Speaker">
 
         <vlayout width="345px">
             <grid>
@@ -95,7 +95,6 @@
 <vlayout style="margin-top: 5px">
 	<hlayout>
 		<button label="Add speaker" onClick="@command('show-edit-window')" width="120px" height="30px"/>
-		<button label="Remove speaker" onClick="@command('delete-entity')" width="120px" height="30px"/>
 	</hlayout>
 	<hlayout>
 		<listbox model="@load(vm.items)" selectedItem="@save(vm.selected)" hflex="min">
@@ -120,7 +119,10 @@
 				<listheader label="Id" sort="auto" width="70px" align="center"/>
 				<listheader label="First name" sort="auto" width="150px" align="center"/>
 				<listheader label="Last name" sort="auto" width="175px" align="center"/>
+                <listheader label="About" sort="auto" width="750px" align="center"/>
 				<listheader label="Social links" width="120px" align="center"/>
+                <listheader label="Edit" width="120px"  align="center"/>
+                <listheader label="Delete" width="120px"  align="center"/>
 			</listhead>
 			<template name="model" var="speaker">
 				<listitem>
@@ -130,19 +132,18 @@
                     <listcell label="@load(speaker.id)" />
                     <listcell label="@load(speaker.firstName)" />
                     <listcell label="@load(speaker.lastName)" />
+                    <listcell label="@load(speaker.about)" style = "text-align:left"/>
                     <listcell style="white-space: nowrap">
                         <a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty speaker.speakerUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
                         <a href="@load(speaker.socialLinks.facebook)" target="_blank" image="/img/icons/social_facebook_box_blue_24.png" />
                         <a href="@load(speaker.socialLinks.twitter)" target="_blank" image="/img/icons/social_twitter_box_blue_24.png" />
                         <a href="@load(speaker.socialLinks.linkedin)" target="_blank" image="/img/icons/social_linkedin_box_blue_24.png" />
                     </listcell>
+                    <listcell> <button image="/img/icons/pencil-small.png" /> </listcell>
+                    <listcell> <button image="/img/icons/delete-cross.png" onClick="@command('removeItem', item=speaker)" /> </listcell>
                 </listitem>
             </template>
         </listbox>
-
-        <vlayout vflex="true" hflex="1">
-            <label value="@load(vm.selected.about)"/>
-        </vlayout>
     </hlayout>
 </vlayout>
 </idspace>

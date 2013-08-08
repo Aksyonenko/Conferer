@@ -1,6 +1,7 @@
 package com.akqa.kiev.conferer.server.model;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -50,11 +51,11 @@ public class Conference extends AbstractEntity {
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar startDate;
+	private Date startDate;
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar endDate;
+	private Date endDate;
 	
 	@JsonIgnore
 	@Column(length = 32, nullable = false)
@@ -85,12 +86,6 @@ public class Conference extends AbstractEntity {
 	)
 	private List<Session> sessions;
 
-	@PostLoad
-	public void postLoad() {
-		startDate.setTimeZone(TimeZone.getTimeZone(timezone));
-		endDate.setTimeZone(TimeZone.getTimeZone(timezone));
-	}
-	
 	public String getConferenceUrl() {
 		return conferenceUrl;
 	}
@@ -123,19 +118,19 @@ public class Conference extends AbstractEntity {
 		this.summary = summary;
 	}
 
-	public Calendar getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Calendar startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public Calendar getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Calendar endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 

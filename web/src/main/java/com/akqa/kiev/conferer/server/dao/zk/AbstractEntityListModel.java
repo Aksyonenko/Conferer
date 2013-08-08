@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
@@ -73,6 +74,13 @@ public abstract class AbstractEntityListModel<E extends AbstractEntity> {
 		
 		editWindowVisible = true;
 	}
+
+    @Command
+    @NotifyChange("items")
+    public void removeItem(@BindingParam("item") E myItem) {
+        dao.delete(myItem);
+        editWindowVisible = false;
+    }
 
 	public ListModelList<E> getItems() {
         LinkedList<E> list = new LinkedList<>();
