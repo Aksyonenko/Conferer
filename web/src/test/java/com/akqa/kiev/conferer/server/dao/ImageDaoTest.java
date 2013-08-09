@@ -32,7 +32,10 @@ public class ImageDaoTest {
 
 	@Before
 	public void setup() throws Exception {
-		FileUtils.cleanDirectory(dao.getAppHomeRoot());
+		File appHomeRoot = dao.getAppHomeRoot();
+		if (!appHomeRoot.exists()) {
+			FileUtils.cleanDirectory(appHomeRoot);
+		}
 
 		File testImageFile = new File(getClass().getResource("/2001.png")
 				.getFile());
