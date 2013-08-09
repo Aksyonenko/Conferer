@@ -54,7 +54,6 @@ public class ImageDaoTest {
 	public void saveImage() throws Exception {
 
 		dao.save(testImage);
-
 		assertTrue(dao.exists(new BigInteger("2001")));
 	}
 
