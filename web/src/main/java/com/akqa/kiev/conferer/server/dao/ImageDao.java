@@ -108,7 +108,7 @@ public class ImageDao implements AbstractImageDao {
 		File userHomeDir = new File(System.getProperty("user.home"));
 		File appHomeDir = new File(userHomeDir, appHome);
 		if (!appHomeDir.exists()) {
-			appHomeDir.mkdir();
+			appHomeDir.mkdirs();
 		}
 		return appHomeDir;
 	}
