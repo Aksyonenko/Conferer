@@ -33,7 +33,7 @@ public class ImageDaoTest {
 	@Before
 	public void setup() throws Exception {
 		File appHomeRoot = dao.getAppHomeRoot();
-		if (!appHomeRoot.exists()) {
+		if (appHomeRoot.exists()) {
 			FileUtils.cleanDirectory(appHomeRoot);
 		}
 
