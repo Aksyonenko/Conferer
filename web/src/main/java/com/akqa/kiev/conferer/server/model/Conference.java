@@ -51,11 +51,11 @@ public class Conference extends AbstractEntity {
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date startDate;
+	private Calendar startDate;
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date endDate;
+	private Calendar endDate;
 	
 	@JsonIgnore
 	@Column(length = 32, nullable = false)
@@ -85,6 +85,12 @@ public class Conference extends AbstractEntity {
 		inverseJoinColumns = @JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false, unique = true)
 	)
 	private List<Session> sessions;
+
+    @PostLoad
+    public void postLoad() {
+        startDate.setTimeZone(TimeZone.getTimeZone(timezone));
+        endDate.setTimeZone(TimeZone.getTimeZone(timezone));
+    }
 
 	public String getConferenceUrl() {
 		return conferenceUrl;
@@ -118,19 +124,19 @@ public class Conference extends AbstractEntity {
 		this.summary = summary;
 	}
 
-	public Date getStartDate() {
+	public Calendar getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public Calendar getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
 

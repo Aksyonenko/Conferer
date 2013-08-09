@@ -4,7 +4,6 @@
     <vlayout style="margin-top: 5px">
         <hlayout>
             <button label="Add conference" onClick="@command('show-edit-window')" width="130px" height="30px"/>
-            <button label="Remove conference" onClick="@command('delete-entity')" width="130px" height="30px"/>
         </hlayout>
         <grid model="@load(vm.items)" selectedItem="@save(vm.selected)">
             <columns>
@@ -13,8 +12,12 @@
                 <column label="Title" width="180px" align="center" />
                 <column label="Link" width="40px" align="center" />
                 <column label="Summary" width="300px" align="center" />
-                <column label="Start date" width="140px" align="center" />
-                <column label="End date" width="140px" align="center" />
+                <column label="Start date" width="140px" align="center">
+                    <image src="/img/icons/calendar-blue.png" />
+                </column>
+                <column label="End date" width="140px" align="center" >
+                    <image src="/img/icons/calendar-blue.png" />
+                </column>
                 <column label="Time zone" width="120px" align="center" />
                 <column label="Country" width="100px" align="center" />
                 <column label="Region" width="100px" align="center" />
@@ -33,8 +36,10 @@
                     <cell align = "left">
                         <label value="@load(conf.summary)"/>
                     </cell>
-                    <datebox value="@load(conf.startDate)" format="medium+short" readonly="true" buttonVisible="false" width="130px"/>
-                    <datebox value="@load(conf.endDate)" format="medium+short" readonly="true" buttonVisible="false" width="130px"/>
+                    <label value="@load(conf.startDate)" />
+                    <label value="@load(conf.endDate)" />
+                    <!--<datebox value="@load(conf.startDate)" format="medium+short" readonly="true" buttonVisible="false" width="130px"/>
+                    <datebox value="@load(conf.endDate)" format="medium+short" readonly="true" buttonVisible="false" width="130px"/>-->
                     <label value="@load(conf.timezone)" />
                     <label value="@load(conf.country)" />
                     <label value="@load(conf.region)" />
