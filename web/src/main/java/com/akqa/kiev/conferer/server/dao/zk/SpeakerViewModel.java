@@ -55,7 +55,15 @@ public class SpeakerViewModel extends AbstractEntityListModel<Speaker> {
 
 		imageDao.save(storableImage);
 	}
-
+	
+    @Command
+    @NotifyChange("items")
+    public void removeItem(@BindingParam("item") Speaker myItem) {
+        super.removeItem(myItem);
+        
+    	imageDao.delete(idGenerator.generate(Speaker.class.getSimpleName(), editedEntity.getId()));
+    }
+	
 	public Image getUploadedImage() {
 		return speakerImage;
 	}

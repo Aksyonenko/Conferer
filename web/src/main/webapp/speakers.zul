@@ -47,7 +47,7 @@
                                         <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
                                         <row>
                                             <cell colspan="2" align="center">
-                                                <button label="Upload photo" upload="true">
+                                                <button label="Upload photo" upload="true" onUpload="@command('upload', media=event.getMedia())">
                                                     <attribute name="onUpload">
                                                         org.zkoss.util.media.Media media = event.getMedia();
                                                         if (media instanceof org.zkoss.image.Image) {
