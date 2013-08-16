@@ -8,16 +8,17 @@ import org.zkoss.image.Image;
 import org.zkoss.util.media.Media;
 import org.zkoss.zkplus.spring.SpringUtil;
 
-import com.akqa.kiev.conferer.server.dao.ImageDao;
-import com.akqa.kiev.conferer.server.dao.ImageIdGenerator;
 import com.akqa.kiev.conferer.server.dao.SpeakerDao;
+import com.akqa.kiev.conferer.server.dao.image.AbstractIdGenerator;
+import com.akqa.kiev.conferer.server.dao.image.ImageDao;
+import com.akqa.kiev.conferer.server.dao.image.StringIdGenerator;
 import com.akqa.kiev.conferer.server.model.Speaker;
 
 public class SpeakerViewModel extends AbstractEntityListModel<Speaker> {
 
-	private ImageDao imageDao;
+	private ImageDao<String> imageDao;
 
-	private ImageIdGenerator idGenerator;
+	private AbstractIdGenerator<String> idGenerator;
 	
 	private Image speakerImage;
 
@@ -25,7 +26,7 @@ public class SpeakerViewModel extends AbstractEntityListModel<Speaker> {
 		super(SpeakerDao.class);
 
 		imageDao = SpringUtil.getApplicationContext().getBean(ImageDao.class);
-		idGenerator = SpringUtil.getApplicationContext().getBean(ImageIdGenerator.class);
+		idGenerator = SpringUtil.getApplicationContext().getBean(StringIdGenerator.class);
 	}
 
 	@Init
@@ -47,9 +48,9 @@ public class SpeakerViewModel extends AbstractEntityListModel<Speaker> {
 	public void saveEntity() {
 		super.saveEntity();
 
-		com.akqa.kiev.conferer.server.model.Image storableImage = new com.akqa.kiev.conferer.server.model.Image();
+		com.akqa.kiev.conferer.server.model.Image<String> storableImage = new com.akqa.kiev.conferer.server.model.Image<String>();
 
-		storableImage.setId(idGenerator.generate(Speaker.class.getSimpleName(), editedEntity.getId()));
+		storableImage.setId(idGenerator.generate(editedEntity));
 		storableImage.setFormat(speakerImage.getFormat());
 		storableImage.setData(speakerImage.getByteData());
 
@@ -61,7 +62,7 @@ public class SpeakerViewModel extends AbstractEntityListModel<Speaker> {
     public void removeItem(@BindingParam("item") Speaker myItem) {
         super.removeItem(myItem);
         
-    	imageDao.delete(idGenerator.generate(Speaker.class.getSimpleName(), editedEntity.getId()));
+    	imageDao.delete(idGenerator.generate(editedEntity));
     }
 	
 	public Image getUploadedImage() {

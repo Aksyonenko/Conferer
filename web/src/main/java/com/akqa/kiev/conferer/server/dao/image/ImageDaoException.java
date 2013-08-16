@@ -1,4 +1,4 @@
-package com.akqa.kiev.conferer.server.dao;
+package com.akqa.kiev.conferer.server.dao.image;
 
 @SuppressWarnings("serial")
 public class ImageDaoException extends RuntimeException {

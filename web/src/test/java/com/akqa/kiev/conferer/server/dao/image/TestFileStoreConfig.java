@@ -1,30 +1,17 @@
-package com.akqa.kiev.conferer.server.dao;
+package com.akqa.kiev.conferer.server.dao.image;
 
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import com.akqa.kiev.conferer.server.dao.AbstractImageDao;
-import com.akqa.kiev.conferer.server.dao.ImageDao;
-
 @Configuration
+@ComponentScan(basePackages = {"com.akqa.kiev.conferer.server.dao.image"})
 public class TestFileStoreConfig {
 
-	@Bean
-	public AbstractImageDao imageDao() {
-		AbstractImageDao iuh = new ImageDao();
-		return iuh;
-	}
-	
-	@Bean
-	public ImageIdGenerator imageIdGenerator() {
-		ImageIdGenerator generator = new ImageIdGenerator();
-		return generator;
-	}
-	
 	static @Bean public PropertySourcesPlaceholderConfigurer myPropertySourcesPlaceholderConfigurer() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         Resource[] resourceLocations = new Resource[] {

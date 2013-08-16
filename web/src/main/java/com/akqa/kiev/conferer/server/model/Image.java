@@ -1,20 +1,20 @@
 package com.akqa.kiev.conferer.server.model;
 
-import java.math.BigInteger;
+import java.io.Serializable;
 
-public class Image {
+public class Image<ID extends Serializable> {
 	
-	private BigInteger id;
+	private ID id;
 	
 	private String format;
 	
 	private byte[] data;
 	
-	public BigInteger getId() {
+	public ID getId() {
 		return id;
 	}
 	
-	public void setId(BigInteger id) {
+	public void setId(ID id) {
 		this.id = id;
 	}
 	

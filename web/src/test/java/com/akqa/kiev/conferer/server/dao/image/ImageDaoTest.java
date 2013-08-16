@@ -1,11 +1,10 @@
-package com.akqa.kiev.conferer.server.dao;
+package com.akqa.kiev.conferer.server.dao.image;
 
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -17,8 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.akqa.kiev.conferer.server.dao.ImageDao;
-import com.akqa.kiev.conferer.server.dao.ImageDaoException;
+import com.akqa.kiev.conferer.server.dao.image.ImageDao;
+import com.akqa.kiev.conferer.server.dao.image.ImageDaoException;
 import com.akqa.kiev.conferer.server.model.Image;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
@@ -26,9 +25,9 @@ import com.akqa.kiev.conferer.server.model.Image;
 public class ImageDaoTest {
 
 	@Autowired
-	private ImageDao dao;
+	private ImageDao<String> dao;
 
-	private Image testImage;
+	private Image<String> testImage;
 
 	@Before
 	public void setup() throws Exception {
@@ -37,7 +36,7 @@ public class ImageDaoTest {
 			FileUtils.cleanDirectory(appHomeRoot);
 		}
 
-		File testImageFile = new File(getClass().getResource("/2001.png")
+		File testImageFile = new File(getClass().getResource("/Session1.png")
 				.getFile());
 		testImage = loadTestImage(testImageFile);
 	}
@@ -45,7 +44,7 @@ public class ImageDaoTest {
 	@Test(expected = ImageDaoException.class)
 	public void unsupportedFormat() throws Exception {
 
-		File wrongFormatFile = new File(getClass().getResource("/2001.txt")
+		File wrongFormatFile = new File(getClass().getResource("/Session1.txt")
 				.getFile());
 		dao.save(loadTestImage(wrongFormatFile));
 	}
@@ -54,17 +53,17 @@ public class ImageDaoTest {
 	public void saveImage() throws Exception {
 
 		dao.save(testImage);
-		assertTrue(dao.exists(new BigInteger("2001")));
+		assertTrue(dao.exists("Session1"));
 	}
 
 	@Test
 	public void updateImage() throws Exception {
 
 		dao.save(testImage);
-		Image storedImage = dao.findOne(new BigInteger("2001"));
+		Image<String> storedImage = dao.findOne("Session1");
 
 		dao.save(testImage);
-		Image updatedImage = dao.findOne(new BigInteger("2001"));
+		Image<String> updatedImage = dao.findOne("Session1");
 		
 		assertEquals(storedImage.getData().length,
 				updatedImage.getData().length);
@@ -75,7 +74,7 @@ public class ImageDaoTest {
 
 		dao.save(testImage);
 
-		Image storableImage = dao.findOne(new BigInteger("2001"));
+		Image<String> storableImage = dao.findOne("Session1");
 		byte[] imageBytes = storableImage.getData();
 		assertTrue(imageBytes.length != 0);
 	}
@@ -83,25 +82,25 @@ public class ImageDaoTest {
 	@Test(expected = ImageDaoException.class)
 	public void findNonExistentImage() throws Exception {
 
-		dao.findOne(new BigInteger("2001"));
+		dao.findOne("Session1");
 	}
 
 	@Test
 	public void deleteImage() throws Exception {
 
 		dao.save(testImage);
-		assertTrue(dao.exists(new BigInteger("2001")));
+		assertTrue(dao.exists("Session1"));
 
-		dao.delete(new BigInteger("2001"));
-		assertFalse(dao.exists(new BigInteger("2001")));
+		dao.delete("Session1");
+		assertFalse(dao.exists("Session1"));
 	}
 
-	private Image loadTestImage(File file) {
+	private Image<String> loadTestImage(File file) {
 
-		Image image = new Image();
+		Image<String> image = new Image<String>();
 		
 		String fileName = file.getName();
-		image.setId(new BigInteger(FilenameUtils.removeExtension(fileName)));
+		image.setId(FilenameUtils.removeExtension(fileName));
 		image.setFormat(FilenameUtils.getExtension(fileName));
 		
 		try {

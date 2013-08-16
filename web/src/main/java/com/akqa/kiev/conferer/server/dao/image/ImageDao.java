@@ -1,16 +1,17 @@
-package com.akqa.kiev.conferer.server.dao;
+package com.akqa.kiev.conferer.server.dao.image;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.math.BigInteger;
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.akqa.kiev.conferer.server.model.Image;
 
@@ -19,7 +20,8 @@ import com.akqa.kiev.conferer.server.model.Image;
  * <p>
  * Images are stored in ${user.home}/${app.home} directory.
  */
-public class ImageDao implements AbstractImageDao {
+@Component
+public class ImageDao<ID extends Serializable> implements AbstractImageDao<ID> {
 
 	private static final String USER_HOME_PROPERTY = "user.home";
 
@@ -30,7 +32,7 @@ public class ImageDao implements AbstractImageDao {
 	private String[] supportedFileTypes;
 
 	@Override
-	public void save(Image image) {
+	public void save(Image<ID> image) {
 
 		validateImageFormat(image);
 
@@ -50,7 +52,7 @@ public class ImageDao implements AbstractImageDao {
 	}
 
 	@Override
-	public boolean exists(BigInteger id) {
+	public boolean exists(ID id) {
 		File[] matchingFiles = findFile(id);
 		if (matchingFiles.length != 0) {
 			return true;
@@ -60,8 +62,8 @@ public class ImageDao implements AbstractImageDao {
 	}
 
 	@Override
-	public Image findOne(BigInteger id) {
-		Image image = new Image();
+	public Image<ID> findOne(ID id) {
+		Image<ID> image = new Image<ID>();
 
 		File[] matchingFiles = findFile(id);
 		if(matchingFiles.length == 0) {
@@ -82,7 +84,7 @@ public class ImageDao implements AbstractImageDao {
 	}
 
 	@Override
-	public void delete(BigInteger id) {
+	public void delete(ID id) {
 
 		File[] matchingFiles = findFile(id);
 		for (File file : matchingFiles) {
@@ -90,14 +92,14 @@ public class ImageDao implements AbstractImageDao {
 		}
 	}
 
-	private void validateImageFormat(Image image) {
+	private void validateImageFormat(Image<ID> image) {
 		if (!Arrays.asList(supportedFileTypes).contains(image.getFormat())) {
 			throw new ImageDaoException("Not supported format "
 					+ image.getFormat());
 		}
 	}
 
-	private File[] findFile(final BigInteger id) {
+	private File[] findFile(final ID id) {
 		File[] matchingFiles = getAppHomeRoot().listFiles(new FilenameFilter() {
 
 			@Override
@@ -118,7 +120,7 @@ public class ImageDao implements AbstractImageDao {
 		return appHomeDir;
 	}
 
-	private String generateFileName(Image image) {
+	private String generateFileName(Image<ID> image) {
 		return image.getId().toString() + FilenameUtils.EXTENSION_SEPARATOR
 				+ image.getFormat();
 	}
