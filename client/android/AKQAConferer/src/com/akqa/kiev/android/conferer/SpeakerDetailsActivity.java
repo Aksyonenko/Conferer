@@ -8,12 +8,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 import com.akqa.kiev.android.conferer.task.DownloadImageTask;
+import com.akqa.kiev.android.conferer.view.social.SocialPanel;
 import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class SpeakerDetailsActivity extends Activity {
@@ -34,6 +36,8 @@ public class SpeakerDetailsActivity extends Activity {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 					R.layout.titlebar);
 		}
+		View searchView = findViewById(R.id.search_view);
+		searchView.setVisibility(View.INVISIBLE);
 		confererService = new ConfererService();
 
 		initView();
@@ -66,7 +70,9 @@ public class SpeakerDetailsActivity extends Activity {
 		aboutView.setTypeface(TypefaceRegistry.getTypeFace(context,
 				TypefaceRegistry.COND));
 		aboutView.setText(speakerDetails.getAbout());
-
+		
+		SocialPanel socialPanel = (SocialPanel)findViewById(R.id.speaker_social);
+		socialPanel.init(speakerDetails.getSocialLinks());
 	}
 
 	@Override

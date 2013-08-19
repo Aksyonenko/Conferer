@@ -57,7 +57,7 @@ public class ConferenceItemView extends TableLayout implements OnClickListener {
 	private void init(Context context) {
 		if (data != null) {
 			setPadding(10, 10, 10, 10);
-			setStretchAllColumns(true);
+			//setStretchAllColumns(true);
 			setColumnShrinkable(1, true);
 			setGravity(Gravity.CENTER);
 

@@ -32,8 +32,7 @@ public class SessionsFragment extends Fragment {
 
 	private Date date;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM",
-			Locale.ENGLISH);
+	private SimpleDateFormat dateFormat;
 
 	public void setSessions(List<SessionData> sessions) {
 		this.sessions = sessions;
@@ -41,7 +40,7 @@ public class SessionsFragment extends Fragment {
 
 	public SessionsFragment() {
 		super();
-		dateFormat = new SimpleDateFormat("EEE", Locale.ENGLISH);
+		dateFormat = new SimpleDateFormat("EEE, dd MMM", Locale.ENGLISH);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 

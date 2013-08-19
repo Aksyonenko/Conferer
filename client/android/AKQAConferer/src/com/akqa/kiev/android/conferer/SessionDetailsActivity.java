@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +47,9 @@ public class SessionDetailsActivity extends Activity {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 					R.layout.titlebar);
 		}
+		
+		View searchView = findViewById(R.id.search_view);
+		searchView.setVisibility(View.INVISIBLE);
 		confererService = new ConfererService();
 
 		dateFormat = new SimpleDateFormat("dd MMM yyyy, EEEE", Locale.ENGLISH);
