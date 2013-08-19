@@ -1,31 +1,100 @@
-<?page title="Speaker list"?>
+<?page title="Speakers list"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <idspace apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.akqa.kiev.conferer.server.dao.zk.SpeakerViewModel')">
 
 	<window form="@id('form') @load(vm.editedEntity) @save(vm.editedEntity, before='save-entity')" onClose="@command('close-edit-window')"
-		visible="@bind(vm.editWindowVisible)" mode="modal" closable="true" border="normal" title="Add a new Speaker">
-		<vlayout>
-			<hlayout><label value="First name:" /><textbox value="@bind(form.firstName)" /></hlayout>
-			<hlayout><label value="Last name:" /><textbox value="@bind(form.lastName)" /></hlayout>
-			
-			<groupbox>
-				<caption label="Social links" />
-				<hlayout><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" /></hlayout>
-				<hlayout><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" /></hlayout>
-				<hlayout><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" /></hlayout>
-			</groupbox>
-			
-			<hlayout>
-				<button label="Create" onClick="@command('save-entity')"/>
-				<button label="Cancel" onClick="@command('close-edit-window')"/>
-			</hlayout>
+		visible="@bind(vm.editWindowVisible)" mode="modal" closable="false" border="normal" title="Add a new Speaker">
+
+        <vlayout width="345px">
+            <grid>
+                <columns>
+                    <column width="90px" />
+                    <column width="250px" />
+                </columns>
+                <rows>
+                    <row><label value="First name:" /><textbox value="@bind(form.firstName)" width="250px" /></row>
+                    <row><label value="Last name:" /><textbox value="@bind(form.lastName)" width="250px" /></row>
+                    <row><label width="150px" value="Competence:" /><textbox value="@bind(form.competence)" width="250px" /></row>
+                    <row><label width="150px" value="Speaker url:" /><textbox value="@bind(form.speakerUrl)" width="250px" /></row>
+                    <row>
+                        <cell colspan="2">
+                        <groupbox>
+                            <caption label="Social links" />
+                            <grid style="border:0px">
+                                <columns>
+                                    <column width="77px" />
+                                    <column width="235px" />
+                                </columns>
+                                <rows>
+                                    <row><label value="Facebook:" /><textbox value="@bind(form.socialLinks.facebook)" width="235px"/></row>
+                                    <row><label value="Twitter:" /><textbox value="@bind(form.socialLinks.twitter)" width="235px"/></row>
+                                    <row><label value="LinkedIn:" /><textbox value="@bind(form.socialLinks.linkedin)" width="235px"/></row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell colspan="2">
+                            <groupbox>
+                                <caption label="Photo" />
+                                <grid style="border:0px">
+                                    <columns>
+                                        <column width="77px" />
+                                        <column width="235px" />
+                                    </columns>
+                                    <rows>
+                                        <row><label value="Photo url:" /><textbox value="@bind(form.photoUrl)" width="250px"/></row>
+                                        <row>
+                                            <cell colspan="2" align="center">
+                                                <button label="Upload photo" upload="true" onUpload="@command('upload', media=event.getMedia())">
+                                                    <attribute name="onUpload">
+                                                        org.zkoss.util.media.Media media = event.getMedia();
+                                                        if (media instanceof org.zkoss.image.Image) {
+                                                            org.zkoss.image.Image img = (org.zkoss.image.Image) media;
+                                                            if (img.getWidth() > img.getHeight()){
+                                                                if (img.getHeight() > 300) {
+                                                                    pics.setHeight("300px");
+                                                                    pics.setWidth(img.getWidth() * 300 / img.getHeight() + "px");
+                                                                }
+                                                            }
+                                                            if (img.getHeight() > img.getWidth()){
+                                                                if (img.getWidth() > 400) {
+                                                                    pics.setWidth("400px");
+                                                                    pics.setHeight(img.getHeight() * 400 / img.getWidth() + "px");
+                                                                }
+                                                            }
+                                                        pics.setContent(img);
+                                                        } else {
+                                                            Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                            break; //not to show too many errors
+                                                        }
+                                                    </attribute>
+                                                </button>
+                                                <image id="pics" />
+                                            </cell>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </groupbox>
+                        </cell>
+                    </row>
+                    <row><label width="200px" value="About:" /><textbox value="@bind(form.about)" width="250px" rows = "5"/></row>
+                    <row>
+                        <cell colspan="2" style="text-align:center">
+                            <hlayout><button label="Create" onClick="@command('save-entity')" width="100px" height="30px"/>
+                                     <button label="Cancel" onClick="@command('close-edit-window')" width="100px" height="30px"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
 		</vlayout>
 	</window>
 
 <vlayout style="margin-top: 5px">
 	<hlayout>
-		<button label="Add speaker" onClick="@command('show-edit-window')" />
-		<button label="Remove speaker"/>
+		<button label="Add speaker" onClick="@command('show-edit-window')" width="120px" height="30px"/>
 	</hlayout>
 	<hlayout>
 		<listbox model="@load(vm.items)" selectedItem="@save(vm.selected)" hflex="min">
@@ -46,11 +115,14 @@
 				<auxheader label="" />
 			</auxhead>
 			<listhead>
-				<listheader label="Photo" width="60px" />
-				<listheader label="Id" sort="auto" width="70px" />
-				<listheader label="First name" sort="auto" width="150px" />
-				<listheader label="Last name" sort="auto" width="175px" />
-				<listheader label="Social links" />
+				<listheader label="Photo" width="80px" align="center"/>
+				<listheader label="Id" sort="auto" width="70px" align="center"/>
+				<listheader label="First name" sort="auto" width="150px" align="center"/>
+				<listheader label="Last name" sort="auto" width="175px" align="center"/>
+                <listheader label="About" sort="auto" width="750px" align="center"/>
+				<listheader label="Social links" width="120px" align="center"/>
+                <listheader label="Edit" width="120px"  align="center"/>
+                <listheader label="Delete" width="120px"  align="center"/>
 			</listhead>
 			<template name="model" var="speaker">
 				<listitem>
@@ -60,20 +132,18 @@
                     <listcell label="@load(speaker.id)" />
                     <listcell label="@load(speaker.firstName)" />
                     <listcell label="@load(speaker.lastName)" />
+                    <listcell label="@load(speaker.about)" style = "text-align:left"/>
                     <listcell style="white-space: nowrap">
                         <a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty speaker.speakerUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
                         <a href="@load(speaker.socialLinks.facebook)" target="_blank" image="/img/icons/social_facebook_box_blue_24.png" />
                         <a href="@load(speaker.socialLinks.twitter)" target="_blank" image="/img/icons/social_twitter_box_blue_24.png" />
                         <a href="@load(speaker.socialLinks.linkedin)" target="_blank" image="/img/icons/social_linkedin_box_blue_24.png" />
                     </listcell>
+                    <listcell> <button image="/img/icons/pencil-small.png" /> </listcell>
+                    <listcell> <button image="/img/icons/delete-cross.png" onClick="@command('removeItem', item=speaker)" /> </listcell>
                 </listitem>
             </template>
         </listbox>
-
-        <vlayout vflex="true" hflex="min">
-            <image src="http://suvenirov.com.ua/wp-content/uploads/2012/08/Kovrik-kruglyiy-Logo-Dota-2.png" />
-            <label value="@load(vm.selected.about)" />
-        </vlayout>
     </hlayout>
 </vlayout>
 </idspace>

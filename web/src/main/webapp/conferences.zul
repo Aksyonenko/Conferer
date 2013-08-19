@@ -1,0 +1,57 @@
+<?page title="Conferences list"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<idspace apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.akqa.kiev.conferer.server.dao.zk.ConferenceViewModel')">
+    <vlayout style="margin-top: 5px">
+        <hlayout>
+            <button label="Add conference" onClick="@command('show-edit-window')" width="130px" height="30px"/>
+        </hlayout>
+        <grid model="@load(vm.items)" selectedItem="@save(vm.selected)">
+            <columns>
+                <column label="Logo" width="200px" align="center" />
+                <column label="Id" width="50px" align="center" />
+                <column label="Title" width="180px" align="center" />
+                <column label="Link" width="40px" align="center" />
+                <column label="Summary" width="300px" align="center" />
+                <column label="Start date" width="140px" align="center">
+                    <image src="/img/icons/calendar-blue.png" />
+                </column>
+                <column label="End date" width="140px" align="center" >
+                    <image src="/img/icons/calendar-blue.png" />
+                </column>
+                <column label="Time zone" width="120px" align="center" />
+                <column label="Country" width="100px" align="center" />
+                <column label="Region" width="100px" align="center" />
+                <column label="City" width="100px" align="center" />
+                <column label="Address" width="120px" align="center" />
+                <column label="Details" width="250px" align="center" />
+                <column label="Edit" width="120px" align="center"/>
+                <column label="Delete" width="120px"  align="center"/>
+            </columns>
+            <template name="model" var="conf" selectedItem="@save(vm.selected)">
+                <row align="center">
+                    <image src="@load(conf.logoUrl)" />
+                    <label value="@load(conf.id)" />
+                    <label value="@load(conf.title)" />
+                    <a href="@load(speaker.speakerUrl)" target="_blank" image="@load(not empty conf.conferenceUrl ? '/img/icons/homepage_24.png' : '/img/icons/homepage_24_bw.png')" />
+                    <cell align = "left">
+                        <label value="@load(conf.summary)"/>
+                    </cell>
+                    <label value="@load(conf.startDate)" />
+                    <label value="@load(conf.endDate)" />
+                    <!--<datebox value="@load(conf.startDate)" format="medium+short" readonly="true" buttonVisible="false" width="130px"/>
+                    <datebox value="@load(conf.endDate)" format="medium+short" readonly="true" buttonVisible="false" width="130px"/>-->
+                    <label value="@load(conf.timezone)" />
+                    <label value="@load(conf.country)" />
+                    <label value="@load(conf.region)" />
+                    <label value="@load(conf.city)" />
+                    <label value="@load(conf.address)" />
+                    <cell align = "left">
+                        <label value="@load(conf.details)"/>
+                    </cell>
+                    <button image="/img/icons/pencil-small.png" onClick="@command('changeEditableStatus', languageContributionStatus=each)" />
+                    <button image="/img/icons/delete-cross.png" onClick="@command('removeItem', item=conf)" />
+                </row>
+            </template>
+        </grid>
+    </vlayout>
+</idspace>

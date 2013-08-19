@@ -16,15 +16,15 @@ public class SpeakerControllerTest extends AbstractControllerTest {
 	public void speaker_existing() throws Exception {
 		preCheckJsonResponse("/speakers/2")
 			.andExpect(jsonPath("$.id", is(2)))
-			.andExpect(jsonPath("$.speakerUrl", is("some url")))
+			.andExpect(jsonPath("$.speakerUrl", is("http://johnsmith-johnsimages.blogspot.com/2013/08/montreal-street-fashion-festival-2013.html")))
 			.andExpect(jsonPath("$.firstName", is("Alain")))
 			// FIXME: Fix Unicode issue
 			// .andExpect(jsonPath("$.lastName", is("Hélaïli")))
 			.andExpect(jsonPath("$.photoUrl", is("http://www.bicompetenceforum.com/wp-content/uploads/2013/04/fabriziodepetris.jpg")))
 			.andExpect(jsonPath("$.about", not(isEmptyOrNullString())))
-			.andExpect(jsonPath("$.socialLinks.facebook", is("facebook link")))
-			.andExpect(jsonPath("$.socialLinks.twitter", is("@tcoupland")))
-			.andExpect(jsonPath("$.socialLinks.linkedin", is("linkedin link")));
+			.andExpect(jsonPath("$.socialLinks.facebook", is("http://www.facebook.com/acousticsmith")))
+			.andExpect(jsonPath("$.socialLinks.twitter", is("http://twitter.com/JohnWSmith")))
+			.andExpect(jsonPath("$.socialLinks.linkedin", is("http://uk.linkedin.com/in/johnwsmithchange")));
 	}
 	
 	@Test
