@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import android.util.Log;
+
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SessionData;
@@ -27,6 +29,7 @@ public class ConfererService {
 					allConfMonthsJson, Long.class);
 		} catch (Exception e) {
 			LogUtils.logE(getClass().getName(), e);
+			e.printStackTrace();
 		}
 		return null;
 	}

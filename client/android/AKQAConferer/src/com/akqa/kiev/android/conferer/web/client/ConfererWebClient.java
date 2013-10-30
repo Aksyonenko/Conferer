@@ -10,6 +10,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.util.Log;
+
 import com.akqa.kiev.android.conferer.utils.IoUtils;
 import com.akqa.kiev.android.conferer.utils.LogUtils;
 
@@ -69,7 +71,8 @@ public class ConfererWebClient {
 			HttpResponse response = httpClient.execute(homeRequest);
 			return getHtmlAnswer(response);
 		} catch (Exception e) {
-			LogUtils.logE(getClass().getName(), e);
+			Log.e(getClass().getName(), "Exception");
+			e.printStackTrace();
 		} finally {
 			releaseConnection(homeRequest);
 		}
