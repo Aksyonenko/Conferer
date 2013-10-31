@@ -20,14 +20,14 @@ public class ConferenceListFragment extends Fragment {
 	
 	private ConfererService confererService;
 	ListView conferenceListView;
-	List<String> conferenceNames;
+	List<ConferenceData> conferences;
 	ArrayAdapter conferenceLVAdapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		confererService = new ConfererService();
-		conferenceNames = new ArrayList<String>();
+		conferences = new ArrayList<ConferenceData>();
 	}
 	
 	@Override
@@ -42,9 +42,9 @@ public class ConferenceListFragment extends Fragment {
 		super.onStart();
 		List<Long> months = confererService.loadConferencesMonths();
 		conferenceListView = (ListView) getView().findViewById(R.id.conferenceListView);
-		conferenceLVAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, conferenceNames);
+		conferenceLVAdapter = new ConferenceListArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, conferences);
 		conferenceListView.setAdapter(conferenceLVAdapter);
-		loadDataTask.execute();
+		loadDataTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 	}
 	
 	AsyncTask<Void, Void, List<ConferenceData>> loadDataTask = new AsyncTask<Void, Void, List<ConferenceData>>() {
@@ -61,7 +61,7 @@ public class ConferenceListFragment extends Fragment {
 		@Override
 		protected void onPostExecute(List<ConferenceData> result) {
 			for(ConferenceData data : result) {
-				conferenceNames.add(data.getTitle());
+				conferences.add(data);
 			}
 			conferenceLVAdapter.notifyDataSetChanged();
 		}

@@ -14,5 +14,7 @@
     <color name="session_title_bg_color">#f0f0f0</color>
     <color name="session_title_color">#d94343</color>
     <color name="speaker_title_color">#d94343</color>
+    <color name="conference_list_background">#f0f0f0</color>
+    <color name="conference_list_secondary_text">#666666</color>
     
 </resources>

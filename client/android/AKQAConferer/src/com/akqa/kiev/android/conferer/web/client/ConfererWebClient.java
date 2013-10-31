@@ -76,6 +76,7 @@ public class ConfererWebClient {
 		} finally {
 			releaseConnection(homeRequest);
 		}
+		Log.i(getClass().getName(), "Response: " + answer);
 		return answer;
 	}
 
