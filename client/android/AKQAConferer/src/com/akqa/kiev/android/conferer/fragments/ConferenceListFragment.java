@@ -40,15 +40,14 @@ public class ConferenceListFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		List<Long> months = confererService.loadConferencesMonths();
 		conferenceListView = (ListView) getView().findViewById(R.id.conferenceListView);
 		conferenceLVAdapter = new ConferenceListArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, conferences);
 		conferenceListView.setAdapter(conferenceLVAdapter);
+		LoadDataTask loadDataTask = new LoadDataTask();
 		loadDataTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 	}
 	
-	AsyncTask<Void, Void, List<ConferenceData>> loadDataTask = new AsyncTask<Void, Void, List<ConferenceData>>() {
-		
+	private class LoadDataTask extends AsyncTask<Void, Void, List<ConferenceData>> {
 		@Override
 		protected List<ConferenceData> doInBackground(Void... params) {
 			List<Long> months = confererService.loadConferencesMonths();
@@ -65,5 +64,6 @@ public class ConferenceListFragment extends Fragment {
 			}
 			conferenceLVAdapter.notifyDataSetChanged();
 		}
-	};
+	}
+
 }

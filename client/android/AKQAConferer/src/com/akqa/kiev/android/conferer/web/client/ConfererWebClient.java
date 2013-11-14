@@ -68,6 +68,7 @@ public class ConfererWebClient {
 		String answer = null;
 		HttpGet homeRequest = new HttpGet(url);
 		try {
+			Log.i(getClass().getName(), "Executing request: " + url);
 			HttpResponse response = httpClient.execute(homeRequest);
 			return getHtmlAnswer(response);
 		} catch (Exception e) {

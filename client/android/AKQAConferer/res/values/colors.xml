@@ -16,5 +16,6 @@
     <color name="speaker_title_color">#d94343</color>
     <color name="conference_list_background">#f0f0f0</color>
     <color name="conference_list_secondary_text">#666666</color>
-    
+    <color name="actionbar_background_color">#262626</color>
+    <color name="actionbar_title_text_color">#d94342</color>
 </resources>
