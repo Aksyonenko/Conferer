@@ -3,6 +3,7 @@ package com.akqa.kiev.android.conferer.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.akqa.kiev.android.conferer.OnConferenceSelectedListener;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.web.ConfererService;
@@ -12,22 +13,27 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ConferenceListFragment extends Fragment {
+public class ConferenceListFragment extends Fragment implements OnItemClickListener {
 	
 	private ConfererService confererService;
 	ListView conferenceListView;
 	List<ConferenceData> conferences;
 	ArrayAdapter conferenceLVAdapter;
+	OnConferenceSelectedListener conferenceSelectedListener;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		confererService = new ConfererService();
 		conferences = new ArrayList<ConferenceData>();
+		conferenceSelectedListener = (OnConferenceSelectedListener) getActivity();
 	}
 	
 	@Override
@@ -43,6 +49,7 @@ public class ConferenceListFragment extends Fragment {
 		conferenceListView = (ListView) getView().findViewById(R.id.conferenceListView);
 		conferenceLVAdapter = new ConferenceListArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, conferences);
 		conferenceListView.setAdapter(conferenceLVAdapter);
+		conferenceListView.setOnItemClickListener(this);
 		LoadDataTask loadDataTask = new LoadDataTask();
 		loadDataTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 	}
@@ -64,6 +71,12 @@ public class ConferenceListFragment extends Fragment {
 			}
 			conferenceLVAdapter.notifyDataSetChanged();
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Long clickedId  = conferences.get(position).getId();
+		conferenceSelectedListener.onConferenceSelected(clickedId);
 	}
 
 }
