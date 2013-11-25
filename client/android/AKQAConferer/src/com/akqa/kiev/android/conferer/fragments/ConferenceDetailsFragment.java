@@ -63,6 +63,7 @@ public class ConferenceDetailsFragment extends Fragment {
 	}
 	
 	private void updateViews(ConferenceDetailsData conferenceDetailsData) {
+		sessions.clear();
 		for(SessionData data : conferenceDetailsData.getSessions()) {
 			sessions.add(data);
 		}
