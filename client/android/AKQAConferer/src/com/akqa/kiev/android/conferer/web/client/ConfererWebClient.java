@@ -73,11 +73,9 @@ public class ConfererWebClient {
 			return getHtmlAnswer(response);
 		} catch (Exception e) {
 			Log.e(getClass().getName(), "Exception");
-			e.printStackTrace();
 		} finally {
 			releaseConnection(homeRequest);
 		}
-		Log.i(getClass().getName(), "Response: " + answer);
 		return answer;
 	}
 

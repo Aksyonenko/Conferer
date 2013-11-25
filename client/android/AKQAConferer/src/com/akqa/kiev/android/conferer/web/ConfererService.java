@@ -54,7 +54,7 @@ public class ConfererService {
 			return ReflectionJsonParsingHelper.objectFromJsonString(
 					conferenceDetailsJson, ConferenceDetailsData.class);
 		} catch (Exception e) {
-			LogUtils.logE(getClass().getName(), e);
+			Log.e(getClass().getName(), e.getMessage());
 		}
 		return null;
 	}
