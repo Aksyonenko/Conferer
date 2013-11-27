@@ -1,37 +1,21 @@
 package com.akqa.kiev.android.conferer;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
-import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-
-import java.util.List;
-
-import android.app.SearchManager;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.SearchView;
 
-import com.akqa.kiev.android.conferer.model.ConferenceData;
-import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
-import com.akqa.kiev.android.conferer.model.SessionData;
-import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.db.ConfererDatabase;
+import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
-import com.akqa.kiev.android.conferer.view.conference.ConferencesPagerAdapter;
-
-import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
 import com.akqa.kiev.android.conferer.utils.Constants;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class StartActivity extends FragmentActivity implements OnConferenceSelectedListener, OnDetailsFragmentStartedListener {
 
@@ -44,6 +28,8 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_start);
+		cs = new ConfererDbService(getApplicationContext());
+
 	}
 
 	@Override

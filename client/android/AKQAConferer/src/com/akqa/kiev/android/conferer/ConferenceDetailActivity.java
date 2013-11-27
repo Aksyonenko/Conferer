@@ -1,14 +1,13 @@
 package com.akqa.kiev.android.conferer;
 
-import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
-import com.akqa.kiev.android.conferer.utils.Constants;
-import com.akqa.kiev.android.conferer.web.ConfererService;
-
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
+import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
+import com.akqa.kiev.android.conferer.service.ConfererService;
+import com.akqa.kiev.android.conferer.utils.Constants;
 
 public class ConferenceDetailActivity extends FragmentActivity implements OnDetailsFragmentStartedListener {
 	

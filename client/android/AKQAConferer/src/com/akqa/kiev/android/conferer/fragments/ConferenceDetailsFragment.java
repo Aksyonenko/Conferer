@@ -9,15 +9,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.akqa.kiev.android.conferer.OnDetailsFragmentStartedListener;
 import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SessionData;
-import com.akqa.kiev.android.conferer.web.ConfererService;
+import com.akqa.kiev.android.conferer.service.ConfererService;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 
 public class ConferenceDetailsFragment extends Fragment {
 	private ConfererService confererService;
@@ -30,7 +29,7 @@ public class ConferenceDetailsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		confererService = new ConfererService();
+		confererService = new ConfererWebService();
 		sessions = new ArrayList<SessionData>();
 	}
 	

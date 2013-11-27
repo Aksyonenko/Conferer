@@ -51,7 +51,7 @@ public class ConfererWebService implements ConfererService {
 			return ReflectionJsonParsingHelper.objectFromJsonString(
 					conferenceDetailsJson, ConferenceDetailsData.class);
 		} catch (Exception e) {
-			Log.e(getClass().getName(), e.getMessage());
+			LogUtils.logE(getClass().getName(), e);
 		}
 		return null;
 	}
