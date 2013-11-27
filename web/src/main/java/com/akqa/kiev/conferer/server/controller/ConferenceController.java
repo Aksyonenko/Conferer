@@ -53,6 +53,17 @@ public class ConferenceController extends AbstractConfererController<Conference>
 		for (Session session : conference.getSessions()) session.getSpeakers().size();
 		return conference;
 	}
+	
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseBody
+    public Iterable<Conference> findAll() {
+        Iterable<Conference> all = conferenceDao.findAll();
+        for (Conference conference : all) {
+            for (Session session : conference.getSessions())
+                session.getSpeakers().size();
+        }
+        return all;
+    }
 
 	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
 	public void conferences(
