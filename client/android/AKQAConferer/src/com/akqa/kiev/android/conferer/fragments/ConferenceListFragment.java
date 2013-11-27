@@ -19,19 +19,24 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
+
 
 public class ConferenceListFragment extends Fragment implements OnItemClickListener {
 	
-	private ConfererService confererService;
+	private ConfererWebService confererService;
 	ListView conferenceListView;
 	List<ConferenceData> conferences;
-	ArrayAdapter conferenceLVAdapter;
+
+	ArrayAdapter<ConferenceData> conferenceLVAdapter;
 	OnConferenceSelectedListener conferenceSelectedListener;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		confererService = new ConfererService();
+		confererService = new ConfererWebService();
 		conferences = new ArrayList<ConferenceData>();
 		conferenceSelectedListener = (OnConferenceSelectedListener) getActivity();
 	}

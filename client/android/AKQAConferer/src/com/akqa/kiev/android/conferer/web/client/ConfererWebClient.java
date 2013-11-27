@@ -24,6 +24,8 @@ import com.akqa.kiev.android.conferer.utils.LogUtils;
 public class ConfererWebClient {
 
 	private static final String CONFERENCES_URL = "http://10.11.100.254/conferences";
+	private static final String ALL_CONFERENCES_URL = "http://10.11.100.254/conferences/all";
+
 	private static final String CONFERENCES_YEAR_PARAM = "year";
 	private static final String CONFERENCES_MONTH_PARAM = "month";
 	private static final String CONFERENCES_MONTHS_URL = "http://10.11.100.254/conferences/months";
@@ -63,20 +65,31 @@ public class ConfererWebClient {
 				.append(month);
 		return getRequest(url.toString());
 	}
+	
+	public String getAllConferences() {
+		return getRequest(ALL_CONFERENCES_URL);
+	}
 
 	private String getRequest(String url) {
-		String answer = null;
-		HttpGet homeRequest = new HttpGet(url);
+		HttpGet request = new HttpGet(url);
 		try {
 			Log.i(getClass().getName(), "Executing request: " + url);
-			HttpResponse response = httpClient.execute(homeRequest);
+			HttpResponse response = httpClient.execute(request);
 			return getHtmlAnswer(response);
 		} catch (Exception e) {
+<<<<<<< HEAD
 			Log.e(getClass().getName(), "Exception");
+=======
+			LogUtils.logE(getClass().getName(), e);
+>>>>>>> b56481132be6cb5da36e295e5a39950a0a82127c
 		} finally {
-			releaseConnection(homeRequest);
+			releaseConnection(request);
 		}
+<<<<<<< HEAD
 		return answer;
+=======
+		return null;
+>>>>>>> b56481132be6cb5da36e295e5a39950a0a82127c
 	}
 
 	/**

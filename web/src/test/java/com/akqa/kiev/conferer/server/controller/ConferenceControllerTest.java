@@ -102,6 +102,11 @@ public class ConferenceControllerTest extends AbstractControllerTest {
 				.andExpect(status().isNotFound());
 	}
 	
+    @Test
+    public void conference_allConferences() throws Exception {
+        mockMvc.perform(get("/conferences/all").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+	
 	@Test
 	public void conference_badConferenceId() throws Exception {
 		mockMvc.perform(get("/conferences/wrong & id").accept(MediaType.APPLICATION_JSON))

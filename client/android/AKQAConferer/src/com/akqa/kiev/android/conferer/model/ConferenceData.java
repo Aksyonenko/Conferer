@@ -11,6 +11,7 @@ import java.util.Date;
 public class ConferenceData {
 
 	private Long id;
+	private String conferenceUrl;
 	private String logoUrl;
 	private String title;
 	private String summary;
@@ -19,6 +20,8 @@ public class ConferenceData {
 	private String country;
 	private String region;
 	private String city;
+	private String address;
+
 
 	public Long getId() {
 		return id;
@@ -26,6 +29,14 @@ public class ConferenceData {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getConferenceUrl() {
+		return conferenceUrl;
+	}
+
+	public void setConferenceUrl(String conferenceUrl) {
+		this.conferenceUrl = conferenceUrl;
 	}
 
 	public String getLogoUrl() {
@@ -91,5 +102,13 @@ public class ConferenceData {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}	
 
 }
