@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.task.DownloadImageTask;
 import com.akqa.kiev.android.conferer.view.social.SocialPanel;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class SpeakerDetailsActivity extends Activity {
 
-	private ConfererService confererService;
+	private ConfererWebService confererService;
 
 	public static String SPEAKER_ID_ARG = "speakerId";
 
@@ -38,7 +38,7 @@ public class SpeakerDetailsActivity extends Activity {
 		}
 		View searchView = findViewById(R.id.search_view);
 		searchView.setVisibility(View.INVISIBLE);
-		confererService = new ConfererService();
+		confererService = new ConfererWebService();
 
 		initView();
 	}

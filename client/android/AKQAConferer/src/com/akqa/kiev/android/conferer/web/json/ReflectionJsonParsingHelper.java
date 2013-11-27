@@ -1,5 +1,6 @@
 package com.akqa.kiev.android.conferer.web.json;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -54,6 +55,10 @@ public final class ReflectionJsonParsingHelper {
 
 		T object = clazz.newInstance();
 		Field[] fields = clazz.getDeclaredFields();
+		if (!clazz.getSuperclass().equals(Object.class)) {
+			Field[] superClassFields = clazz.getSuperclass().getDeclaredFields();
+			fields = addAll(fields, superClassFields);
+		}
 		for (Field field : fields) {
 			if (jsonObject.has(field.getName())) {
 				Class<?> type = field.getType();
@@ -134,5 +139,25 @@ public final class ReflectionJsonParsingHelper {
 				.append(Character.toTitleCase(str.charAt(0)))
 				.append(str.substring(1)).toString();
 	}
+	
+	@SuppressWarnings("unchecked")
+	private static<T> T[] addAll(T[] array1, T[] array2) {
+		if (array1 == null) {
+			return cloneArray(array2);
+		} else if (array2 == null) {
+		}
+		T[] joinedArray = (T[]) Array.newInstance(array1.getClass()
+				.getComponentType(), array1.length + array2.length);
+		System.arraycopy(array1, 0, joinedArray, 0, array1.length);
+		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
+		return joinedArray;
+	}
+	
+	private static<T> T[] cloneArray(T[] array) {
+		if (array == null) {
+			return null;
+		}
+		return (T[]) array.clone();
+	}   
 
 }

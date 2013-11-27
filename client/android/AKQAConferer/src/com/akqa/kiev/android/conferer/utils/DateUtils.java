@@ -87,5 +87,20 @@ public final class DateUtils {
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
 	}
+	
+	public static Boolean between(Date from, Date to, Date eventStart, Date eventEnd) {
+		long p1 = from.getTime();
+		long p2 = to.getTime();
+		
+		long e1 = eventStart.getTime();
+		long e2 = eventEnd.getTime();
+
+		boolean result = e1 >= p1 && e2 <= p2; // inner criteria;
+		result = result || e1 <= p1 && e2 >= p2; // outer criteria;
+		result = result || e1 <= p1 && (e2 >= p1 && e2 <= p2); // starts earlier, finishes inside;
+		result = result || (e1 >= p1 && e1 <= p2) && e2 >= p2; // starts inside, finishes later
+		
+ 		return result;
+	}
 
 }

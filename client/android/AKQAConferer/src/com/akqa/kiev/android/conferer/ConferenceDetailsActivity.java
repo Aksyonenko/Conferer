@@ -8,8 +8,8 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.view.conference.details.ConferenceDetailsPagerAdapter;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class ConferenceDetailsActivity extends FragmentActivity {
 
@@ -17,7 +17,7 @@ public class ConferenceDetailsActivity extends FragmentActivity {
 
 	private ViewPager viewPager;
 
-	private ConfererService confererService;
+	private ConfererWebService confererService;
 
 	public static String CONFERENCE_ID_ARG = "conferenceId";
 
@@ -31,7 +31,7 @@ public class ConferenceDetailsActivity extends FragmentActivity {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 					R.layout.titlebar);
 		}
-		confererService = new ConfererService();
+		confererService = new ConfererWebService();
 		initView();
 	}
 

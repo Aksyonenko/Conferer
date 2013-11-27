@@ -20,12 +20,12 @@ import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.task.DownloadImageTask;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class SessionDetailsActivity extends Activity {
 
-	private ConfererService confererService;
+	private ConfererWebService confererService;
 
 	public static String SESSION_ID_ARG = "sessionId";
 
@@ -50,7 +50,7 @@ public class SessionDetailsActivity extends Activity {
 		
 		View searchView = findViewById(R.id.search_view);
 		searchView.setVisibility(View.INVISIBLE);
-		confererService = new ConfererService();
+		confererService = new ConfererWebService();
 
 		dateFormat = new SimpleDateFormat("dd MMM yyyy, EEEE", Locale.ENGLISH);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

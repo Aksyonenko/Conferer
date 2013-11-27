@@ -19,8 +19,8 @@ import com.akqa.kiev.android.conferer.ConferenceDetailsActivity;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SessionData;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.utils.DateUtils;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class SessionsFragment extends Fragment {
 
@@ -28,7 +28,7 @@ public class SessionsFragment extends Fragment {
 
 	private List<SessionData> sessions;
 
-	private ConfererService confererService = new ConfererService();
+	private ConfererWebService confererService = new ConfererWebService();
 
 	private Date date;
 

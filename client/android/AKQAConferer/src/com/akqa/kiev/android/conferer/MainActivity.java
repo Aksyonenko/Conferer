@@ -9,9 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.Window;
 
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.utils.DateUtils;
 import com.akqa.kiev.android.conferer.view.conference.ConferencesPagerAdapter;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class MainActivity extends FragmentActivity {
 
@@ -19,7 +19,7 @@ public class MainActivity extends FragmentActivity {
 
 	private ViewPager viewPager;
 
-	private ConfererService confererService;
+	private ConfererWebService confererService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity {
 					R.layout.titlebar);
 		}
 
-		confererService = new ConfererService();
+		confererService = new ConfererWebService();
 		List<Long> conferencesMonths = confererService.loadConferencesMonths();
 		conferencePagerAdapter = new ConferencesPagerAdapter(
 				getSupportFragmentManager(), conferencesMonths);

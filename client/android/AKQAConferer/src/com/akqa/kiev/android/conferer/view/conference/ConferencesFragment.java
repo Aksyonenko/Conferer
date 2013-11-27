@@ -12,8 +12,8 @@ import android.widget.ScrollView;
 
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.utils.DateUtils;
-import com.akqa.kiev.android.conferer.web.ConfererService;
 
 public class ConferencesFragment extends Fragment {
 
@@ -21,7 +21,7 @@ public class ConferencesFragment extends Fragment {
 
 	public static final String MONTH_ARG = "month";
 
-	private ConfererService confererService = new ConfererService();
+	private ConfererWebService confererService = new ConfererWebService();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +33,7 @@ public class ConferencesFragment extends Fragment {
 		LinearLayout conferencesRoot = (LinearLayout) rootView.getChildAt(0);
 		if (conferencesForMonth == null) {
 			List<Long> months = confererService.loadConferencesMonths();
-			int month = DateUtils.getNearestToCurrentDateIndex(confererService.loadConferencesMonths());
+			int month = DateUtils.getNearestToCurrentDateIndex(months);
 			conferencesForMonth = confererService
 					.loadConferencesForMonth(month);
 			
