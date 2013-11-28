@@ -67,6 +67,7 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 		
 		@Override
 		protected void onPostExecute(List<ConferenceData> result) {
+			conferences.clear();
 			for(ConferenceData data : result) {
 				conferences.add(data);
 			}
