@@ -6,10 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
+
+import com.akqa.kiev.android.conferer.db.ConferenceDao;
+import com.akqa.kiev.android.conferer.db.SessionDao;
+import com.akqa.kiev.android.conferer.db.SpeakerDao;
 
 public class SearchableActivity extends Activity {
 
@@ -28,9 +33,19 @@ public class SearchableActivity extends Activity {
 
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			long conferenceId = Long.parseLong(intent.getData().getLastPathSegment());
-			//star conferernce details activity here
-		} 
+			long id = Long.parseLong(intent.getData().getLastPathSegment());
+			String entity = intent.getExtras().getString(
+					SearchManager.EXTRA_DATA_KEY);
+			if (entity != null) {
+				if (entity.equals(ConferenceDao.TABLE_NAME)) {
+
+				} else if (entity.equals(SessionDao.TABLE_NAME)) {
+
+				} else if (entity.equals(SpeakerDao.TABLE_NAME)) {
+
+				}
+			}
+		}
 	}
 
 

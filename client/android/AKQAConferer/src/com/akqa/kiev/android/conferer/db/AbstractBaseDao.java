@@ -1,8 +1,11 @@
 package com.akqa.kiev.android.conferer.db;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +13,7 @@ import android.provider.BaseColumns;
 
 public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 
+	private static final int SEARCH_LIMIT = 3;
 	protected static final String COLUMN_ID = BaseColumns._ID;
 
 	protected SQLiteDatabase mDataBase;
@@ -56,8 +60,19 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 		}
 	}
 	
-	public abstract String getTableName();
-
+	public Cursor searchQuery(String searchArg) {
+		Map<String, String> map = getSearchColumnsMap();
+		final String query = MessageFormat
+				.format("select {0}, {0} as {1}, {2} as {3}, {4} as {5}, {6} as {7}, {8} as {9} from {10} where {3} like ''%{11}%'' limit {12};",
+						COLUMN_ID, SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID,
+						map.get(SearchManager.SUGGEST_COLUMN_TEXT_1), SearchManager.SUGGEST_COLUMN_TEXT_1,
+						map.get(SearchManager.SUGGEST_COLUMN_TEXT_2), SearchManager.SUGGEST_COLUMN_TEXT_2,
+						map.get(SearchManager.SUGGEST_COLUMN_ICON_1), SearchManager.SUGGEST_COLUMN_ICON_1,
+						"'" + getTableName() + "'", SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA,
+						getTableName(), searchArg, SEARCH_LIMIT);
+		return mDataBase.rawQuery(query, null);
+	}
+	
 	protected T cursorToObject(Cursor cursor) {
 		try {
 			if (cursor.moveToFirst()) {
@@ -69,9 +84,13 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 			cursor.close();
 		}
 	}
+	
+	public abstract String getTableName();
 
 	protected abstract T cursorToObjectInternal(Cursor cursor);
 
 	protected abstract ContentValues asContentValues(T item);
+	
+	protected abstract Map<String, String> getSearchColumnsMap();
 
 }
