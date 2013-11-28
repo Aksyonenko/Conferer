@@ -30,8 +30,17 @@ public class ConfererDatabase {
 	private SpeakerDao speakerDao;
 	
 	private CountDownLatch countDownLatch;
+	
+	private static ConfererDatabase instance;
+	
+	public static ConfererDatabase getInstance(Context context) {
+		if (instance == null) {
+			instance = new ConfererDatabase(context);
+		}
+		return instance;
+	}
 
-	public ConfererDatabase(Context context) {
+	private ConfererDatabase(Context context) {
 		client = new ConfererWebClient();
 		conferenceDao = new ConferenceDao();
 		sessionDao = new SessionDao();

@@ -1,18 +1,20 @@
 package com.akqa.kiev.android.conferer.db;
 
-import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 
 public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 
-	protected static final String TABLE_NAME = "conferences";
+	public static final String TABLE_NAME = "conferences";
 
 	// columns
 	private static final String COLUMN_CONFERENCE_URL = "conference_url";
@@ -25,6 +27,10 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 	private static final String COLUMN_REGION = "region";
 	private static final String COLUMN_CITY = "city";
 	private static final String COLUMN_ADDRESS = "address";
+	
+	protected ConferenceDao() {
+
+	}
 	
 	@Override
 	public void init(SQLiteDatabase db) {
@@ -44,14 +50,14 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		db.execSQL(createStatement);
 	}
 	
-	public Cursor searchQuery(String searchArg) {
-		final String query = MessageFormat
-				.format("select {0}, {0} as {1}, {2} as {3}, {4} as {5} from {6} where {3} like ''%{7}%'';",
-						COLUMN_ID, SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID,
-						COLUMN_TITLE, SearchManager.SUGGEST_COLUMN_TEXT_1,
-						COLUMN_SUMMARY, SearchManager.SUGGEST_COLUMN_TEXT_2,
-						TABLE_NAME, searchArg);
-		return mDataBase.rawQuery(query, null);
+	@Override
+	protected Map<String, String> getSearchColumnsMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, COLUMN_TITLE);
+		map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, COLUMN_SUMMARY);
+		map.put(SearchManager.SUGGEST_COLUMN_ICON_1,
+				String.valueOf(R.drawable.search_conference));
+		return map;
 	}
 	
 	

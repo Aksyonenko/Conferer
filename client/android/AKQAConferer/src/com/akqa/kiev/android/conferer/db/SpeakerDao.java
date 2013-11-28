@@ -2,18 +2,22 @@ package com.akqa.kiev.android.conferer.db;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.SocialLinksData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 
 public class SpeakerDao extends AbstractBaseDao<SpeakerData> {
 	
-	protected static final String TABLE_NAME = "speakers";
+	public static final String TABLE_NAME = "speakers";
 
 	// columns
 	private static final String COLUMN_SPEAKER_URL = "speaker_url";
@@ -64,6 +68,19 @@ public class SpeakerDao extends AbstractBaseDao<SpeakerData> {
 	
 	public List<SpeakerData> getList(Long... ids){	
 		return getList(Arrays.asList(ids));
+	}
+	
+	@Override
+	protected Map<String, String> getSearchColumnsMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, "(" + COLUMN_FIRSTNAME
+				+ "||' '||" + COLUMN_LASTNAME + ")"); // concatenation firstname
+														// and lastname in sql
+														// query
+		map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, COLUMN_COMPETENCE);
+		map.put(SearchManager.SUGGEST_COLUMN_ICON_1,
+				String.valueOf(R.drawable.search_speaker));
+		return map;
 	}
 	
 	@Override

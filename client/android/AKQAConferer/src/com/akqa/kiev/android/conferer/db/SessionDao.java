@@ -2,17 +2,21 @@ package com.akqa.kiev.android.conferer.db;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.SessionData;
 
 public class SessionDao extends AbstractBaseDao<SessionData> {
 
-	private static final String TABLE_NAME = "sessions";
+	public static final String TABLE_NAME = "sessions";
 	
 
 	// columns
@@ -111,6 +115,16 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 	}
 	
 	@Override
+	protected Map<String, String> getSearchColumnsMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, COLUMN_TITLE);
+		map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, COLUMN_SUMMARY);
+		map.put(SearchManager.SUGGEST_COLUMN_ICON_1,
+				String.valueOf(R.drawable.search_session));
+		return map;
+	}
+	
+	@Override
 	protected ContentValues asContentValues(SessionData session) {
 		ContentValues valuesMap = new ContentValues();
 		valuesMap.put(COLUMN_ID, session.getId());
@@ -150,5 +164,6 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 	public String getTableName() {
 		return TABLE_NAME;
 	}
+
 
 }
