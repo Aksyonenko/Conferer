@@ -9,4 +9,8 @@
     <string name="search_title">Search</string>
     <string name="conferences_title">CONFERENCES</string>
     <string name="search_hint">Enter search query here</string>
+    <string name="session_details_speaker">Speaker:</string>
+    <string name="session_details_day">Day:</string>
+    <string name="session_details_time">Time:</string>
+    <string name="session_details_location">Location:</string>
 </resources>

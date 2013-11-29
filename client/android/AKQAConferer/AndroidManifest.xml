@@ -32,6 +32,14 @@
             	android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akqa.kiev.android.conferer.StartActivity"/>
         </activity>
+        <activity 
+            android:name="SessionDetailsActivity" 
+            android:label="@string/app_name"
+            android:parentActivityName="com.akqa.kiev.android.conferer.StartActivity">
+        	<meta-data 
+            	android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.akqa.kiev.android.conferer.StartActivity"/>
+        </activity>
        
          <activity android:name="com.akqa.kiev.android.conferer.SearchableActivity" >
         	<intent-filter>

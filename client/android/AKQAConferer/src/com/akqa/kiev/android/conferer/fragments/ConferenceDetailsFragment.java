@@ -14,26 +14,29 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.OnDetailsFragmentStartedListener;
+import com.akqa.kiev.android.conferer.OnSessionSelectedListener;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 
-public class ConferenceDetailsFragment extends Fragment {
+public class ConferenceDetailsFragment extends Fragment implements OnItemClickListener {
 	private ConfererService confererService;
 	private Long conferenceId;
 	List<SessionData> sessions;
 	ListView conferenceDetailsListView;
 	ConferenceDetailsArrayAdapter conferenceDetailsAdapter;
 	OnDetailsFragmentStartedListener fragmentStartedListener;
+	OnSessionSelectedListener sessionSelectedListener;
 	SimpleDateFormat dayFormat;
 	SimpleDateFormat monthFormat;
-	View conferenceDetailsHeaderView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,13 +59,13 @@ public class ConferenceDetailsFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		fragmentStartedListener = (OnDetailsFragmentStartedListener) getActivity();
+		sessionSelectedListener = (OnSessionSelectedListener) getActivity();
 		conferenceDetailsListView = (ListView) getView().findViewById(R.id.conference_details_list_view);
 		LayoutInflater inflater = (LayoutInflater) this.getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		conferenceDetailsHeaderView = inflater.inflate(R.layout.session_list_header, conferenceDetailsListView, false);
-		conferenceDetailsListView.addHeaderView(conferenceDetailsHeaderView);
 		conferenceDetailsAdapter = new ConferenceDetailsArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, sessions);
 		conferenceDetailsListView.setAdapter(conferenceDetailsAdapter);
+		conferenceDetailsListView.setOnItemClickListener(this);
 		fragmentStartedListener.onDetailsFragmentStarted(this);
 		
 	}
@@ -78,13 +81,13 @@ public class ConferenceDetailsFragment extends Fragment {
 	}
 	
 	private void updateViews(ConferenceDetailsData conferenceDetailsData) {
-		TextView headerTitle = (TextView) conferenceDetailsHeaderView.findViewById(R.id.session_list_header_title);
+		TextView headerTitle = (TextView) getView().findViewById(R.id.session_list_header_title);
 		headerTitle.setText(conferenceDetailsData.getTitle());
-		TextView headerLocation = (TextView) conferenceDetailsHeaderView.findViewById(R.id.session_list_header_location);
+		TextView headerLocation = (TextView) getView().findViewById(R.id.session_list_header_location);
 		headerLocation.setText(conferenceDetailsData.getCity() + ", " + conferenceDetailsData.getCountry());
-		TextView headerDescription = (TextView) conferenceDetailsHeaderView.findViewById(R.id.session_list_header_description);
+		TextView headerDescription = (TextView) getView().findViewById(R.id.session_list_header_description);
 		headerDescription.setText(conferenceDetailsData.getSummary());
-		TextView headerDate = (TextView) conferenceDetailsHeaderView.findViewById(R.id.session_list_header_dates);
+		TextView headerDate = (TextView) getView().findViewById(R.id.session_list_header_dates);
 		StringBuilder builder = new StringBuilder();
 		Date startDate = conferenceDetailsData.getStartDate();
 		Date endDate = conferenceDetailsData.getEndDate();
@@ -115,5 +118,11 @@ public class ConferenceDetailsFragment extends Fragment {
 			}
 		}
 		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Long sessionId = sessions.get(position).getId();
+		sessionSelectedListener.onSessionSelected(sessionId);
 	}
 }
