@@ -1,9 +1,16 @@
 package com.akqa.kiev.conferer.server.model;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "speakers")
@@ -26,6 +33,10 @@ public class Speaker extends AbstractEntity {
 	
 	@Column(length = 4096)
 	private String about;
+	
+	@JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "speakers")
+    private List<Session> sessions;
 
 	@Embedded
 	private SocialLinks socialLinks = new SocialLinks();
@@ -89,5 +100,13 @@ public class Speaker extends AbstractEntity {
 	public void setSocialLinks(SocialLinks socialLinks) {
 		this.socialLinks = socialLinks;
 	}
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
 
 }

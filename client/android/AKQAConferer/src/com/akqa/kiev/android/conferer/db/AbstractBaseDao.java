@@ -63,7 +63,7 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 	public Cursor searchQuery(String searchArg) {
 		Map<String, String> map = getSearchColumnsMap();
 		final String query = MessageFormat
-				.format("select {0}, {0} as {1}, {2} as {3}, {4} as {5}, {6} as {7}, {8} as {9} from {10} where {3} like ''%{11}%'' limit {12};",
+				.format("select {0}, {0} as {1}, {2} as {3}, {4} as {5}, {6} as {7}, {8} as {9} from {10} where {3} like ''%{11}%'' order by {3} limit {12};",
 						COLUMN_ID, SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID,
 						map.get(SearchManager.SUGGEST_COLUMN_TEXT_1), SearchManager.SUGGEST_COLUMN_TEXT_1,
 						map.get(SearchManager.SUGGEST_COLUMN_TEXT_2), SearchManager.SUGGEST_COLUMN_TEXT_2,
