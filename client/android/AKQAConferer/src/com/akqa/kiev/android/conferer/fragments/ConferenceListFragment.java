@@ -59,8 +59,12 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 		@Override
 		protected List<ConferenceData> doInBackground(Void... params) {
 			List<Long> months = confererService.loadConferencesMonths();
+			List<ConferenceData> conferences = new ArrayList<ConferenceData>();
 			if(months != null && !months.isEmpty()) {
-				return confererService.loadConferencesForMonth(months.get(0));
+				for(Long month : months) {
+					conferences.addAll(confererService.loadConferencesForMonth(month));
+				}
+				return conferences;
 			}
 			return null;
 		}

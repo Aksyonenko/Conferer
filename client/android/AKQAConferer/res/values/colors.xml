@@ -1,12 +1,9 @@
 <resources>
 
-    <color name="months_bar_color">#f0f0f0</color>
-    <color name="months_text_color">#d94343</color>
     <color name="conferer_background">#efefef</color>
     <color name="odd_conference_color">#808080</color>
     <color name="titlebar_color">#0f0f0f</color>
     <color name="title_color">#d94343</color>
-    <color name="footer_bg_color">#f0f0f0</color>
     <color name="conference_title_color">#d94343</color>
     <color name="conference_title_bg_color">#f0f0f0</color>
     <color name="conference_days_bar_color">#2f0f0f</color>
@@ -20,4 +17,7 @@
     <color name="actionbar_background_color">#262626</color>
     <color name="actionbar_title_text_color">#d94342</color>
     <color name="speaker_text_color">#d94342</color>
+    <color name="conference_list_item_selected_bg">#eabcbc</color>
+    <color name="conference_list_item_focused_bg">#e8d3d3</color>
+    <color name="conference_list_item_pressed_bg">#e89494</color>
 </resources>
