@@ -18,7 +18,7 @@ public class SearchSuggestionProvider extends ContentProvider {
 	public static String AUTHORITY = "com.akqa.kiev.android.conferer.SearchSuggestionProvider";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/conferer");
-	
+
 	private ConferenceDao conferenceDao;
 	private SessionDao sessionDao;
 	private SpeakerDao speakerDao;
@@ -42,13 +42,13 @@ public class SearchSuggestionProvider extends ContentProvider {
 		}
 		Cursor conferencesCursor = conferenceDao.searchQuery(selectionArgs[0]);
 		Cursor sessionsCursor = sessionDao.searchQuery(selectionArgs[0]);
-		Cursor speakersCursor =speakerDao.searchQuery(selectionArgs[0]);
+		Cursor speakersCursor = speakerDao.searchQuery(selectionArgs[0]);
 
 		MergeCursor mergedCursor = new MergeCursor(new Cursor[] {
 				conferencesCursor, sessionsCursor, speakersCursor });
-		
-		 if (!mergedCursor.moveToFirst()) {
-			 mergedCursor.close();
+
+		if (!mergedCursor.moveToFirst()) {
+			mergedCursor.close();
 			return null;
 		}
 		return mergedCursor;
