@@ -1,9 +1,7 @@
 package com.akqa.kiev.conferer.server.dao;
 
 import java.math.BigInteger;
-import java.util.List;
 
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;

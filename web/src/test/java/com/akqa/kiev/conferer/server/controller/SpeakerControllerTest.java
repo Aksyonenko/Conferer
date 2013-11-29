@@ -38,4 +38,9 @@ public class SpeakerControllerTest extends AbstractControllerTest {
 		mockMvc.perform(get("/speakers/- &").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest());
 	}
+	
+    @Test
+    public void speaker_sessions() throws Exception {
+        mockMvc.perform(get("/speakers/1/sessions").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
 }
