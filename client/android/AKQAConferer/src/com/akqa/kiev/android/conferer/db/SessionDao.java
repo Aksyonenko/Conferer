@@ -1,5 +1,6 @@
 package com.akqa.kiev.android.conferer.db;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,6 +71,13 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 		mDataBase.insert(SESSION_SPEAKER_TABLE_NAME, null, valuesMap);
 	}
 	
+	public List<SessionData> getConferenceSessions(Long confId) {
+		Cursor cursor = mDataBase.rawQuery(String.format(
+				"select * from %s where %s = ?", TABLE_NAME,
+				COLUMN_CONFERENCE_ID), new String[] { String.valueOf(confId) });
+		return cursorToListObjects(cursor);
+	}
+	
 	public List<Long> getSpeakerIdsForSession(Long sessionId) {
 		Cursor cursor = mDataBase.rawQuery(String.format(
 				"select %s from %s where %s = ?", COLUMN_SPEAKER_ID,
@@ -89,24 +97,14 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 		return ids;
 	}
 	
-	public List<SessionData> getConferenceSessions(Long confId) {
-		List<SessionData> sessions = new ArrayList<SessionData>();
-		Cursor cursor = mDataBase.rawQuery(String.format(
-				"select * from %s where %s = ?", TABLE_NAME,
-				COLUMN_CONFERENCE_ID), new String[] { String.valueOf(confId) });
-		try {
-			if (cursor.moveToFirst()) {
-				while (!cursor.isAfterLast()) {
-					sessions.add(cursorToObjectInternal(cursor));
-					cursor.moveToNext();
-				}
-			}
-		} finally {
-			cursor.close();
-		}
-		return sessions;
+	public List<SessionData> getSpeakerSessions(long speakerId) {
+		Cursor cursor = mDataBase.rawQuery(MessageFormat.format(
+				"select * from {0} join {1} on {0}.{2}={1}.{3} where {4} = ?",
+				TABLE_NAME, SESSION_SPEAKER_TABLE_NAME, COLUMN_ID,
+				COLUMN_SESSION_ID, COLUMN_SPEAKER_ID), new String[] { String
+				.valueOf(speakerId) });
+		return cursorToListObjects(cursor);
 	}
-	
 	
 	public void insert(SessionData session, Long conferenceId) {
 		ContentValues valuesMap = asContentValues(session);

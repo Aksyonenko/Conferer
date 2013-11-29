@@ -2,6 +2,7 @@ package com.akqa.kiev.android.conferer.web.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -23,14 +24,22 @@ import com.akqa.kiev.android.conferer.utils.LogUtils;
  */
 public class ConfererWebClient {
 
-	private static final String CONFERENCES_URL = "http://10.11.100.254/conferences";
-	private static final String ALL_CONFERENCES_URL = "http://10.11.100.254/conferences/all";
-
+	private static final String SERVER_ADDR = "http://10.11.100.254";
+	
+	private static final String CONFERENCES_URL = SERVER_ADDR + "/conferences";
+	private static final String ALL_CONFERENCES_URL = SERVER_ADDR
+			+ "/conferences/all";
 	private static final String CONFERENCES_YEAR_PARAM = "year";
 	private static final String CONFERENCES_MONTH_PARAM = "month";
-	private static final String CONFERENCES_MONTHS_URL = "http://10.11.100.254/conferences/months";
-	private static final String SESSIONS_URL = "http://10.11.100.254/sessions";
-	private static final String SPEAKERS_URL = "http://10.11.100.254/speakers";
+	private static final String CONFERENCES_MONTHS_URL = SERVER_ADDR
+			+ "/conferences/months";
+
+	private static final String SESSIONS_URL = SERVER_ADDR + "/sessions";
+
+	private static final String SPEAKERS_URL = SERVER_ADDR + "/speakers";
+	private static final String SPEAKER_SESSIONS_URL = SERVER_ADDR
+			+ "/speakers/{0}/sessions";
+
 
 	private DefaultHttpClient httpClient;
 
@@ -45,6 +54,18 @@ public class ConfererWebClient {
 	public String getAllconferencesMonths() {
 		return getRequest(CONFERENCES_MONTHS_URL);
 	}
+	
+	public String getConferences(int year, int month) {
+		StringBuilder url = new StringBuilder(CONFERENCES_URL);
+		url.append("?").append(CONFERENCES_YEAR_PARAM).append("=").append(year);
+		url.append("&").append(CONFERENCES_MONTH_PARAM).append("=")
+				.append(month);
+		return getRequest(url.toString());
+	}
+	
+	public String getAllConferences() {
+		return getRequest(ALL_CONFERENCES_URL);
+	}
 
 	public String getConferenceDetails(long id) {
 		return getRequest(CONFERENCES_URL + "/" + id);
@@ -57,17 +78,10 @@ public class ConfererWebClient {
 	public String getSpeakerDetails(long id) {
 		return getRequest(SPEAKERS_URL + "/" + id);
 	}
-
-	public String getConferences(int year, int month) {
-		StringBuilder url = new StringBuilder(CONFERENCES_URL);
-		url.append("?").append(CONFERENCES_YEAR_PARAM).append("=").append(year);
-		url.append("&").append(CONFERENCES_MONTH_PARAM).append("=")
-				.append(month);
-		return getRequest(url.toString());
-	}
 	
-	public String getAllConferences() {
-		return getRequest(ALL_CONFERENCES_URL);
+
+	public String getSpeakerSessions(long speakerId){
+		return getRequest(MessageFormat.format(SPEAKER_SESSIONS_URL, speakerId));
 	}
 
 	private String getRequest(String url) {

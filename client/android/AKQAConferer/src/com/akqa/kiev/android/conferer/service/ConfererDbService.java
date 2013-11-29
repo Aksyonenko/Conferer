@@ -126,4 +126,9 @@ public class ConfererDbService implements ConfererService {
 		return speakerDao.getById(id);
 	}
 
+	@Override
+	public List<SessionData> loadSpeakerSessions(long speakerId) {
+		return sessionDao.getSpeakerSessions(speakerId);
+	}
+
 }

@@ -18,4 +18,6 @@ public interface ConfererService {
 	SessionData loadSessionDetails(long id);
 
 	SpeakerData loadSpeakereDetails(long id);
+	
+	List<SessionData> loadSpeakerSessions(long speakerId);
 }

@@ -77,4 +77,16 @@ public class ConfererWebService implements ConfererService {
 		}
 		return null;
 	}
+
+	@Override
+	public List<SessionData> loadSpeakerSessions(long speakerId) {
+		String sessionsJson = webClient.getSpeakerDetails(speakerId);
+		try {
+			return ReflectionJsonParsingHelper.listObjectsFromJsonString(
+					sessionsJson, SessionData.class);
+		} catch (Exception e) {
+			LogUtils.logE(getClass().getName(), e);
+		}
+		return null;
+	}
 }

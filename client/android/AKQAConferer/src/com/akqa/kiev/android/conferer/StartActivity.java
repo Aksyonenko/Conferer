@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.akqa.kiev.android.conferer.db.ConfererDatabase;
 import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
@@ -29,7 +28,6 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_start);
 		cs = new ConfererDbService(getApplicationContext());
-
 	}
 
 	@Override

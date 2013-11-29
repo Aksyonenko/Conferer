@@ -1,6 +1,5 @@
 package com.akqa.kiev.android.conferer.db;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -48,22 +47,11 @@ public class SpeakerDao extends AbstractBaseDao<SpeakerData> {
 	}
 	
 	public List<SpeakerData> getList(List<Long> ids) {
-		List<SpeakerData> speakers = new ArrayList<SpeakerData>();
 		String inClause = ids.toString().replace("[", "").replace("]", "");
 		Cursor cursor = mDataBase.rawQuery(String.format(
 				"select * from %s where %s in (%s)", TABLE_NAME, COLUMN_ID,
 				inClause), null);
-		try {
-			if (cursor.moveToFirst()) {
-				while (!cursor.isAfterLast()) {
-					speakers.add(cursorToObjectInternal(cursor));
-					cursor.moveToNext();
-				}
-			}
-		} finally {
-			cursor.close();
-		}
-		return speakers;
+		return cursorToListObjects(cursor);
 	}
 	
 	public List<SpeakerData> getList(Long... ids){	

@@ -35,13 +35,18 @@ public class ConfererWebClientTest extends TestCase {
 	}
 
 	public void testGetSessioneDetails() {
-		String confDetails = client.getSessionDetails(1);
-		assertNotNull(confDetails);
+		String sessionDetails = client.getSessionDetails(1);
+		assertNotNull(sessionDetails);
 	}
 
 	public void testGetSpeakerDetails() {
-		String confDetails = client.getSpeakerDetails(1);
-		assertNotNull(confDetails);
+		String speakerDetails = client.getSpeakerDetails(1);
+		assertNotNull(speakerDetails);
+	}
+	
+	public void testGetSpeakerSessions() {
+		String speakerSessions = client.getSpeakerSessions(1);
+		assertNotNull(speakerSessions);
 	}
 
 }

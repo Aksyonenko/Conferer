@@ -85,6 +85,21 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 		}
 	}
 	
+	protected List<T> cursorToListObjects(Cursor cursor) {
+		List<T> list = new ArrayList<T>();
+		try {
+			if (cursor.moveToFirst()) {
+				while (!cursor.isAfterLast()) {
+					list.add(cursorToObjectInternal(cursor));
+					cursor.moveToNext();
+				}
+			}
+		} finally {
+			cursor.close();
+		}
+		return list;
+	}
+	
 	public abstract String getTableName();
 
 	protected abstract T cursorToObjectInternal(Cursor cursor);
