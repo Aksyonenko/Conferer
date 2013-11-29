@@ -42,7 +42,7 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_conference_list, container, false);
 		return view;
-	}
+	} 
 	
 	@Override
 	public void onStart() {
@@ -82,6 +82,7 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Long clickedId  = conferences.get(position).getId();
+		view.setSelected(true);
 		conferenceSelectedListener.onConferenceSelected(clickedId);
 	}
 
