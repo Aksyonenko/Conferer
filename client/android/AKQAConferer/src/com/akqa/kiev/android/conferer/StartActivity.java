@@ -23,6 +23,7 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
+	private Long currentConferenceId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 
 	@Override
 	public void onConferenceSelected(Long conferenceId) {
+		currentConferenceId = conferenceId;
 		if (isTwoPane) {
 			ConferenceDetailsFragment detailsFragment = initDetailsFragment();
 			detailsFragment.setConferenceId(conferenceId);
@@ -92,6 +94,7 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 	public void onSessionSelected(Long sessionId) {
 		Intent sessionDetailsIntent = new Intent(this, SessionDetailsActivity.class);
 		sessionDetailsIntent.putExtra(Constants.BUNDLE_SESSION_ID, sessionId);
+		sessionDetailsIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, currentConferenceId);
 		startActivity(sessionDetailsIntent);
 	}
 }

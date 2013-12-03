@@ -1,5 +1,6 @@
 package com.akqa.kiev.android.conferer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -9,7 +10,7 @@ import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
 import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.utils.Constants;
 
-public class ConferenceDetailActivity extends FragmentActivity implements OnDetailsFragmentStartedListener {
+public class ConferenceDetailActivity extends FragmentActivity implements OnDetailsFragmentStartedListener, OnSessionSelectedListener {
 	
 	private ConfererService confererService;
 	
@@ -36,6 +37,14 @@ public class ConferenceDetailActivity extends FragmentActivity implements OnDeta
 	@Override
 	public void onDetailsFragmentStarted(ConferenceDetailsFragment fragment) {
 		fragment.setConferenceId(conferenceId);
+	}
+
+	@Override
+	public void onSessionSelected(Long sessionId) {
+		Intent sessionDetailsIntent = new Intent(this, SessionDetailsActivity.class);
+		sessionDetailsIntent.putExtra(Constants.BUNDLE_SESSION_ID, sessionId);
+		sessionDetailsIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, conferenceId);
+		startActivity(sessionDetailsIntent);
 	}
 	
 }

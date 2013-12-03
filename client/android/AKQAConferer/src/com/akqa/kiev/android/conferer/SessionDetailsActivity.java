@@ -12,7 +12,7 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
-	Long sessionId;
+	private Long sessionId, conferenceId;
 	
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -20,10 +20,11 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 		setContentView(R.layout.activity_session_details);
 		cs = new ConfererDbService(getApplicationContext());
 		sessionId = getIntent().getLongExtra(Constants.BUNDLE_SESSION_ID, 0L);
+		conferenceId = getIntent().getLongExtra(Constants.BUNDLE_CONFERENCE_ID, 0L);
 	}
 
 	@Override
 	public void onSessionDetailsFragmentStarted(SessionDetailsFragment fragment) {
-		fragment.setSessionId(sessionId);
+		fragment.setSessionId(sessionId, conferenceId);
 	}
 }
