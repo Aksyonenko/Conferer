@@ -66,6 +66,7 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 		conferenceDetailsAdapter = new ConferenceDetailsArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, sessions);
 		conferenceDetailsListView.setAdapter(conferenceDetailsAdapter);
 		conferenceDetailsListView.setOnItemClickListener(this);
+		conferenceDetailsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		fragmentStartedListener.onDetailsFragmentStarted(this);
 		
 	}
@@ -123,6 +124,7 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Long sessionId = sessions.get(position).getId();
+		conferenceDetailsListView.setItemChecked(position, true);
 		sessionSelectedListener.onSessionSelected(sessionId);
 	}
 }

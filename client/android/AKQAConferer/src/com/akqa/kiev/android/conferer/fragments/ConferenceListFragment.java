@@ -49,6 +49,7 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 		super.onStart();
 		conferenceListView = (ListView) getView().findViewById(R.id.conferenceListView);
 		conferenceLVAdapter = new ConferenceListArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, conferences);
+		conferenceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		conferenceListView.setAdapter(conferenceLVAdapter);
 		conferenceListView.setOnItemClickListener(this);
 		LoadDataTask loadDataTask = new LoadDataTask();
