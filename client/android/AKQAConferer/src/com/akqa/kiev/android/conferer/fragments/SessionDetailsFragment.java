@@ -2,15 +2,6 @@ package com.akqa.kiev.android.conferer.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
-import java.util.Locale;
-
-import com.akqa.kiev.android.conferer.OnSessionDetailsFragmentStartedListenter;
-import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.model.SessionData;
-import com.akqa.kiev.android.conferer.model.SpeakerData;
-import com.akqa.kiev.android.conferer.service.ConfererService;
-import com.akqa.kiev.android.conferer.service.ConfererWebService;
-import com.androidquery.AQuery;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,9 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.akqa.kiev.android.conferer.OnSessionDetailsFragmentStartedListenter;
+import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.SessionData;
+import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.service.ConfererService;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
+import com.androidquery.AQuery;
+
 public class SessionDetailsFragment extends Fragment {
 	private ConfererService confererService;
-	private SessionData sessionData;
 	private Long sessionId, conferenceId;
 	private OnSessionDetailsFragmentStartedListenter onFragmentStartedListenter;
 	private SimpleDateFormat sessionTimeFormat;
