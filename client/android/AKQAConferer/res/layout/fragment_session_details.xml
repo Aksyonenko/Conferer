@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/fragment_background" >
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -163,31 +164,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/session_details_speaker_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="vertical"
+                android:background="@android:color/holo_orange_light" >
 
                 <TextView
-                    android:id="@+id/session_details_date"
+                    android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:text="24 APR - 25 APR"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/session_details_geo_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:text="Tokyo, Japan"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:text="Speakers" />
+                
             </LinearLayout>
 
             <TextView
