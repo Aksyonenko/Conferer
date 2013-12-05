@@ -6,7 +6,7 @@
     android:paddingLeft="5dp" >
 
     <TextView
-        android:id="@+id/speaker_name"
+        android:id="@+id/speaker_details_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Christophe Coenraets"
@@ -14,9 +14,23 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/speaker_subtitle"
+        android:id="@+id/speaker_details_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chief Architect and Group CTO of Application Security and Identity Products, Intel" />
+
+    <ImageView
+        android:id="@+id/speaker_details_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/conference_logo_test" />
+
+    <TextView
+        android:id="@+id/speaker_details_bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="roboto-light"
+        android:textSize="12sp"
+        android:text="Christophe Coenraets is Chief Architect and Group CTO of Application Security and Identity Products with Intel, where he is responsible for architecting SOA, Cloud, Mobile, Big Data" />
 
 </LinearLayout>

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.akqa.kiev.android.conferer.OnSessionDetailsFragmentStartedListenter;
 import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.SessionDetailsFragmentListener;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 import com.akqa.kiev.android.conferer.service.ConfererService;
@@ -33,6 +34,7 @@ public class SessionDetailsFragment extends Fragment {
 	private SimpleDateFormat sessionTimeFormat;
 	private SimpleDateFormat sessionDateFormat;
 	private SessionData sessionData;
+	private SessionDetailsFragmentListener sessionDetailsFragmentListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class SessionDetailsFragment extends Fragment {
 		confererService = new ConfererWebService();
 		sessionTimeFormat = new SimpleDateFormat("HH:mm");
 		sessionDateFormat = new SimpleDateFormat("dd MMMM yyyy, EEE");
+		sessionDetailsFragmentListener = (SessionDetailsFragmentListener) getActivity();
 	}
 
 	@Override
@@ -138,7 +141,7 @@ public class SessionDetailsFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			Log.d(getClass().getName(), "speaker click" + speakerId);
+			sessionDetailsFragmentListener.onSpeakerClick(speakerId);
 		}
 
 	}

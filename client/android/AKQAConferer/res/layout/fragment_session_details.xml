@@ -182,7 +182,9 @@
                 android:id="@+id/session_details_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="roboto-light"
                 android:layout_marginLeft="4dp"
+                android:textSize="12sp"
                 android:text="The garbage-first, also known as G1, garbage collector is an officially supported garbage collector in Java 7 update 4 and later JVMs based on Oracles HotSpot" />
 
         </LinearLayout>

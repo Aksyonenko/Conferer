@@ -2,6 +2,7 @@ package com.akqa.kiev.android.conferer;
 
 import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
 import com.akqa.kiev.android.conferer.fragments.SessionDetailsFragment;
+import com.akqa.kiev.android.conferer.fragments.SpeakerDetailsFragment;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.utils.Constants;
@@ -9,6 +10,7 @@ import com.akqa.kiev.android.conferer.utils.Constants;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -17,7 +19,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 public class SessionDetailsActivity extends FragmentActivity implements OnSessionDetailsFragmentStartedListenter,
-		OnDetailsFragmentStartedListener, OnSessionSelectedListener {
+		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener {
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
@@ -43,8 +45,12 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 	}
 
 	private SessionDetailsFragment initSessionDetailsFragment() {
-		SessionDetailsFragment sessionDetailsFragment = (SessionDetailsFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.sessionDetailsRightFragmentContainer);
+		SessionDetailsFragment sessionDetailsFragment = null;
+		Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(
+				R.id.sessionDetailsRightFragmentContainer);
+		if(fragment != null && fragment instanceof SessionDetailsFragment) {
+			sessionDetailsFragment = (SessionDetailsFragment) fragment;
+		}
 		if (sessionDetailsFragment == null) {
 			sessionDetailsFragment = new SessionDetailsFragment();
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -84,9 +90,30 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 	@Override
 	public void onSessionSelected(Long sessionId) {
 		this.sessionId = sessionId;
-		if(isTwoPane) {
+		if (isTwoPane) {
 			SessionDetailsFragment sessionDetailsFragment = initSessionDetailsFragment();
 			sessionDetailsFragment.setSessionId(sessionId, conferenceId);
-		} 
+		}
+	}
+
+	@Override
+	public void onSpeakerClick(Long speakerId) {
+		if (isTwoPane) {
+			Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(
+					R.id.sessionDetailsRightFragmentContainer);
+			SpeakerDetailsFragment speakerFragment = null;
+			if (fragment != null && fragment instanceof SpeakerDetailsFragment) {
+				speakerFragment = (SpeakerDetailsFragment) fragment;
+			}
+
+			if (speakerFragment == null) {
+				speakerFragment = new SpeakerDetailsFragment();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+				transaction.setCustomAnimations(R.anim.anim_speaker_enter, R.anim.anim_speaker_exit,
+						R.anim.anim_speaker_pop_enter, R.anim.anim_speaker_pop_exit);
+				transaction.replace(R.id.sessionDetailsRightFragmentContainer, speakerFragment).addToBackStack(null);
+				transaction.commit();
+			}
+		}
 	}
 }
