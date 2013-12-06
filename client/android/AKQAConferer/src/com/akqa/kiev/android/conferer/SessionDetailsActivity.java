@@ -9,6 +9,7 @@ import com.akqa.kiev.android.conferer.utils.Constants;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -19,11 +20,11 @@ import android.view.View;
 import android.widget.SearchView;
 
 public class SessionDetailsActivity extends FragmentActivity implements OnSessionDetailsFragmentStartedListenter,
-		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener {
+		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener, SpeakerDetailsFragmentListener {
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
-	private Long sessionId, conferenceId;
+	private Long sessionId, conferenceId, speakerId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 
 	@Override
 	public void onSpeakerClick(Long speakerId) {
+		this.speakerId = speakerId;
 		if (isTwoPane) {
 			Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(
 					R.id.sessionDetailsRightFragmentContainer);
@@ -114,6 +116,15 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 				transaction.replace(R.id.sessionDetailsRightFragmentContainer, speakerFragment).addToBackStack(null);
 				transaction.commit();
 			}
+		} else {
+			Intent speakerIntent = new Intent(this, SpeakerDetailsActivity.class);
+			speakerIntent.putExtra(Constants.BUNDLE_SPEAKER_ID, speakerId);
+			startActivity(speakerIntent);
 		}
+	}
+
+	@Override
+	public void onSpeakerDetailsFragmentStart(SpeakerDetailsFragment fragment) {
+		fragment.setSpeakerId(speakerId);		
 	}
 }
