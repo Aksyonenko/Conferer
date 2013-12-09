@@ -1,20 +1,24 @@
 package com.akqa.kiev.android.conferer.fragments;
 
-import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.SpeakerDetailsFragmentListener;
-import com.akqa.kiev.android.conferer.model.SpeakerData;
-import com.akqa.kiev.android.conferer.service.ConfererService;
-import com.akqa.kiev.android.conferer.service.ConfererWebService;
-import com.androidquery.AQuery;
-
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.SpeakerDetailsFragmentListener;
+import com.akqa.kiev.android.conferer.model.SocialLinksData;
+import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.service.ConfererService;
+import com.akqa.kiev.android.conferer.service.ConfererWebService;
+import com.androidquery.AQuery;
 
 public class SpeakerDetailsFragment extends Fragment {
 	
@@ -53,6 +57,36 @@ public class SpeakerDetailsFragment extends Fragment {
 		}
 		TextView speakerBio = (TextView) getView().findViewById(R.id.speaker_details_bio);
 		speakerBio.setText(speakerData.getAbout());
+		updateSocialLinks(speakerData.getSocialLinks());
+	}
+	
+	public void updateSocialLinks(SocialLinksData data) {
+		ImageView facebookImageView = (ImageView) getView().findViewById(R.id.speaker_details_facebook_logo);
+		ImageView linkedInImageView = (ImageView) getView().findViewById(R.id.speaker_details_linkedin_logo);
+		ImageView twitterImageView = (ImageView) getView().findViewById(R.id.speaker_details_twitter_logo);
+		final String facebookLink = data.getFacebook();
+		if(facebookLink != null && !facebookLink.isEmpty()) {
+			facebookImageView.setVisibility(View.VISIBLE);
+			facebookImageView.setOnClickListener(new OnSocialLinkclickListener(facebookLink));
+		} else {
+			facebookImageView.setVisibility(View.GONE);
+		}
+		
+		final String linkedInLink = data.getLinkedin();
+		if(linkedInLink != null && !linkedInLink.isEmpty()) {
+			linkedInImageView.setVisibility(View.VISIBLE);
+			linkedInImageView.setOnClickListener(new OnSocialLinkclickListener(linkedInLink));
+		} else {
+			linkedInImageView.setVisibility(View.GONE);
+		}
+		
+		final String twitterLink = data.getTwitter();
+		if(twitterLink != null && !twitterLink.isEmpty()) {
+			twitterImageView.setVisibility(View.VISIBLE);
+			twitterImageView.setOnClickListener(new OnSocialLinkclickListener(twitterLink));
+		} else {
+			twitterImageView.setVisibility(View.GONE);
+		}
 	}
 	
 	public void setSpeakerId(Long speakerId) {
@@ -74,4 +108,21 @@ public class SpeakerDetailsFragment extends Fragment {
 		}
 		
 	}
+	
+	private class OnSocialLinkclickListener implements OnClickListener {
+
+		private String url;
+		
+		public OnSocialLinkclickListener(String url) {
+			this.url = url;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			Intent viewProfileIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			startActivity(viewProfileIntent);
+		}
+		
+	}
+	
 }
