@@ -120,7 +120,9 @@ public class SessionDetailsFragment extends Fragment {
 
 		@Override
 		protected SessionData doInBackground(Void... params) {
-			return confererService.loadSessionDetails(sessionId);
+			if(confererService != null)
+				return confererService.loadSessionDetails(sessionId);
+			else return null;
 		}
 
 		@Override

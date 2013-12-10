@@ -7,6 +7,7 @@ import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.utils.Constants;
 
+import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +26,8 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
 	private Long sessionId, conferenceId, speakerId;
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,6 +94,8 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 	public void onSessionSelected(Long sessionId) {
 		this.sessionId = sessionId;
 		if (isTwoPane) {
+			FragmentManager fm = this.getSupportFragmentManager();
+			fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			SessionDetailsFragment sessionDetailsFragment = initSessionDetailsFragment();
 			sessionDetailsFragment.setSessionId(sessionId, conferenceId);
 		}

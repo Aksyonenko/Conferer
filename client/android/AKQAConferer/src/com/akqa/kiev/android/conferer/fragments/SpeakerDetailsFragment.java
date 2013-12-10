@@ -1,5 +1,7 @@
 package com.akqa.kiev.android.conferer.fragments;
 
+import java.lang.ref.WeakReference;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,14 +25,14 @@ import com.androidquery.AQuery;
 public class SpeakerDetailsFragment extends Fragment {
 	
 	private ConfererService confererService;
-	private SpeakerDetailsFragmentListener speakerListener;
 	private Long speakerId;
+	private static WeakReference<SpeakerDetailsFragmentListener> speakerListenerReference = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		confererService = new ConfererWebService();
-		speakerListener = (SpeakerDetailsFragmentListener)getActivity();
+		speakerListenerReference = new WeakReference<SpeakerDetailsFragmentListener>((SpeakerDetailsFragmentListener) getActivity());
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +43,10 @@ public class SpeakerDetailsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		speakerListener.onSpeakerDetailsFragmentStart(this);
+		SpeakerDetailsFragmentListener listener = speakerListenerReference.get();
+		if(listener != null) {
+			listener.onSpeakerDetailsFragmentStart(this);
+		}
 		
 	}
 	
