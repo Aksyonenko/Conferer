@@ -28,7 +28,6 @@ public class SpeakerDetailsFragment extends Fragment {
 
 	private ConfererService confererService;
 	private Long speakerId;
-	private static WeakReference<SpeakerDetailsFragmentListener> speakerListenerReference = null;
 
 	public static SpeakerDetailsFragment newInstance(Long speakerId) {
 		SpeakerDetailsFragment fragment = new SpeakerDetailsFragment();
@@ -42,8 +41,6 @@ public class SpeakerDetailsFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		confererService = new ConfererWebService();
-		speakerListenerReference = new WeakReference<SpeakerDetailsFragmentListener>(
-				(SpeakerDetailsFragmentListener) getActivity());
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

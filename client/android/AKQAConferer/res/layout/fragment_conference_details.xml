@@ -16,9 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"
-        android:lines="2"
         android:maxLines="2"
-        android:text=""
+        android:text="Session list header title"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -33,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="1dp"
-            android:text=""
+            android:text="23 MAY - 25 MAy"
             android:textAllCaps="false"
             android:textColor="@color/conference_list_secondary_text"
             android:textSize="12dp" />
@@ -44,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="1dp"
-            android:text=""
+            android:text="Tokyo, Japan"
             android:textAllCaps="false"
             android:textColor="@color/conference_list_secondary_text"
             android:textSize="12dp" />
@@ -55,12 +54,12 @@
         android:id="@+id/session_list_header_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="9sp"
         android:layout_marginTop="5dp"
-        android:text=""
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec nisi eu quam aliquet."
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/conference_list_secondary_text"
-        android:textStyle="bold" />
+        android:fontFamily="sans-serif-light" />
 
 </LinearLayout>
 

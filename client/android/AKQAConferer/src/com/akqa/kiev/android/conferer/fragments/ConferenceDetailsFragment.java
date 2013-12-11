@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.akqa.kiev.android.conferer.ConferenceDetailActivity;
 import com.akqa.kiev.android.conferer.OnDetailsFragmentStartedListener;
 import com.akqa.kiev.android.conferer.OnSessionSelectedListener;
 import com.akqa.kiev.android.conferer.R;
@@ -28,15 +29,29 @@ import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 
 public class ConferenceDetailsFragment extends Fragment implements OnItemClickListener {
+	public static String ARG_CONFERENCE_ID = "conferenceId";
+	public static String ARG_SHOW_DESCRIPTION = "showDescription";
+	
 	private ConfererService confererService;
+	
 	private Long conferenceId;
-	List<SessionData> sessions;
-	ListView conferenceDetailsListView;
-	ConferenceDetailsArrayAdapter conferenceDetailsAdapter;
-	OnDetailsFragmentStartedListener fragmentStartedListener;
-	OnSessionSelectedListener sessionSelectedListener;
-	SimpleDateFormat dayFormat;
-	SimpleDateFormat monthFormat;
+	private boolean showDescription = true;
+	
+	private List<SessionData> sessions;
+	private ListView conferenceDetailsListView;
+	private ConferenceDetailsArrayAdapter conferenceDetailsAdapter;
+	private OnSessionSelectedListener sessionSelectedListener;
+	private SimpleDateFormat dayFormat;
+	private SimpleDateFormat monthFormat;
+	
+	public static ConferenceDetailsFragment newInstance(Long conferenceId, boolean showDescription) {
+		ConferenceDetailsFragment fragment = new ConferenceDetailsFragment();
+		Bundle args = new Bundle();
+		args.putLong(ARG_CONFERENCE_ID, conferenceId);
+		args.putBoolean(ARG_SHOW_DESCRIPTION, showDescription);
+		fragment.setArguments(args);
+		return fragment;
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +73,6 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 	@Override
 	public void onStart() {
 		super.onStart();
-		fragmentStartedListener = (OnDetailsFragmentStartedListener) getActivity();
 		sessionSelectedListener = (OnSessionSelectedListener) getActivity();
 		conferenceDetailsListView = (ListView) getView().findViewById(R.id.conference_details_list_view);
 		LayoutInflater inflater = (LayoutInflater) this.getActivity()
@@ -67,8 +81,15 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 		conferenceDetailsListView.setAdapter(conferenceDetailsAdapter);
 		conferenceDetailsListView.setOnItemClickListener(this);
 		conferenceDetailsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		fragmentStartedListener.onDetailsFragmentStarted(this);
-		
+		Bundle args = getArguments();
+		if(args != null) {
+			showDescription = args.getBoolean(ARG_SHOW_DESCRIPTION, true);
+			setConferenceId(args.getLong(ARG_CONFERENCE_ID));
+		}
+	}
+	
+	public void setShowDescription(boolean showDescription) {
+		this.showDescription = showDescription;
 	}
 
 	public void setConferenceId(Long conferenceId) {
@@ -78,7 +99,7 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 	
 	private void onConferenceIdChange(Long conferenceId) {
 		LoadDataTask loadDataTask = new LoadDataTask();
-		loadDataTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+		loadDataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 	
 	private void updateViews(ConferenceDetailsData conferenceDetailsData) {
@@ -88,6 +109,11 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 		headerLocation.setText(conferenceDetailsData.getCity() + ", " + conferenceDetailsData.getCountry());
 		TextView headerDescription = (TextView) getView().findViewById(R.id.session_list_header_description);
 		headerDescription.setText(conferenceDetailsData.getSummary());
+		if(showDescription) {
+			headerDescription.setVisibility(View.VISIBLE);
+		} else {
+			headerDescription.setVisibility(View.GONE);
+		}
 		TextView headerDate = (TextView) getView().findViewById(R.id.session_list_header_dates);
 		StringBuilder builder = new StringBuilder();
 		Date startDate = conferenceDetailsData.getStartDate();

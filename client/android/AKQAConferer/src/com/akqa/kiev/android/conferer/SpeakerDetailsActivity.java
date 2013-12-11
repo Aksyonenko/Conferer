@@ -13,7 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
-public class SpeakerDetailsActivity extends FragmentActivity implements SpeakerDetailsFragmentListener {
+public class SpeakerDetailsActivity extends FragmentActivity {
 
 	private Long speakerId;
 	
@@ -22,6 +22,10 @@ public class SpeakerDetailsActivity extends FragmentActivity implements SpeakerD
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_speaker_details);
 		speakerId = getIntent().getLongExtra(Constants.BUNDLE_SPEAKER_ID, 0L);
+		SpeakerDetailsFragment speakerDetailsFragment = (SpeakerDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.speakerDetailsFragment);
+		if(speakerDetailsFragment != null && speakerDetailsFragment.isInLayout()) {
+			speakerDetailsFragment.setSpeakerId(speakerId);
+		}
 	}
 	
 	@Override
@@ -34,11 +38,7 @@ public class SpeakerDetailsActivity extends FragmentActivity implements SpeakerD
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onSpeakerDetailsFragmentStart(SpeakerDetailsFragment fragment) {
-		fragment.setSpeakerId(speakerId);
-	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -55,6 +55,5 @@ public class SpeakerDetailsActivity extends FragmentActivity implements SpeakerD
 
 		return true;
 	}
-	
-	
+
 }

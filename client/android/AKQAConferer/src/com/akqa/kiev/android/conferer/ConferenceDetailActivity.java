@@ -15,20 +15,25 @@ import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
 import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.utils.Constants;
 
-public class ConferenceDetailActivity extends FragmentActivity implements OnDetailsFragmentStartedListener, OnSessionSelectedListener {
-	
+public class ConferenceDetailActivity extends FragmentActivity implements OnSessionSelectedListener {
+
 	private ConfererService confererService;
-	
+
 	private Long conferenceId;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_conference_details);
 		conferenceId = getIntent().getLongExtra(Constants.BUNDLE_CONFERENCE_ID, 0);
+		ConferenceDetailsFragment conferenceDetailsFragment = (ConferenceDetailsFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.conferenceDetailsFragment);
+		if(conferenceDetailsFragment != null) {
+			conferenceDetailsFragment.setConferenceId(conferenceId);
+		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -39,11 +44,6 @@ public class ConferenceDetailActivity extends FragmentActivity implements OnDeta
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onDetailsFragmentStarted(ConferenceDetailsFragment fragment) {
-		fragment.setConferenceId(conferenceId);
-	}
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -68,5 +68,5 @@ public class ConferenceDetailActivity extends FragmentActivity implements OnDeta
 		sessionDetailsIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, conferenceId);
 		startActivity(sessionDetailsIntent);
 	}
-	
+
 }

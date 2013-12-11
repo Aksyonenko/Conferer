@@ -3,6 +3,7 @@ package com.akqa.kiev.android.conferer;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -37,22 +38,9 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 	protected void onStart() {
 		View frameLayoutView = findViewById(R.id.rightFragmentContainer);
 		if (frameLayoutView != null) {
-			initDetailsFragment();
 			isTwoPane = true;
 		}
 		super.onStart();
-	}
-
-	private ConferenceDetailsFragment initDetailsFragment() {
-		ConferenceDetailsFragment detailsFragment = (ConferenceDetailsFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.rightFragmentContainer);
-		if (detailsFragment == null) {
-			detailsFragment = new ConferenceDetailsFragment();
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction.replace(R.id.rightFragmentContainer, detailsFragment);
-			transaction.commit();
-		}
-		return detailsFragment;
 	}
 
 	@Override
@@ -76,8 +64,15 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 	public void onConferenceSelected(Long conferenceId) {
 		currentConferenceId = conferenceId;
 		if (isTwoPane) {
-			ConferenceDetailsFragment detailsFragment = initDetailsFragment();
-			detailsFragment.setConferenceId(conferenceId);
+			ConferenceDetailsFragment detailsFragment = (ConferenceDetailsFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.rightFragmentContainer);
+			if (detailsFragment == null) {
+				detailsFragment = ConferenceDetailsFragment.newInstance(conferenceId, true);
+				getSupportFragmentManager().beginTransaction().replace(R.id.rightFragmentContainer, detailsFragment)
+						.commit();
+			} else {
+				detailsFragment.setConferenceId(conferenceId);
+			}
 		} else {
 			Intent detailsIntent = new Intent(this, ConferenceDetailActivity.class);
 			detailsIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, conferenceId);
@@ -87,7 +82,6 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 
 	@Override
 	public void onDetailsFragmentStarted(ConferenceDetailsFragment fragment) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override

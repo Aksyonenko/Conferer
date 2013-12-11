@@ -3,14 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
+    <View 
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:background="@color/actionbar_title_text_color"/>
 
     <fragment
         android:id="@+id/conferences"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         class="com.akqa.kiev.android.conferer.fragments.ConferenceListFragment"
-        tools:layout="@layout/conferences_fragment" />
+        tools:layout="@layout/fragment_conference_list" />
 
 </LinearLayout>

@@ -21,8 +21,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 public class SessionDetailsActivity extends FragmentActivity implements OnSessionDetailsFragmentStartedListenter,
-		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener,
-		SpeakerDetailsFragmentListener {
+		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener {
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
@@ -50,6 +49,11 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 				transaction.replace(R.id.sessionDetailsRightFragmentContainer, sessionDetailsFragment);
 				transaction.commit();
 			}
+
+			ConferenceDetailsFragment conferenceDetailsFragment = (ConferenceDetailsFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.sessionDetailsListFragment);
+			conferenceDetailsFragment.setShowDescription(false);
+			conferenceDetailsFragment.setConferenceId(conferenceId);
 		} else {
 			SessionDetailsFragment fragment = (SessionDetailsFragment) getSupportFragmentManager().findFragmentById(
 					R.id.sessionDetailsFragment);
@@ -80,7 +84,6 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 
 	@Override
 	public void onDetailsFragmentStarted(ConferenceDetailsFragment fragment) {
-		fragment.setConferenceId(conferenceId);
 	}
 
 	@Override
@@ -125,10 +128,5 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 			speakerIntent.putExtra(Constants.BUNDLE_SPEAKER_ID, speakerId);
 			startActivity(speakerIntent);
 		}
-	}
-
-	@Override
-	public void onSpeakerDetailsFragmentStart(SpeakerDetailsFragment fragment) {
-		fragment.setSpeakerId(speakerId);
 	}
 }
