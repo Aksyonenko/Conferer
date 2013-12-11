@@ -28,6 +28,7 @@ import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.androidquery.AQuery;
 
 public class SessionDetailsFragment extends Fragment {
+	private static String ARG_SESSION_ID = "sessionId";
 	private ConfererService confererService;
 	private Long sessionId, conferenceId;
 	private OnSessionDetailsFragmentStartedListenter onFragmentStartedListenter;
@@ -36,6 +37,14 @@ public class SessionDetailsFragment extends Fragment {
 	private SessionData sessionData;
 	private SessionDetailsFragmentListener sessionDetailsFragmentListener;
 
+	public static SessionDetailsFragment newInstance(Long sessionId) {
+		SessionDetailsFragment fragment = new SessionDetailsFragment();
+		Bundle args = new Bundle();
+		args.putLong(ARG_SESSION_ID, sessionId);
+		fragment.setArguments(args);
+		return fragment;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,8 +63,15 @@ public class SessionDetailsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		onFragmentStartedListenter = (OnSessionDetailsFragmentStartedListenter) getActivity();
-		onFragmentStartedListenter.onSessionDetailsFragmentStarted(this);
+		Bundle args = getArguments();
+		if(args != null) {
+			setSessionId(args.getLong(ARG_SESSION_ID), null);
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 
 	public void setSessionId(Long sessionId, Long conferenceId) {

@@ -18,7 +18,7 @@
         android:layout_marginTop="8dp"
         android:lines="2"
         android:maxLines="2"
-        android:text="Gartner Symposium / ITxpo"
+        android:text=""
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="1dp"
-            android:text="24 APR - 1 MAY"
+            android:text=""
             android:textAllCaps="false"
             android:textColor="@color/conference_list_secondary_text"
             android:textSize="12dp" />
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="1dp"
-            android:text="Tokyo, Japan"
+            android:text=""
             android:textAllCaps="false"
             android:textColor="@color/conference_list_secondary_text"
             android:textSize="12dp" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:text="The conference empowers software development by facilitaing the spread of knowledge."
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/conference_list_secondary_text"
         android:textStyle="bold" />

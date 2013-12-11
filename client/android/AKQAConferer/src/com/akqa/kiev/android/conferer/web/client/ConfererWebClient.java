@@ -23,14 +23,14 @@ import com.akqa.kiev.android.conferer.utils.LogUtils;
  */
 public class ConfererWebClient {
 
-	private static final String CONFERENCES_URL = "http://10.11.100.254/conferences";
-	private static final String ALL_CONFERENCES_URL = "http://10.11.100.254/conferences/all";
+	private static final String CONFERENCES_URL = "http://54.203.248.182:8080/conferer/conferences";
+	private static final String ALL_CONFERENCES_URL = "http://54.203.248.182:8080/conferer/conferences/all";
 
 	private static final String CONFERENCES_YEAR_PARAM = "year";
 	private static final String CONFERENCES_MONTH_PARAM = "month";
-	private static final String CONFERENCES_MONTHS_URL = "http://10.11.100.254/conferences/months";
-	private static final String SESSIONS_URL = "http://10.11.100.254/sessions";
-	private static final String SPEAKERS_URL = "http://10.11.100.254/speakers";
+	private static final String CONFERENCES_MONTHS_URL = "http://54.203.248.182:8080/conferer/conferences/months";
+	private static final String SESSIONS_URL = "http://54.203.248.182:8080/conferer/sessions";
+	private static final String SPEAKERS_URL = "http://54.203.248.182:8080/conferer/speakers";
 
 	private DefaultHttpClient httpClient;
 

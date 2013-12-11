@@ -21,13 +21,13 @@ import android.view.View;
 import android.widget.SearchView;
 
 public class SessionDetailsActivity extends FragmentActivity implements OnSessionDetailsFragmentStartedListenter,
-		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener, SpeakerDetailsFragmentListener {
+		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener,
+		SpeakerDetailsFragmentListener {
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
 	private Long sessionId, conferenceId, speakerId;
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,32 +35,26 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 		cs = new ConfererDbService(getApplicationContext());
 		sessionId = getIntent().getLongExtra(Constants.BUNDLE_SESSION_ID, 0L);
 		conferenceId = getIntent().getLongExtra(Constants.BUNDLE_CONFERENCE_ID, 0L);
-	}
-
-	@Override
-	protected void onStart() {
 		View frameLayoutView = findViewById(R.id.sessionDetailsRightFragmentContainer);
 		if (frameLayoutView != null) {
-			initSessionDetailsFragment();
 			isTwoPane = true;
 		}
-		super.onStart();
-	}
 
-	private SessionDetailsFragment initSessionDetailsFragment() {
-		SessionDetailsFragment sessionDetailsFragment = null;
-		Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(
-				R.id.sessionDetailsRightFragmentContainer);
-		if(fragment != null && fragment instanceof SessionDetailsFragment) {
-			sessionDetailsFragment = (SessionDetailsFragment) fragment;
+		if (isTwoPane) {
+			SessionDetailsFragment sessionDetailsFragment = null;
+			sessionDetailsFragment = (SessionDetailsFragment) getSupportFragmentManager().findFragmentById(
+					R.id.sessionDetailsRightFragmentContainer);
+			if (sessionDetailsFragment == null) {
+				sessionDetailsFragment = SessionDetailsFragment.newInstance(sessionId);
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+				transaction.replace(R.id.sessionDetailsRightFragmentContainer, sessionDetailsFragment);
+				transaction.commit();
+			}
+		} else {
+			SessionDetailsFragment fragment = (SessionDetailsFragment) getSupportFragmentManager().findFragmentById(
+					R.id.sessionDetailsFragment);
+			fragment.setSessionId(sessionId, conferenceId);
 		}
-		if (sessionDetailsFragment == null) {
-			sessionDetailsFragment = new SessionDetailsFragment();
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction.replace(R.id.sessionDetailsRightFragmentContainer, sessionDetailsFragment);
-			transaction.commit();
-		}
-		return sessionDetailsFragment;
 	}
 
 	@Override
@@ -82,7 +76,6 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 
 	@Override
 	public void onSessionDetailsFragmentStarted(SessionDetailsFragment fragment) {
-		fragment.setSessionId(sessionId, conferenceId);
 	}
 
 	@Override
@@ -96,8 +89,15 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 		if (isTwoPane) {
 			FragmentManager fm = this.getSupportFragmentManager();
 			fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			SessionDetailsFragment sessionDetailsFragment = initSessionDetailsFragment();
-			sessionDetailsFragment.setSessionId(sessionId, conferenceId);
+			SessionDetailsFragment sessionDetailsFragment = (SessionDetailsFragment) fm
+					.findFragmentById(R.id.sessionDetailsRightFragmentContainer);
+			if (sessionDetailsFragment != null) {
+				sessionDetailsFragment.setSessionId(sessionId, conferenceId);
+			} else {
+				sessionDetailsFragment = SessionDetailsFragment.newInstance(sessionId);
+				fm.beginTransaction().replace(R.id.sessionDetailsRightFragmentContainer, sessionDetailsFragment)
+						.commit();
+			}
 		}
 	}
 
@@ -113,7 +113,7 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 			}
 
 			if (speakerFragment == null) {
-				speakerFragment = new SpeakerDetailsFragment();
+				speakerFragment = SpeakerDetailsFragment.newInstance(speakerId);
 				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 				transaction.setCustomAnimations(R.anim.anim_speaker_enter, R.anim.anim_speaker_exit,
 						R.anim.anim_speaker_pop_enter, R.anim.anim_speaker_pop_exit);
@@ -129,6 +129,6 @@ public class SessionDetailsActivity extends FragmentActivity implements OnSessio
 
 	@Override
 	public void onSpeakerDetailsFragmentStart(SpeakerDetailsFragment fragment) {
-		fragment.setSpeakerId(speakerId);		
+		fragment.setSpeakerId(speakerId);
 	}
 }
