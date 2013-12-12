@@ -53,11 +53,6 @@ public class ConferenceDetailsArrayAdapter extends ArrayAdapter<SessionData> {
 		TextView titleTextView = (TextView) row.findViewById(R.id.conference_details_list_item_title);
 		TextView speakerTextView = (TextView) row.findViewById(R.id.conference_details_list_item_speaker);
 		TextView timeTextView = (TextView) row.findViewById(R.id.conference_details_list_item_time);
-		ImageView logoImageView = (ImageView) row.findViewById(R.id.conference_details_list_item_logo);
-		if (logoImageView != null) {
-			AQuery aq = new AQuery(row);
-			aq.id(R.id.conference_details_list_item_logo).image(item.getSessionLogoUrl());
-		}
 		StringBuilder builder = new StringBuilder();
 		Iterator<SpeakerData> speakers = item.getSpeakers().iterator();
 		while (speakers.hasNext()) {

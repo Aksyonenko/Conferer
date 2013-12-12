@@ -1,6 +1,8 @@
 package com.akqa.kiev.android.conferer.fragments;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,6 +23,8 @@ public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 	List<ConferenceData> conferences;
 	SimpleDateFormat dayFormat;
 	SimpleDateFormat monthFormat;
+	SimpleDateFormat separatorDateFormat;
+	private int lastMonth = 0;
 	
 	public ConferenceListArrayAdapter(Context context, int textViewResourceId,
 			List<ConferenceData> conferences) {
@@ -28,6 +32,7 @@ public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 		this.conferences = conferences;
 		dayFormat = new SimpleDateFormat("dd", Locale.US);
 		monthFormat = new SimpleDateFormat("MMM", Locale.US);
+		separatorDateFormat = new SimpleDateFormat("MMMM yyyy", context.getResources().getConfiguration().locale);
 	}
 	
 	@Override
@@ -51,9 +56,22 @@ public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 		
 		ConferenceData item = getItem(position);
 		
+		//Determine if separator needed
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTimeInMillis(item.getStartDate().getTime());
+		int month = calendar.get(Calendar.MONTH);
+		View separatorContainerView = row.findViewById(R.id.conference_listitem_separator);
+		if(month != lastMonth) {
+			separatorContainerView.setVisibility(View.VISIBLE);
+			TextView separatorTextView = (TextView) row.findViewById(R.id.conference_listitem_separator_text);
+			separatorTextView.setText(separatorDateFormat.format(item.getStartDate()));
+			lastMonth = month;
+		} else {
+			separatorContainerView.setVisibility(View.GONE);
+		}
+		
 		TextView titleTV = (TextView) row.findViewById(R.id.conference_listitem_title);
 		titleTV.setText(getItem(position).getTitle());
-		
 		TextView dateTV = (TextView) row.findViewById(R.id.conference_listitem_dates);
 		StringBuilder builder = new StringBuilder();
 		builder.append("<b>").append(dayFormat.format(item.getStartDate())).append("</b>");

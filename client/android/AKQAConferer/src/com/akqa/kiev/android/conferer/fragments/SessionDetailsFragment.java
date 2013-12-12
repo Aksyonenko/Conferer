@@ -88,22 +88,6 @@ public class SessionDetailsFragment extends Fragment {
 		this.sessionData = sessionData;
 		TextView sessionTitle = (TextView) getView().findViewById(R.id.session_details_title);
 		sessionTitle.setText(sessionData.getTitle());
-		ImageView sessionLogo = (ImageView) getView().findViewById(R.id.session_details_logo);
-		if (sessionLogo != null) {
-			AQuery aq = new AQuery(getView());
-			aq.id(R.id.session_details_logo).image(sessionData.getSessionLogoUrl());
-		}
-		TextView sessionSpeaker = (TextView) getView().findViewById(R.id.session_details_speaker);
-		StringBuilder builder = new StringBuilder();
-		Iterator<SpeakerData> speakers = sessionData.getSpeakers().iterator();
-		while (speakers.hasNext()) {
-			SpeakerData speaker = speakers.next();
-			builder.append(speaker.getFirstName()).append(" ").append(speaker.getLastName());
-			if (speakers.hasNext()) {
-				builder.append(", ");
-			}
-		}
-		sessionSpeaker.setText(builder.toString());
 		String sessionTimeString = sessionTimeFormat.format(sessionData.getStartTime()) + " - "
 				+ sessionTimeFormat.format(sessionData.getEndTime());
 		TextView sessionTime = (TextView) getView().findViewById(R.id.session_details_time);
@@ -126,6 +110,11 @@ public class SessionDetailsFragment extends Fragment {
 			View speakerView = inflater.inflate(R.layout.speaker_list_item, null);
 			TextView speakerName = (TextView) speakerView.findViewById(R.id.session_details_speaker_list_item_name);
 			speakerName.setText(speaker.getFirstName() + " " + speaker.getLastName());
+			TextView speakerSubtitle = (TextView) speakerView.findViewById(R.id.session_details_speaker_list_item_subtitle);
+			speakerSubtitle.setText(speaker.getCompetence());
+			ImageView speakerImage = (ImageView) speakerView.findViewById(R.id.session_details_speaker_list_item_image);
+			AQuery aq = new AQuery(speakerView);
+			aq.id(R.id.session_details_speaker_list_item_image).image(speaker.getPhotoUrl());
 			speakerView.setClickable(true);
 			speakerView.setOnClickListener(new OnSpeakerClickListener(speaker.getId()));
 			root.addView(speakerView);

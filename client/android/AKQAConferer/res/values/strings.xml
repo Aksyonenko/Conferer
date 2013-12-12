@@ -13,4 +13,6 @@
     <string name="session_details_day">Day:</string>
     <string name="session_details_time">Time:</string>
     <string name="session_details_location">Location:</string>
+    <string name="session_details_speaker_list_title">Speakers</string>
+    <string name="session_details_about_title">Session</string>
 </resources>

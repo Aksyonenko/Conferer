@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="2dp"
+    android:orientation="horizontal"
+    android:background="@drawable/conference_list_item_background_selector" >
 
-    <TextView
-        android:id="@+id/session_details_speaker_list_item_name"
+    <ImageView
+        android:id="@+id/session_details_speaker_list_item_image"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:baselineAlignBottom="false"
+        android:src="@drawable/icon_session" />
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Speaker" />
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/session_details_speaker_list_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="Christophe Coenraets"
+            android:textColor="@color/title_color"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/session_details_speaker_list_item_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="4dp"
+            android:text="Chief Architect and Group CTO of Application Security and Identity Products, Intel"
+            android:textSize="11sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

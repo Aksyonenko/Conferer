@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ public class SearchableActivity extends Activity {
 	}
 
 	private void handleIntent(Intent intent) {
+		Log.d(getClass().getName(), intent.getAction());
 		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			long id = Long.parseLong(intent.getData().getLastPathSegment());
 			String entity = intent.getExtras().getString(
