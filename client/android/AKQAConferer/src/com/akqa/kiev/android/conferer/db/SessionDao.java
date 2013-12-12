@@ -1,5 +1,6 @@
 package com.akqa.kiev.android.conferer.db;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -106,6 +107,22 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 		}
 		return sessions;
 	}
+	
+	 public Long getConferenceId(long sessionId) {
+		  Cursor cursor = mDataBase.rawQuery(MessageFormat.format(
+		    "select {0} from {1} where {2} = ?", COLUMN_CONFERENCE_ID,
+		    TABLE_NAME, COLUMN_ID), new String[] { String
+		    .valueOf(sessionId) });
+		  try {
+		   if (cursor.moveToFirst()) {
+		    return cursor.getLong(0);
+		   } else {
+		    return null;
+		   }
+		  } finally {
+		   cursor.close();
+		  }
+		 }
 	
 	
 	public void insert(SessionData session, Long conferenceId) {

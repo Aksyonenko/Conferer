@@ -15,14 +15,18 @@ import android.widget.SearchView;
 import com.akqa.kiev.android.conferer.db.ConferenceDao;
 import com.akqa.kiev.android.conferer.db.SessionDao;
 import com.akqa.kiev.android.conferer.db.SpeakerDao;
+import com.akqa.kiev.android.conferer.service.ConfererDbService;
+import com.akqa.kiev.android.conferer.service.ConfererService;
+import com.akqa.kiev.android.conferer.utils.Constants;
 
 public class SearchableActivity extends Activity {
 
+	ConfererDbService service;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		service = new ConfererDbService(getApplicationContext());
 		handleIntent(getIntent());
 	}
 
@@ -38,12 +42,24 @@ public class SearchableActivity extends Activity {
 			String entity = intent.getExtras().getString(
 					SearchManager.EXTRA_DATA_KEY);
 			if (entity != null) {
+				Intent redirectIntent = null;
 				if (entity.equals(ConferenceDao.TABLE_NAME)) {
-
+					redirectIntent = new Intent(this, ConferenceDetailActivity.class);
+					redirectIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, id);
 				} else if (entity.equals(SessionDao.TABLE_NAME)) {
-
+					redirectIntent = new Intent(this, SessionDetailsActivity.class);
+					redirectIntent.putExtra(Constants.BUNDLE_SESSION_ID, id);
+					redirectIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, service.getConferenceId(id));
+					Log.d(getClass().getName(), "Conference id:" + service.getConferenceId(id));
 				} else if (entity.equals(SpeakerDao.TABLE_NAME)) {
-
+					redirectIntent = new Intent(this, SpeakerDetailsActivity.class);
+					redirectIntent.putExtra(Constants.BUNDLE_SPEAKER_ID, id);
+				}
+				
+				if(redirectIntent != null) {
+					redirectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(redirectIntent);
+					finish();
 				}
 			}
 		}

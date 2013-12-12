@@ -114,6 +114,10 @@ public class ConfererDbService implements ConfererService {
 		return session;
 	}
 	
+	public Long getConferenceId(Long sessionId) {
+		return sessionDao.getConferenceId(sessionId);
+	}
+	
 	private void enrichSession(SessionData session) {
 		List<Long> speakersIds = sessionDao.getSpeakerIdsForSession(session
 				.getId());
@@ -122,7 +126,7 @@ public class ConfererDbService implements ConfererService {
 	}
 
 	@Override
-	public SpeakerData loadSpeakereDetails(long id) {
+	public SpeakerData loadSpeakerDetails(long id) {
 		return speakerDao.getById(id);
 	}
 

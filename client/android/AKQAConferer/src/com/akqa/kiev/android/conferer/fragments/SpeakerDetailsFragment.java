@@ -116,7 +116,7 @@ public class SpeakerDetailsFragment extends Fragment {
 
 		@Override
 		protected SpeakerData doInBackground(Void... params) {
-			return confererService.loadSpeakereDetails(speakerId);
+			return confererService.loadSpeakerDetails(speakerId);
 		}
 
 		@Override

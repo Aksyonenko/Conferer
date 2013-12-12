@@ -67,7 +67,7 @@ public class ConfererWebService implements ConfererService {
 		return null;
 	}
 
-	public SpeakerData loadSpeakereDetails(long id) {
+	public SpeakerData loadSpeakerDetails(long id) {
 		String conferenceDetailsJson = webClient.getSpeakerDetails(id);
 		try {
 			return ReflectionJsonParsingHelper.objectFromJsonString(
