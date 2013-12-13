@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.SearchData;
 import com.akqa.kiev.android.conferer.model.SessionData;
 
 public class SessionDao extends AbstractBaseDao<SessionData> {
@@ -180,6 +181,16 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 	@Override
 	public String getTableName() {
 		return TABLE_NAME;
+	}
+
+	@Override
+	public SearchData cursorToSearchObject(Cursor cursor) {
+		SearchData data = new SearchData();
+		data.setType(SearchData.TYPE_SESSION);
+		data.setId(cursor.getLong(0));
+		data.setTitle(cursor.getString(2));
+		data.setSubtitle(cursor.getString(3));
+		return data;
 	}
 
 

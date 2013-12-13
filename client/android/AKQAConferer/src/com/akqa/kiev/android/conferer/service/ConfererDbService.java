@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.akqa.kiev.android.conferer.db.ConferenceDao;
 import com.akqa.kiev.android.conferer.db.ConfererDatabase;
@@ -17,6 +18,7 @@ import com.akqa.kiev.android.conferer.db.SessionDao;
 import com.akqa.kiev.android.conferer.db.SpeakerDao;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
+import com.akqa.kiev.android.conferer.model.SearchData;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 import com.akqa.kiev.android.conferer.utils.DateUtils;
@@ -117,6 +119,43 @@ public class ConfererDbService implements ConfererService {
 	public Long getConferenceId(Long sessionId) {
 		return sessionDao.getConferenceId(sessionId);
 	}
+	
+	public List<SearchData> searchConferences(String searchArg) {
+		List<SearchData> searchDataList = new ArrayList<SearchData>();
+		Cursor searchResult = conferenceDao.searchQuery(searchArg);
+		if(searchResult.moveToFirst()) {
+			do {
+				searchDataList.add(conferenceDao.cursorToSearchObject(searchResult));
+			} while(searchResult.moveToNext());
+		}
+		searchResult.close();
+		return searchDataList;
+	}
+	
+	public List<SearchData> searchSessions(String searchArg) {
+		List<SearchData> searchDataList = new ArrayList<SearchData>();
+		Cursor searchResult = sessionDao.searchQuery(searchArg);
+		if(searchResult.moveToFirst()) {
+			do {
+				searchDataList.add(sessionDao.cursorToSearchObject(searchResult));
+			} while(searchResult.moveToNext());
+		}
+		searchResult.close();
+		return searchDataList;
+	}
+	
+	public List<SearchData> searchSpeakers(String searchArg) {
+		List<SearchData> searchDataList = new ArrayList<SearchData>();
+		Cursor searchResult = speakerDao.searchQuery(searchArg);
+		if(searchResult.moveToFirst()) {
+			do {
+				searchDataList.add(speakerDao.cursorToSearchObject(searchResult));
+			} while(searchResult.moveToNext());
+		}
+		searchResult.close();
+		return searchDataList;
+	}
+	
 	
 	private void enrichSession(SessionData session) {
 		List<Long> speakersIds = sessionDao.getSpeakerIdsForSession(session

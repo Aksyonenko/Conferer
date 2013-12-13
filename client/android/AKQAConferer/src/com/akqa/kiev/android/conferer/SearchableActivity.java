@@ -1,32 +1,42 @@
 package com.akqa.kiev.android.conferer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.akqa.kiev.android.conferer.db.ConferenceDao;
 import com.akqa.kiev.android.conferer.db.SessionDao;
 import com.akqa.kiev.android.conferer.db.SpeakerDao;
+import com.akqa.kiev.android.conferer.fragments.SearchFragment;
+import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.akqa.kiev.android.conferer.model.SearchData;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.utils.Constants;
 
-public class SearchableActivity extends Activity {
+public class SearchableActivity extends FragmentActivity {
 
-	ConfererDbService service;
+	private ConfererDbService service;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		service = new ConfererDbService(getApplicationContext());
+		setContentView(R.layout.activity_search);
 		handleIntent(getIntent());
 	}
 
@@ -39,8 +49,7 @@ public class SearchableActivity extends Activity {
 		Log.d(getClass().getName(), intent.getAction());
 		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			long id = Long.parseLong(intent.getData().getLastPathSegment());
-			String entity = intent.getExtras().getString(
-					SearchManager.EXTRA_DATA_KEY);
+			String entity = intent.getExtras().getString(SearchManager.EXTRA_DATA_KEY);
 			if (entity != null) {
 				Intent redirectIntent = null;
 				if (entity.equals(ConferenceDao.TABLE_NAME)) {
@@ -50,21 +59,25 @@ public class SearchableActivity extends Activity {
 					redirectIntent = new Intent(this, SessionDetailsActivity.class);
 					redirectIntent.putExtra(Constants.BUNDLE_SESSION_ID, id);
 					redirectIntent.putExtra(Constants.BUNDLE_CONFERENCE_ID, service.getConferenceId(id));
-					Log.d(getClass().getName(), "Conference id:" + service.getConferenceId(id));
 				} else if (entity.equals(SpeakerDao.TABLE_NAME)) {
 					redirectIntent = new Intent(this, SpeakerDetailsActivity.class);
 					redirectIntent.putExtra(Constants.BUNDLE_SPEAKER_ID, id);
 				}
-				
-				if(redirectIntent != null) {
+
+				if (redirectIntent != null) {
 					redirectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(redirectIntent);
 					finish();
 				}
 			}
+		} else if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			SearchFragment fragment = (SearchFragment) getSupportFragmentManager().findFragmentById(R.id.searchResultsFragment);
+			if(fragment != null) {
+				fragment.setSearchQuery(query);
+			}
 		}
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,10 +86,8 @@ public class SearchableActivity extends Activity {
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-			SearchView searchView = (SearchView) menu.findItem(R.id.search)
-					.getActionView();
-			searchView.setSearchableInfo(searchManager
-					.getSearchableInfo(getComponentName()));
+			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 			searchView.setIconifiedByDefault(false);
 		}
 
@@ -93,4 +104,6 @@ public class SearchableActivity extends Activity {
 			return false;
 		}
 	}
+
+
 }

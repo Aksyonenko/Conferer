@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.akqa.kiev.android.conferer.model.SearchData;
 
 public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 
@@ -97,6 +98,15 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		conf.setCity(cursor.getString(9));
 		conf.setAddress(cursor.getString(10));
 		return conf;
+	}
+	
+	public SearchData cursorToSearchObject(Cursor cursor) {
+		SearchData data = new SearchData();
+		data.setType(SearchData.TYPE_CONFERENCE);
+		data.setId(cursor.getLong(0));
+		data.setTitle(cursor.getString(2));
+		data.setSubtitle(cursor.getString(3));
+		return data;
 	}
 
 	@Override
