@@ -12,7 +12,7 @@
     <color name="session_title_bg_color">#f0f0f0</color>
     <color name="session_title_color">#d94343</color>
     <color name="speaker_title_color">#d94343</color>
-    <color name="conference_list_background">#f0f0f0</color>
+    <color name="conference_list_background">#f4f4f4</color>
     <color name="conference_list_secondary_text">#666666</color>
     <color name="actionbar_background_color">#262626</color>
     <color name="actionbar_title_text_color">#d94342</color>
@@ -22,4 +22,7 @@
     <color name="conference_list_item_pressed_bg">#e89494</color>
     <color name="drop_shadow_start">#a8a8a8</color>
     <color name="drop_shadow_end">#e9e9e9</color>
+    <color name="separator_gradient_start">#cdcdcd</color>
+    <color name="separator_gradient_end">#00cdcdcd</color>
+    <color name="conference_details_details_button_background">#cdcdcd</color>
 </resources>

@@ -12,12 +12,9 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 
 import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
-import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.utils.Constants;
 
 public class ConferenceDetailActivity extends FragmentActivity implements OnSessionSelectedListener {
-
-	private ConfererService confererService;
 
 	private Long conferenceId;
 

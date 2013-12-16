@@ -40,11 +40,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akqa.kiev.android.conferer.StartActivity" />
         </activity>
-        <activity android:name="com.akqa.kiev.android.conferer.SearchableActivity" >
+        <activity
+            android:name="com.akqa.kiev.android.conferer.SearchableActivity"
+            android:parentActivityName="com.akqa.kiev.android.conferer.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.akqa.kiev.android.conferer.StartActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -65,7 +70,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akqa.kiev.android.conferer.StartActivity" />
->
+>
         </activity>
     </application>
 

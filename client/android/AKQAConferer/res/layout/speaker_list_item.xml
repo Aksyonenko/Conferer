@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/session_details_speaker_list_item_image"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
+            android:layout_marginTop="2dp"
             android:text="Christophe Coenraets"
             android:textColor="@color/title_color"
             android:textSize="14sp"
@@ -38,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:text="Chief Architect and Group CTO of Application Security and Identity Products, Intel"
             android:textSize="11sp" />
 

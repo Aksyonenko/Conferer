@@ -17,12 +17,14 @@ import android.widget.ListView;
 import com.akqa.kiev.android.conferer.OnConferenceSelectedListener;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.akqa.kiev.android.conferer.service.ConfererDbService;
+import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 
 
 public class ConferenceListFragment extends Fragment implements OnItemClickListener {
 	
-	private ConfererWebService confererService;
+	private ConfererService confererService;
 	ListView conferenceListView;
 	List<ConferenceData> conferences;
 
@@ -32,7 +34,7 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		confererService = new ConfererWebService();
+		confererService = new ConfererDbService(getActivity());
 		conferences = new ArrayList<ConferenceData>();
 		conferenceSelectedListener = (OnConferenceSelectedListener) getActivity();
 	}

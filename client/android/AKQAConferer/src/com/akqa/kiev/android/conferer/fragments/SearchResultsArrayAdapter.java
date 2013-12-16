@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SearchResultsArrayAdapter extends ArrayAdapter<SearchData> {
@@ -39,7 +40,19 @@ public class SearchResultsArrayAdapter extends ArrayAdapter<SearchData> {
 			row = inflater.inflate(R.layout.search_results_list_item, parent, false);
 		}
 		SearchData item = getItem(position);
-		TextView title = (TextView) row.findViewById(R.id.search_resluts_list_item_title);
+		ImageView icon = (ImageView) row.findViewById(R.id.search_results_list_item_icon);
+		switch(item.getType()) {
+		case SearchData.TYPE_CONFERENCE:
+			icon.setImageResource(R.drawable.search_conference);
+			break;
+		case SearchData.TYPE_SESSION:
+			icon.setImageResource(R.drawable.search_session);
+			break;
+		case SearchData.TYPE_SPEAKER:
+			icon.setImageResource(R.drawable.search_speaker);
+			break;
+		}
+		TextView title = (TextView) row.findViewById(R.id.search_results_list_item_title);
 		title.setText(item.getTitle());
 		TextView subtitle = (TextView) row.findViewById(R.id.search_results_list_item_subtitle);
 		subtitle.setText(item.getSubtitle());

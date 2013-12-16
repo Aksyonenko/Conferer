@@ -3,6 +3,7 @@ package com.akqa.kiev.android.conferer.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.akqa.kiev.android.conferer.OnSearchResultSelectedListener;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.SearchData;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
@@ -15,9 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements OnItemClickListener {
 	public static final String ARG_SEARCH_QUERY = "searchQuery";
 
 	private ConfererDbService service;
@@ -25,6 +28,7 @@ public class SearchFragment extends Fragment {
 	private List<SearchData> searchDataList;
 	private ListView searchResultsLV;
 	private SearchResultsArrayAdapter adapter;
+	private OnSearchResultSelectedListener onResultSelectedListener;
 
 	public static SearchFragment newInstance(String searchQuery) {
 		Bundle args = new Bundle();
@@ -39,6 +43,7 @@ public class SearchFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		service = new ConfererDbService(getActivity());
 		searchDataList = new ArrayList<SearchData>();
+		onResultSelectedListener = (OnSearchResultSelectedListener) getActivity();
 	}
 
 	@Override
@@ -50,6 +55,7 @@ public class SearchFragment extends Fragment {
 	@Override
 	public void onStart() {
 		searchResultsLV = (ListView) getView().findViewById(R.id.search_results_list);
+		searchResultsLV.setOnItemClickListener(this);
 		adapter = new SearchResultsArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, searchDataList);
 		searchResultsLV.setAdapter(adapter);
 		super.onStart();
@@ -89,6 +95,12 @@ public class SearchFragment extends Fragment {
 			}
 		}
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		SearchData data = searchDataList.get(position);
+		onResultSelectedListener.onSearchResultClick(data.getType(), data.getId());
 	}
 
 }
