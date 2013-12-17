@@ -3,6 +3,8 @@ package com.akqa.kiev.android.conferer.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,8 +28,10 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 	
 	private ConfererService confererService;
 	ListView conferenceListView;
+	StickyListHeadersListView conferencesStickyListView;
 	List<ConferenceData> conferences;
 
+	ConferenceListStickyAdapter stickyAdapter;
 	ArrayAdapter<ConferenceData> conferenceLVAdapter;
 	OnConferenceSelectedListener conferenceSelectedListener;
 	
@@ -49,11 +53,11 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 	@Override
 	public void onStart() {
 		super.onStart();
-		conferenceListView = (ListView) getView().findViewById(R.id.conferenceListView);
-		conferenceLVAdapter = new ConferenceListArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, conferences);
-		conferenceListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		conferenceListView.setAdapter(conferenceLVAdapter);
-		conferenceListView.setOnItemClickListener(this);
+		stickyAdapter = new ConferenceListStickyAdapter(getActivity(), conferences);
+		conferencesStickyListView = (StickyListHeadersListView) getView().findViewById(R.id.sticky_conference_list_view);
+		conferencesStickyListView.setAdapter(stickyAdapter);
+		conferencesStickyListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		conferencesStickyListView.setOnItemClickListener(this);
 		LoadDataTask loadDataTask = new LoadDataTask();
 		loadDataTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 	}
@@ -78,14 +82,14 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 			for(ConferenceData data : result) {
 				conferences.add(data);
 			}
-			conferenceLVAdapter.notifyDataSetChanged();
+			stickyAdapter.notifyDataSetChanged();
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Long clickedId  = conferences.get(position).getId();
-		view.setSelected(true);
+		conferencesStickyListView.setItemChecked(position, true);
 		conferenceSelectedListener.onConferenceSelected(clickedId);
 	}
 

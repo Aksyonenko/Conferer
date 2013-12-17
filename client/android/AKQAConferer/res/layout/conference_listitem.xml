@@ -4,29 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/conference_listitem_separator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/separator_gradient_start"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/conference_listitem_separator_text"
-            android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="5dp"
-            android:gravity="right|center"
-            android:text="January 2013"
-            android:textColor="@color/actionbar_title_text_color" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/actionbar_title_text_color" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
