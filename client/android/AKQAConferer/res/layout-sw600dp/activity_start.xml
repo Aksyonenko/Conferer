@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <View 
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:background="@color/actionbar_title_text_color"/>
+
+    <fragment
+        android:id="@+id/conferences"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.akqa.kiev.android.conferer.fragments.ConferenceListFragment"
+        tools:layout="@layout/fragment_conference_list" />
+
+</LinearLayout>
