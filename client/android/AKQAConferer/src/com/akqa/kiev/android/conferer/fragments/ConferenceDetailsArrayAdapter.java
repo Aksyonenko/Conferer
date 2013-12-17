@@ -51,21 +51,11 @@ public class ConferenceDetailsArrayAdapter extends ArrayAdapter<SessionData> {
 		}
 		SessionData item = getItem(position);
 		TextView titleTextView = (TextView) row.findViewById(R.id.conference_details_list_item_title);
-		TextView speakerTextView = (TextView) row.findViewById(R.id.conference_details_list_item_speaker);
+		TextView locationTextView = (TextView) row.findViewById(R.id.conference_details_list_item_location);
 		TextView timeTextView = (TextView) row.findViewById(R.id.conference_details_list_item_time);
-		StringBuilder builder = new StringBuilder();
-		Iterator<SpeakerData> speakers = item.getSpeakers().iterator();
-		while (speakers.hasNext()) {
-			SpeakerData speaker = speakers.next();
-			builder.append(speaker.getFirstName()).append(" ").append(speaker.getLastName());
-			if (speakers.hasNext()) {
-				builder.append(", ");
-			}
-		}
-
 		String sessionTime = startDateFormat.format(item.getStartTime()) + " - "
 				+ endDateFormat.format(item.getEndTime());
-		speakerTextView.setText(builder.toString());
+		locationTextView.setText(item.getLocation().toString());
 		titleTextView.setText(item.getTitle());
 		timeTextView.setText(sessionTime);
 		return row;

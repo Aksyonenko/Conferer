@@ -1,37 +1,32 @@
 package com.akqa.kiev.android.conferer;
 
-import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
-import com.akqa.kiev.android.conferer.fragments.SessionDetailsFragment;
-import com.akqa.kiev.android.conferer.fragments.SpeakerDetailsFragment;
-import com.akqa.kiev.android.conferer.service.ConfererDbService;
-import com.akqa.kiev.android.conferer.service.ConfererWebService;
-import com.akqa.kiev.android.conferer.utils.Constants;
-
-import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
+import com.akqa.kiev.android.conferer.fragments.SessionDetailsFragment;
+import com.akqa.kiev.android.conferer.fragments.SpeakerDetailsFragment;
+import com.akqa.kiev.android.conferer.utils.Constants;
+
 public class SessionDetailsActivity extends FragmentActivity implements OnSessionDetailsFragmentStartedListenter,
 		OnDetailsFragmentStartedListener, OnSessionSelectedListener, SessionDetailsFragmentListener {
 	private boolean isTwoPane = false;
-	private ConfererWebService confererService;
-	private ConfererDbService cs;
 	private Long sessionId, conferenceId, speakerId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_session_details);
-		cs = new ConfererDbService(getApplicationContext());
 		sessionId = getIntent().getLongExtra(Constants.BUNDLE_SESSION_ID, 0L);
 		conferenceId = getIntent().getLongExtra(Constants.BUNDLE_CONFERENCE_ID, 0L);
 		View frameLayoutView = findViewById(R.id.sessionDetailsRightFragmentContainer);

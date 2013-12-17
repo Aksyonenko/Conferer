@@ -6,11 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SearchViewCompat.OnCloseListenerCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +23,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.akqa.kiev.android.conferer.ConferenceDetailActivity;
-import com.akqa.kiev.android.conferer.OnDetailsFragmentStartedListener;
 import com.akqa.kiev.android.conferer.OnSessionSelectedListener;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererService;
-import com.akqa.kiev.android.conferer.service.ConfererWebService;
 
 public class ConferenceDetailsFragment extends Fragment implements OnItemClickListener {
 	public static String ARG_CONFERENCE_ID = "conferenceId";
@@ -51,6 +49,7 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 	private TextView conferenceSummary;
 	private ImageView detailsButtonArrowImageView;
 	private View conferenceSummaryButtonView;
+	private ImageView webLinkImage;
 
 	public static ConferenceDetailsFragment newInstance(Long conferenceId, boolean showDescription) {
 		ConferenceDetailsFragment fragment = new ConferenceDetailsFragment();
@@ -81,16 +80,31 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 	public void onStart() {
 		super.onStart();
 		sessionSelectedListener = (OnSessionSelectedListener) getActivity();
+		
 		conferenceDetailsListView = (ListView) getView().findViewById(R.id.conference_details_list_view);
-		LayoutInflater inflater = (LayoutInflater) this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		conferenceDetailsAdapter = new ConferenceDetailsArrayAdapter(getActivity(),
 				android.R.layout.simple_list_item_1, sessions);
 		conferenceDetailsListView.setAdapter(conferenceDetailsAdapter);
 		conferenceDetailsListView.setOnItemClickListener(this);
 		conferenceDetailsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
 		conferenceSummaryButtonView = getView().findViewById(R.id.conference_details_details_button);
 		conferenceSummaryButtonView.setOnClickListener(new DetailsClickListener());
 		conferenceSummary = (TextView) getView().findViewById(R.id.session_list_header_description);
+		
+		detailsButtonArrowImageView = (ImageView) getView().findViewById(R.id.conference_details_details_button_arrow);
+		
+		webLinkImage = (ImageView) getView().findViewById(R.id.conference_details_web_link);
+		webLinkImage.setClickable(true);
+		webLinkImage.setOnClickListener(new WebLinkClickListener());
+
+		if (showDescription) {
+			conferenceSummary.setVisibility(View.VISIBLE);
+			detailsButtonArrowImageView.setImageResource(R.drawable.arrow_up);
+		} else {
+			conferenceSummary.setVisibility(View.GONE);
+			detailsButtonArrowImageView.setImageResource(R.drawable.arrow_down);
+		}
 		
 		Bundle args = getArguments();
 		if (args != null) {
@@ -113,6 +127,7 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 		loadDataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
+	@SuppressLint("DefaultLocale")
 	private void updateViews(ConferenceDetailsData conferenceDetailsData) {
 		TextView headerTitle = (TextView) getView().findViewById(R.id.session_list_header_title);
 		headerTitle.setText(conferenceDetailsData.getTitle());
@@ -171,7 +186,6 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 
 		@Override
 		public void onClick(View v) {
-			int headerViewCount = conferenceDetailsListView.getHeaderViewsCount();
 			if (detailsButtonArrowImageView == null) {
 				detailsButtonArrowImageView = (ImageView) getView().findViewById(
 						R.id.conference_details_details_button_arrow);
@@ -186,6 +200,21 @@ public class ConferenceDetailsFragment extends Fragment implements OnItemClickLi
 				conferenceSummary.setVisibility(View.GONE);
 				detailsButtonArrowImageView.setImageResource(R.drawable.arrow_down);
 				break;
+			}
+		}
+
+	}
+
+	private class WebLinkClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			if (data != null) {
+				String url = data.getConferenceUrl();
+				if (url.startsWith("http")) {
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getConferenceUrl()));
+					startActivity(intent);
+				}
 			}
 		}
 
