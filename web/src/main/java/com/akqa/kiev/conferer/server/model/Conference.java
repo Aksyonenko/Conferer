@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,9 +43,13 @@ public class Conference extends AbstractEntity {
 	@Column(length = 1024)
 	private String logoUrl;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="category_id")
+	private ConferenceCategory category;
+	
 	@Column(length = 255, nullable = false)
 	private String title;
-	
+
 	@Column(length = 4096)
 	private String summary;
 
@@ -55,138 +60,146 @@ public class Conference extends AbstractEntity {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar endDate;
-	
+
 	@JsonIgnore
 	@Column(length = 32, nullable = false)
 	private String timezone;
-
+	
 	@Column(length = 64, nullable = false)
 	private String country;
 	
 	@Column(length = 64, nullable = false)
 	private String region;
-	
+
 	@Column(length = 64, nullable = false)
 	private String city;
 	
 	@Column(length = 128, nullable = false)
 	private String address;
-
+	
 	@JsonView(FullView.class)
 	@Column(length = 4096)
 	private String details;
-
+	
 	@JsonView(FullView.class)
 	@OneToMany(targetEntity = Session.class, fetch = FetchType.EAGER, mappedBy="conference")
 	private List<Session> sessions;
 
-    @PostLoad
-    public void postLoad() {
-        startDate.setTimeZone(TimeZone.getTimeZone(timezone));
-        endDate.setTimeZone(TimeZone.getTimeZone(timezone));
-    }
+	public String getAddress() {
+		return address;
+	}
+
+	public ConferenceCategory getCategory() {
+		return category;
+	}
+
+    public String getCity() {
+		return city;
+	}
 
 	public String getConferenceUrl() {
 		return conferenceUrl;
-	}
-
-	public void setConferenceUrl(String conferenceUrl) {
-		this.conferenceUrl = conferenceUrl;
-	}
-
-	public String getLogoUrl() {
-		return logoUrl;
-	}
-
-	public void setLogoUrl(String logoUrl) {
-		this.logoUrl = logoUrl;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	public Calendar getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Calendar startDate) {
-		this.startDate = startDate;
-	}
-
-	public Calendar getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Calendar endDate) {
-		this.endDate = endDate;
-	}
-
-	public String getTimezone() {
-		return timezone;
-	}
-
-	public void setTimezone(String timezone) {
-		this.timezone = timezone;
 	}
 
 	public String getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public String getDetails() {
+		return details;
+	}
+
+	public Calendar getEndDate() {
+		return endDate;
+	}
+
+	public String getLogoUrl() {
+		return logoUrl;
 	}
 
 	public String getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
-		this.region = region;
+	public List<Session> getSessions() {
+		return sessions;
 	}
 
-	public String getCity() {
-		return city;
+	public Calendar getStartDate() {
+		return startDate;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	@PostLoad
+    public void postLoad() {
+        startDate.setTimeZone(TimeZone.getTimeZone(timezone));
+        endDate.setTimeZone(TimeZone.getTimeZone(timezone));
+    }
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setCategory(ConferenceCategory category) {
+		this.category = category;
 	}
 
 	public void setCity(String city) {
 		this.city = city;
 	}
 
-	public String getDetails() {
-		return details;
+	public void setConferenceUrl(String conferenceUrl) {
+		this.conferenceUrl = conferenceUrl;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public void setDetails(String details) {
 		this.details = details;
 	}
 
-	public String getAddress() {
-		return address;
+	public void setEndDate(Calendar endDate) {
+		this.endDate = endDate;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
 	}
 
-	public List<Session> getSessions() {
-		return sessions;
+	public void setRegion(String region) {
+		this.region = region;
 	}
 
 	public void setSessions(List<Session> sessions) {
 		this.sessions = sessions;
+	}
+
+	public void setStartDate(Calendar startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

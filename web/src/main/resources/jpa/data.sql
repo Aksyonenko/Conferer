@@ -1,5 +1,13 @@
+DELETE FROM conference_categories;
+INSERT INTO conference_categories (ID, NAME) VALUES
+	(1, 'IT'),
+	(2, 'Buisness'),
+	(3, 'Marketing'),
+	(4, 'Design');
+
 DELETE FROM conferences;
-INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, endDate, timezone, country, region, city, address, details) VALUES (
+INSERT INTO conferences (id, category_id, conferenceUrl, logoUrl, title, summary, startDate, endDate, timezone, country, region, city, address, details) VALUES (
+	1,
 	1,
 	'dummy conference url',
 	'https://qconnewyork.com/sites/all/themes/qcon_master/images/logo.jpg',
@@ -15,6 +23,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'QCon empowers software development by facilitating the spread of knowledge and innovation in the developer community. A practitioner-driven conference, QCon is designed for technical team leads, architects, engineering directors, and project managers who influence innovation in their teams. QCon highlights the most important development topics driving innovation - things you should be doing now or researching for your next project - presented by the doers in our community. Our conferences bring practitioners together with attendees who influence innovation in their teams: over half of conferences attendees, for example, have team lead or higher job titles. Additionally, QCons are staged in an intimate environment that promotes high-quality learning, peer-sharing, fun, and inspiration! QCon starts with 2 days of tutorials on Monday and Tuesday, June 10-11 followed by the full 3-day conference from Wednesday, June 12-14. The conference will feature over 100 speakers in 6 concurrent tracks daily covering the most timely and innovative topics driving the evolution of enterprise software development today. The setting is the beautiful, centrally-located Marriott at Brooklyn Bridge in New York City.'
 ), (
 	2,
+	2,
 	'dummy conference url',
 	'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRLiqx5l8ys8sQu-gcXfCcUCQivPwKjBIRFXf0WKYGtsKaAG6KTg5oPbjE6',
 	'QCon SГЈo Paulo: 2 dias, 50 palestras de alto nГ­vel tГ©cnico',
@@ -28,6 +37,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'dummy address',
 	'A Caelum e o InfoQ organizam, pela terceira vez no Brasil, o principal evento de arquitetos e desenvolvedores do mundo. O QCon SP traz, dias 4 e 5 de agosto, Г­cones internacionais e nacionais de diversas ГЎreas, com apresentaГ§Гµes aprofundadas de alto nГ­vel tГ©cnico. O QCon aborda nГЈo apenas uma Гєnica tecnologia ou aspecto: passa por Arquitetura, Linguagens Funcionais, Mobile, Agile, PrГЎticas de Engenharia ГЃgil e outros. Dentre os keynotes desse ano teremos Tom Soderstrom, CTO do laboratГіrio de propulsГЈo da NASA, Martin Fowler, chief scientist da ThoughtWorks e Zach Holman, arquiteto do GitHub.'
 ), (
+	3,
 	3,
 	'dummy conference url',
 	'https://qconnewyork.com/sites/all/themes/qcon_master/images/logo.jpg',
@@ -43,6 +53,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'Thank you for participating in this year''s QCon San Francisco Conference. We hope that you enjoyed the conference and were able to go home with ideas, experience and new connections from the conference. QCon is a practitioner-driven conference designed for team leads, architects and project managers. The program includes two tutorial days led by over 80 industry experts and authors and three conference days with 18 tracks and over 80 speakers covering a wide variety of relevant and exciting topics in software development today. There is no other event in the US with similar opportunities for learning, networking, and tracking innovation occurring in the enterprise software development community.'
 ), (
 	4,
+	4,
 	'dummy conference url',
 	'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQvbqM-aHb32rnQZaS07S5CNZoul3i1hp2a9oT95ijneU_ecXba',
 	'QCon London 2013. Training: March 4-5 // Conference: March 6-8',
@@ -57,6 +68,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'QCon London is the seventh annual London enterprise software development conference designed for developers, team leads, architects and project management is back! There is no other event in the UK with similar opportunities for learning, networking, and tracking innovation occurring in the Java, .NET, Html5, Mobile , Agile, and Architecture communities. Key takeaway points and the many blog discussions from last year''s QCon London can be found in this article. Our concept has always been to present the latest developments as they become relevant and interesting for the software development community. With a 360 degree perspective we present new technology and trends in a non vendor forum to give the attendees inspiration, energy and desire to learn. Plus, we always have awesome speakers! QCon London is organized by Trifork A/S, a software development company situated in Aarhus, Denmark and InfoQ - Tracking change and innovation in the enterprise software development community.'
 ), (
 	5,
+	1,
 	'dummy conference url',
 	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuJN6M6Z9MqJhrfBqU6T0WVWSc781132ALstWNbYe-Dx1K4_wsFQ',
 	'Architectural Hangover Cure',
@@ -71,6 +83,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'Some years ago your company adopted the "framework | development tooling | cloud service" that was going to "halve your development costs | quarter your bug turnaround time | delight your customers". Sadly the technology you adopted did not deliver any of the benefits that the salesman promised - now it sits there like some obese octopus with its tentacles reaching into and choking your entire system. This track is all about strategies for escape, how to move on and never make that mistake again.'
 ), (
 	6,
+	2,
 	'http://google.com',
 	'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR_myHAqiNfNNjdB98RqCYlqiQPL4iaoVx98dv1jhbwEJEwx07m',
 	'The Java EE 7 Platform: Higher Productivity & Embracing HTML5',
@@ -85,6 +98,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'The Java EE 7 platform has a changed scope and will now be focusing on Productivity and HTML5. JAX-RS 2 adds a new Client API to invoke the RESTful endpoints. JMS 2 is undergoing a complete overhaul to align with improvements in the Java language. Long awaited Batch Processing API and Caching API are also getting added to build applications using capabilities of the platform itself. Together these APIs will allow you to be more productive by simplifying enterprise development. WebSocket attempts to solve the issues and limitations of HTTP for real-time communication. A new API is getting added to build WebSocket driven applications. Processing JSON structures is inherent in any HTML5 applications and a new API to parse, generate, transform, and query JSON is being added to the platform. JavaServer Faces will add support for HTML5 forms. There are several other improvements coming in this latest version of the platform. The Java EE 7 platform is scheduled to release in Q2 2013. Some of the implementations are already integrated in GlassFish. This talk will provide a code-intensive introduction to the updated Java EE 7 platform. Several live demos will be shown during the talk. Don''t miss out on this session to learn all about how to leverage the new and exciting standards in building your next enterprise application.'
 ), (
 	7,
+	3,
 	'http://google.com',
 	'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR_myHAqiNfNNjdB98RqCYlqiQPL4iaoVx98dv1jhbwEJEwx07m',
 	'Google Android conference',
@@ -99,6 +113,7 @@ INSERT INTO conferences (id, conferenceUrl, logoUrl, title, summary, startDate, 
 	'An in depth tour of the Android development tools, with a closer look at everything new - along with tips and tricks for getting the most out of them'
 ), (
 	8,
+	4,
 	'http://google.com',
 	'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR_myHAqiNfNNjdB98RqCYlqiQPL4iaoVx98dv1jhbwEJEwx07m',
 	'Google Chrome and Apps conference',
@@ -525,7 +540,6 @@ INSERT INTO speakers (id, speakerUrl, firstName, lastName, photoUrl, about, face
 	'http://uk.linkedin.com/in/andyrubin',
 	'Senior Vice President of Mobile and Digital Content'
 );
-
 
 INSERT INTO sessions_speakers (SESSION_ID, SPEAKER_ID) VALUES
 	(1, 1), (1, 16),
