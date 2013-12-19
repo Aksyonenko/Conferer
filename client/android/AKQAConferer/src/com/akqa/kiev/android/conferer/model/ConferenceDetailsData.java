@@ -6,14 +6,7 @@ public class ConferenceDetailsData extends ConferenceData {
 
 	private List<SessionData> sessions;
 
-	public List<SessionData> getSessions() {
-		return sessions;
-	}
 
-	public void setSessions(List<SessionData> sessions) {
-		this.sessions = sessions;
-	}
-	
 	public ConferenceDetailsData() {
 
 	}
@@ -30,5 +23,15 @@ public class ConferenceDetailsData extends ConferenceData {
 		setRegion(data.getRegion());
 		setCity(data.getCity());
 		setAddress(data.getAddress());
+		setCategory(data.getCategory());
+	}
+	
+
+	public List<SessionData> getSessions() {
+		return sessions;
+	}
+	
+	public void setSessions(List<SessionData> sessions) {
+		this.sessions = sessions;
 	}
 }

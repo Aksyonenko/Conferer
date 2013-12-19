@@ -11,6 +11,7 @@ import java.util.Date;
 public class ConferenceData {
 
 	private Long id;
+	private CategoryData category;
 	private String conferenceUrl;
 	private String logoUrl;
 	private String title;
@@ -109,6 +110,14 @@ public class ConferenceData {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public CategoryData getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryData category) {
+		this.category = category;
 	}	
 
 }

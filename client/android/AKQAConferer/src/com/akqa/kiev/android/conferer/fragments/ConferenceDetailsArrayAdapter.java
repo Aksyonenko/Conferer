@@ -1,7 +1,6 @@
 package com.akqa.kiev.android.conferer.fragments;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -10,13 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.SessionData;
-import com.akqa.kiev.android.conferer.model.SpeakerData;
-import com.androidquery.AQuery;
 
 public class ConferenceDetailsArrayAdapter extends ArrayAdapter<SessionData> {
 

@@ -3,22 +3,20 @@ package com.akqa.kiev.android.conferer.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.akqa.kiev.android.conferer.OnSearchResultSelectedListener;
-import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.model.SearchData;
-import com.akqa.kiev.android.conferer.service.ConfererDbService;
-import com.akqa.kiev.android.conferer.service.ConfererWebService;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.akqa.kiev.android.conferer.OnSearchResultSelectedListener;
+import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.SearchData;
+import com.akqa.kiev.android.conferer.service.ConfererDbService;
 
 public class SearchFragment extends Fragment implements OnItemClickListener {
 	public static final String ARG_SEARCH_QUERY = "searchQuery";

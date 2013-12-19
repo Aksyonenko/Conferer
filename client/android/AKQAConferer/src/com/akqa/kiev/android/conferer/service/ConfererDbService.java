@@ -12,10 +12,12 @@ import java.util.TimeZone;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.akqa.kiev.android.conferer.db.CategoryDao;
 import com.akqa.kiev.android.conferer.db.ConferenceDao;
 import com.akqa.kiev.android.conferer.db.ConfererDatabase;
 import com.akqa.kiev.android.conferer.db.SessionDao;
 import com.akqa.kiev.android.conferer.db.SpeakerDao;
+import com.akqa.kiev.android.conferer.model.CategoryData;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SearchData;
@@ -30,12 +32,14 @@ public class ConfererDbService implements ConfererService {
 	private ConferenceDao conferenceDao;
 	private SessionDao sessionDao;
 	private SpeakerDao speakerDao;
+	private CategoryDao categoryDao;
 	
 	public ConfererDbService(Context context) {
 		conferenceDao = ConfererDatabase.getInstance(context)
 				.getConferenceDao();
 		sessionDao = ConfererDatabase.getInstance(context).getSessionDao();
 		speakerDao = ConfererDatabase.getInstance(context).getSpeakerDao();
+		categoryDao = ConfererDatabase.getInstance(context).getCategoryDao();
 	}
 
 	@Override
@@ -167,6 +171,14 @@ public class ConfererDbService implements ConfererService {
 	@Override
 	public SpeakerData loadSpeakerDetails(long id) {
 		return speakerDao.getById(id);
+	}
+	
+	public List<CategoryData> loadCategories() {
+		return categoryDao.findAll();
+	}
+	
+	public CategoryData loadCategory(long id) {
+		return categoryDao.getById(id);
 	}
 
 }

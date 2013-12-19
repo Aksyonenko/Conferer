@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.CategoryData;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.model.SearchData;
 
@@ -28,6 +29,9 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 	private static final String COLUMN_REGION = "region";
 	private static final String COLUMN_CITY = "city";
 	private static final String COLUMN_ADDRESS = "address";
+	private static final String COLUMN_CATEGORY_ID = "category_id";
+	
+	private CategoryDao categoryDao;
 	
 	protected ConferenceDao() {
 
@@ -47,7 +51,9 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 			      COLUMN_COUNTRY + " text, " + 
 			      COLUMN_REGION + " text, " + 
 			      COLUMN_CITY + " text, " + 
-			      COLUMN_ADDRESS + " text); ";
+			      COLUMN_ADDRESS + " text, " +
+			      COLUMN_CATEGORY_ID + " long, " +
+			      "foreign key(" + COLUMN_CATEGORY_ID + ") references " + CategoryDao.TABLE_NAME + "(" + COLUMN_ID + "));";
 		db.execSQL(createStatement);
 	}
 	
@@ -66,6 +72,7 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 	protected ContentValues asContentValues(ConferenceData conference) {
 		ContentValues valuesMap = new ContentValues();
 		valuesMap.put(COLUMN_ID, conference.getId());
+		valuesMap.put(COLUMN_CATEGORY_ID, conference.getCategory().getId());
 		valuesMap.put(COLUMN_CONFERENCE_URL, conference.getConferenceUrl());
 		valuesMap.put(COLUMN_LOGO_URL, conference.getLogoUrl());
 		valuesMap.put(COLUMN_TITLE, conference.getTitle());
@@ -97,6 +104,12 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		conf.setRegion(cursor.getString(8));
 		conf.setCity(cursor.getString(9));
 		conf.setAddress(cursor.getString(10));
+		if(categoryDao == null) {
+			categoryDao = new CategoryDao();
+			categoryDao.setDataBase(mDataBase);
+		}
+		CategoryData catData  = categoryDao.getById(cursor.getLong(11));
+		conf.setCategory(catData);
 		return conf;
 	}
 	

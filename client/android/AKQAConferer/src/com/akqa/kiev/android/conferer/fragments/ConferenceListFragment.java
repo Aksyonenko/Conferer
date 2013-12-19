@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererService;
-import com.akqa.kiev.android.conferer.service.ConfererWebService;
 
 
 public class ConferenceListFragment extends Fragment implements OnItemClickListener {
@@ -80,6 +79,7 @@ public class ConferenceListFragment extends Fragment implements OnItemClickListe
 		protected void onPostExecute(List<ConferenceData> result) {
 			conferences.clear();
 			for(ConferenceData data : result) {
+				Log.i(getClass().getName(), "Conference category: " + data.getCategory().getId() + ": " + data.getCategory().getName());
 				conferences.add(data);
 			}
 			stickyAdapter.notifyDataSetChanged();

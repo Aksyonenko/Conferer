@@ -17,7 +17,7 @@ import com.akqa.kiev.android.conferer.web.client.ConfererWebClient;
 import com.akqa.kiev.android.conferer.web.json.ReflectionJsonParsingHelper;
 
 public class ConfererDatabase {
-	
+
 	private static final String DATABASE_NAME = "conferer.db";
 	private static final int DATABASE_VERSION = 1;
 
@@ -28,11 +28,12 @@ public class ConfererDatabase {
 	private ConferenceDao conferenceDao;
 	private SessionDao sessionDao;
 	private SpeakerDao speakerDao;
-	
+	private CategoryDao categoryDao;
+
 	private CountDownLatch countDownLatch;
-	
+
 	private static ConfererDatabase instance;
-	
+
 	public static ConfererDatabase getInstance(Context context) {
 		if (instance == null) {
 			instance = new ConfererDatabase(context);
@@ -45,12 +46,18 @@ public class ConfererDatabase {
 		conferenceDao = new ConferenceDao();
 		sessionDao = new SessionDao();
 		speakerDao = new SpeakerDao();
+		categoryDao = new CategoryDao();
 
 		mDataBase = new OpenHelper(context).getWritableDatabase();
 		conferenceDao.setDataBase(mDataBase);
 		sessionDao.setDataBase(mDataBase);
 		speakerDao.setDataBase(mDataBase);
+		categoryDao.setDataBase(mDataBase);
 		waitForDbInitIfFirstCall();
+	}
+
+	public CategoryDao getCategoryDao() {
+		return categoryDao;
 	}
 
 	public ConferenceDao getConferenceDao() {
@@ -64,10 +71,11 @@ public class ConfererDatabase {
 	public SpeakerDao getSpeakerDao() {
 		return speakerDao;
 	}
-	
+
 	private void init(SQLiteDatabase db) {
 		db.beginTransaction();
 		try {
+			categoryDao.init(db);
 			conferenceDao.init(db);
 			speakerDao.init(db);
 			sessionDao.init(db);
@@ -76,15 +84,19 @@ public class ConfererDatabase {
 			db.endTransaction();
 		}
 	}
-	
+
 	private void initTablesData(List<ConferenceDetailsData> data) {
 		mDataBase.beginTransaction();
 		try {
+			List<Long> insertedCategories = new ArrayList<Long>();
 			List<Long> insertedSpeakers = new ArrayList<Long>();
 			for (ConferenceDetailsData conferenceDetailsData : data) {
 				conferenceDao.insert(conferenceDetailsData);
-				List<SessionData> sessions = conferenceDetailsData
-						.getSessions();
+				if (!insertedCategories.contains(conferenceDetailsData.getCategory().getId())) {
+					categoryDao.insert(conferenceDetailsData.getCategory());
+					insertedCategories.add(conferenceDetailsData.getCategory().getId());
+				}
+				List<SessionData> sessions = conferenceDetailsData.getSessions();
 				Long conferenceId = conferenceDetailsData.getId();
 				for (SessionData session : sessions) {
 					sessionDao.insert(session, conferenceId);
@@ -94,8 +106,7 @@ public class ConfererDatabase {
 							speakerDao.insert(speaker);
 							insertedSpeakers.add(speaker.getId());
 						}
-						sessionDao.assignSpeakerToSession(session.getId(),
-								speaker.getId());
+						sessionDao.assignSpeakerToSession(session.getId(), speaker.getId());
 					}
 				}
 			}
@@ -104,7 +115,7 @@ public class ConfererDatabase {
 			mDataBase.endTransaction();
 		}
 	}
-	
+
 	private class OpenHelper extends SQLiteOpenHelper {
 
 		public OpenHelper(Context context) {
@@ -118,14 +129,13 @@ public class ConfererDatabase {
 			LoadDataTask loadDataTask = new LoadDataTask();
 			loadDataTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 		}
-		
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			// do nothing
 		}
 	}
-	
+
 	private void waitForDbInitIfFirstCall() {
 		if (countDownLatch != null) {
 			try {
@@ -135,16 +145,14 @@ public class ConfererDatabase {
 			}
 		}
 	}
-	
-	private class LoadDataTask extends
-			AsyncTask<Void, Void, List<ConferenceDetailsData>> {
+
+	private class LoadDataTask extends AsyncTask<Void, Void, List<ConferenceDetailsData>> {
 		@Override
 		protected List<ConferenceDetailsData> doInBackground(Void... params) {
 			String allConferencesDetailsJson = client.getAllConferences();
 			try {
-				List<ConferenceDetailsData> result = ReflectionJsonParsingHelper
-						.listObjectsFromJsonString(allConferencesDetailsJson,
-								ConferenceDetailsData.class);
+				List<ConferenceDetailsData> result = ReflectionJsonParsingHelper.listObjectsFromJsonString(
+						allConferencesDetailsJson, ConferenceDetailsData.class);
 				if (result != null) {
 					initTablesData(result);
 				}

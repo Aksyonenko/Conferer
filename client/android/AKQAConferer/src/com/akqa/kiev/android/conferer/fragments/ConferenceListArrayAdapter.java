@@ -1,14 +1,9 @@
 package com.akqa.kiev.android.conferer.fragments;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-
-import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.model.ConferenceData;
-import com.androidquery.AQuery;
 
 import android.content.Context;
 import android.text.Html;
@@ -18,13 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.androidquery.AQuery;
+
 public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 
 	List<ConferenceData> conferences;
 	SimpleDateFormat dayFormat;
 	SimpleDateFormat monthFormat;
 	SimpleDateFormat separatorDateFormat;
-	private int lastMonth = 0;
 	
 	public ConferenceListArrayAdapter(Context context, int textViewResourceId,
 			List<ConferenceData> conferences) {

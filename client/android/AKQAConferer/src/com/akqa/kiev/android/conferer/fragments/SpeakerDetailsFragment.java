@@ -1,7 +1,5 @@
 package com.akqa.kiev.android.conferer.fragments;
 
-import java.lang.ref.WeakReference;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.SpeakerDetailsFragmentListener;
 import com.akqa.kiev.android.conferer.model.SocialLinksData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 import com.akqa.kiev.android.conferer.service.ConfererService;
