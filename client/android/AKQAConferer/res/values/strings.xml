@@ -9,5 +9,12 @@
     <string name="search_title">Search</string>
     <string name="conferences_title">CONFERENCES</string>
     <string name="search_hint">Enter search query here</string>
+    <string name="session_details_speaker">Speaker:</string>
+    <string name="session_details_day">Day:</string>
+    <string name="session_details_time">Time:</string>
+    <string name="session_details_location">Location:</string>
+    <string name="session_details_speaker_list_title">Speakers</string>
+    <string name="session_details_about_title">Session</string>
+    
     <string name="gcm_sender_id">897752841406</string>
 </resources>

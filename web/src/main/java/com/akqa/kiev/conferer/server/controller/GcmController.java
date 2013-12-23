@@ -32,6 +32,13 @@ public class GcmController {
         gcmRegistrationDao.save(gcmRegistration);
         return gcmRegistration;
     }
+    
+    //TODO - remove later
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseBody
+    public Iterable<GcmRegistration> findAll() {
+        return gcmRegistrationDao.findAll();
+    }
 
     @RequestMapping(value = "/unregister/{id}", method = RequestMethod.GET)
     @ResponseBody

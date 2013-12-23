@@ -24,7 +24,7 @@ import com.akqa.kiev.android.conferer.utils.LogUtils;
  */
 public class ConfererWebClient {
 
-	private static final String SERVER_ADDR = "http://10.11.100.254";
+	private static final String SERVER_ADDR = "http://54.203.248.182:8080/conferer";
 	
 	private static final String CONFERENCES_URL = SERVER_ADDR + "/conferences";
 	private static final String ALL_CONFERENCES_URL = SERVER_ADDR

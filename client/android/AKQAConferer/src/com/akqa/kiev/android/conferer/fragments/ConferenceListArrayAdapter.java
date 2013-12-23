@@ -1,12 +1,9 @@
 package com.akqa.kiev.android.conferer.fragments;
 
 import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-
-import com.akqa.kiev.android.conferer.R;
-import com.akqa.kiev.android.conferer.model.ConferenceData;
-import com.androidquery.AQuery;
 
 import android.content.Context;
 import android.text.Html;
@@ -16,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.ConferenceData;
+import com.androidquery.AQuery;
+
 public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 
 	List<ConferenceData> conferences;
 	SimpleDateFormat dayFormat;
 	SimpleDateFormat monthFormat;
+	SimpleDateFormat separatorDateFormat;
 	
 	public ConferenceListArrayAdapter(Context context, int textViewResourceId,
 			List<ConferenceData> conferences) {
@@ -28,6 +30,7 @@ public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 		this.conferences = conferences;
 		dayFormat = new SimpleDateFormat("dd", Locale.US);
 		monthFormat = new SimpleDateFormat("MMM", Locale.US);
+		separatorDateFormat = new SimpleDateFormat("MMMM yyyy", context.getResources().getConfiguration().locale);
 	}
 	
 	@Override
@@ -51,9 +54,12 @@ public class ConferenceListArrayAdapter extends ArrayAdapter<ConferenceData> {
 		
 		ConferenceData item = getItem(position);
 		
+		//Determine if separator needed
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTimeInMillis(item.getStartDate().getTime());
+				
 		TextView titleTV = (TextView) row.findViewById(R.id.conference_listitem_title);
 		titleTV.setText(getItem(position).getTitle());
-		
 		TextView dateTV = (TextView) row.findViewById(R.id.conference_listitem_dates);
 		StringBuilder builder = new StringBuilder();
 		builder.append("<b>").append(dayFormat.format(item.getStartDate())).append("</b>");

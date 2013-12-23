@@ -15,21 +15,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "actions")
 public class Action extends AbstractEntity {
 
-    @Column(nullable = false)
+    @Column(name = "action_name", nullable = false)
     private String actionName;
 
-    @Column(nullable = false)
+    @Column(name = "entity_class", nullable = false)
     private String entityClass;
 
-    @Column(nullable = false)
+    @Column(name = "entity_id", nullable = false)
     private BigInteger entityId;
 
     @JsonIgnore
-    @Column(nullable = false)
+    @Column(name = "db_timestamp", nullable = false)
     private Date dbTimestamp;
 
     @JsonIgnore
-    @Column(nullable = false)
+    @Column(name = "sent_to_device", nullable = false)
     private Boolean sentToDevice;
 
     public Action() {

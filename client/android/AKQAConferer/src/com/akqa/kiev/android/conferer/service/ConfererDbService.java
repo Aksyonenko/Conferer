@@ -10,13 +10,17 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import android.content.Context;
+import android.database.Cursor;
 
+import com.akqa.kiev.android.conferer.db.CategoryDao;
 import com.akqa.kiev.android.conferer.db.ConferenceDao;
 import com.akqa.kiev.android.conferer.db.ConfererDatabase;
 import com.akqa.kiev.android.conferer.db.SessionDao;
 import com.akqa.kiev.android.conferer.db.SpeakerDao;
+import com.akqa.kiev.android.conferer.model.CategoryData;
 import com.akqa.kiev.android.conferer.model.ConferenceData;
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
+import com.akqa.kiev.android.conferer.model.SearchData;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
 import com.akqa.kiev.android.conferer.utils.DateUtils;
@@ -28,12 +32,14 @@ public class ConfererDbService implements ConfererService {
 	private ConferenceDao conferenceDao;
 	private SessionDao sessionDao;
 	private SpeakerDao speakerDao;
+	private CategoryDao categoryDao;
 	
 	public ConfererDbService(Context context) {
 		conferenceDao = ConfererDatabase.getInstance(context)
 				.getConferenceDao();
 		sessionDao = ConfererDatabase.getInstance(context).getSessionDao();
 		speakerDao = ConfererDatabase.getInstance(context).getSpeakerDao();
+		categoryDao = ConfererDatabase.getInstance(context).getCategoryDao();
 	}
 
 	@Override
@@ -93,6 +99,10 @@ public class ConfererDbService implements ConfererService {
 		}
 		return monthConf;
 	}
+	
+	public List<ConferenceData> loadConferencesForCategory(long categoryId) {
+		return conferenceDao.getByCategory(categoryId);
+	}
 
 	@Override
 	public ConferenceDetailsData loadConferenceDetails(long id) {
@@ -114,6 +124,47 @@ public class ConfererDbService implements ConfererService {
 		return session;
 	}
 	
+	public Long getConferenceId(Long sessionId) {
+		return sessionDao.getConferenceId(sessionId);
+	}
+	
+	public List<SearchData> searchConferences(String searchArg) {
+		List<SearchData> searchDataList = new ArrayList<SearchData>();
+		Cursor searchResult = conferenceDao.searchQuery(searchArg);
+		if(searchResult.moveToFirst()) {
+			do {
+				searchDataList.add(conferenceDao.cursorToSearchObject(searchResult));
+			} while(searchResult.moveToNext());
+		}
+		searchResult.close();
+		return searchDataList;
+	}
+	
+	public List<SearchData> searchSessions(String searchArg) {
+		List<SearchData> searchDataList = new ArrayList<SearchData>();
+		Cursor searchResult = sessionDao.searchQuery(searchArg);
+		if(searchResult.moveToFirst()) {
+			do {
+				searchDataList.add(sessionDao.cursorToSearchObject(searchResult));
+			} while(searchResult.moveToNext());
+		}
+		searchResult.close();
+		return searchDataList;
+	}
+	
+	public List<SearchData> searchSpeakers(String searchArg) {
+		List<SearchData> searchDataList = new ArrayList<SearchData>();
+		Cursor searchResult = speakerDao.searchQuery(searchArg);
+		if(searchResult.moveToFirst()) {
+			do {
+				searchDataList.add(speakerDao.cursorToSearchObject(searchResult));
+			} while(searchResult.moveToNext());
+		}
+		searchResult.close();
+		return searchDataList;
+	}
+	
+	
 	private void enrichSession(SessionData session) {
 		List<Long> speakersIds = sessionDao.getSpeakerIdsForSession(session
 				.getId());
@@ -122,8 +173,16 @@ public class ConfererDbService implements ConfererService {
 	}
 
 	@Override
-	public SpeakerData loadSpeakereDetails(long id) {
+	public SpeakerData loadSpeakerDetails(long id) {
 		return speakerDao.getById(id);
+	}
+	
+	public List<CategoryData> loadCategories() {
+		return categoryDao.findAll();
+	}
+	
+	public CategoryData loadCategory(long id) {
+		return categoryDao.getById(id);
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.akqa.kiev.android.conferer.model.SearchData;
+
 import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -82,7 +84,11 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 		return mDataBase.rawQuery(query, null);
 	}
 	
-	protected T cursorToObject(Cursor cursor) {
+	public T currentCursorToObject(Cursor cursor) {
+		return cursorToObjectInternal(cursor);
+	}
+	
+	public T cursorToObject(Cursor cursor) {
 		try {
 			if (cursor.moveToFirst()) {
 				return cursorToObjectInternal(cursor);
@@ -116,5 +122,5 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 	protected abstract ContentValues asContentValues(T item);
 	
 	protected abstract Map<String, String> getSearchColumnsMap();
-
+	public abstract SearchData cursorToSearchObject(Cursor cursor);
 }

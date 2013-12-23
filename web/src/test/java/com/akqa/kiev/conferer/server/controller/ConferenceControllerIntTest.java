@@ -121,7 +121,8 @@ public class ConferenceControllerIntTest extends AbstractControllerIntTest {
 			.andExpect(jsonPath("$[*]", contains(
 				1356998400000L, // Jan 2013
 				1362096000000L, // Mar 2013
-				1364774400000L  // Apr 2013
+				1364774400000L,
+				1391212800000L // Feb 2014
 			)));
 	}
 	

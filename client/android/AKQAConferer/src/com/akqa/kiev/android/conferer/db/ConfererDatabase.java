@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.akqa.kiev.android.conferer.model.ConferenceDetailsData;
 import com.akqa.kiev.android.conferer.model.SessionData;
@@ -28,6 +29,7 @@ public class ConfererDatabase {
 	private ConferenceDao conferenceDao;
 	private SessionDao sessionDao;
 	private SpeakerDao speakerDao;
+	private CategoryDao categoryDao;
 	
 	private CountDownLatch countDownLatch;
 	
@@ -42,15 +44,22 @@ public class ConfererDatabase {
 
 	private ConfererDatabase(Context context) {
 		client = new ConfererWebClient();
-		conferenceDao = new ConferenceDao();
+		categoryDao = new CategoryDao();
+		conferenceDao = new ConferenceDao(categoryDao);
 		sessionDao = new SessionDao();
 		speakerDao = new SpeakerDao();
 
 		mDataBase = new OpenHelper(context).getWritableDatabase();
+		categoryDao.setDataBase(mDataBase);
 		conferenceDao.setDataBase(mDataBase);
 		sessionDao.setDataBase(mDataBase);
 		speakerDao.setDataBase(mDataBase);
+		
 		waitForDbInitIfFirstCall();
+	}
+	
+	public CategoryDao getCategoryDao() {
+		return categoryDao;
 	}
 
 	public ConferenceDao getConferenceDao() {
@@ -68,6 +77,7 @@ public class ConfererDatabase {
 	private void init(SQLiteDatabase db) {
 		db.beginTransaction();
 		try {
+			categoryDao.init(db);
 			conferenceDao.init(db);
 			speakerDao.init(db);
 			sessionDao.init(db);
@@ -115,9 +125,16 @@ public class ConfererDatabase {
 	private void initTablesData(List<ConferenceDetailsData> data) {
 		mDataBase.beginTransaction();
 		try {
+			List<Long> insertedCategories = new ArrayList<Long>();
 			List<Long> insertedSpeakers = new ArrayList<Long>();
 			for (ConferenceDetailsData conferenceDetailsData : data) {
 				conferenceDao.insert(conferenceDetailsData);
+				if (!insertedCategories.contains(conferenceDetailsData
+						.getCategory().getId())) {
+					categoryDao.insert(conferenceDetailsData.getCategory());
+					insertedCategories.add(conferenceDetailsData.getCategory()
+							.getId());
+				}
 				List<SessionData> sessions = conferenceDetailsData
 						.getSessions();
 				Long conferenceId = conferenceDetailsData.getId();

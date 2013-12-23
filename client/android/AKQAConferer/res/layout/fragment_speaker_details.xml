@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/speaker_details_image"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:maxHeight="140dp"
+                android:minHeight="40dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/conference_logo_test" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/speaker_details_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:text="Christophe Coenraets"
+                    android:textColor="@color/title_color"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/speaker_details_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Chief Architect and Group CTO of Application Security and Identity Products, Intel" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/speaker_details_facebook_logo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:padding="4dp"
+                    android:src="@drawable/facebook_logo" />
+
+                <ImageView
+                    android:id="@+id/speaker_details_linkedin_logo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:padding="4dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/linkedin_logo" />
+
+                <ImageView
+                    android:id="@+id/speaker_details_twitter_logo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:padding="4dp"
+                    android:src="@drawable/twitter_logo" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/speaker_details_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Christophe Coenraets is Chief Architect and Group CTO of Application Security and Identity Products with Intel, where he is responsible for architecting SOA, Cloud, Mobile, Big Data"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

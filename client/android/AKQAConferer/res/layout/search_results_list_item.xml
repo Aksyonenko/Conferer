@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/conference_list_item_background_selector"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp" >
+
+    <ImageView
+        android:id="@+id/search_results_list_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:src="@drawable/icon_session" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="4dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/search_results_list_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Creating Android Apps in Java"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/search_results_list_item_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:maxLines="2"
+            android:text="This is a one-day tutorial in writing Android apps with the application Eclipse. An app is made of two parts: a screen layout written in XML (extensible Markup Language), and objects written in Java. Learn how the two halves of the app communicate with each other. "
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

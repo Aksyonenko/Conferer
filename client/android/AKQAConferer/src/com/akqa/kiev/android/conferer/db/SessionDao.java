@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.akqa.kiev.android.conferer.R;
+import com.akqa.kiev.android.conferer.model.SearchData;
 import com.akqa.kiev.android.conferer.model.SessionData;
 
 public class SessionDao extends AbstractBaseDao<SessionData> {
@@ -106,6 +107,22 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 		return cursorToListObjects(cursor);
 	}
 	
+	public Long getConferenceId(long sessionId) {
+		Cursor cursor = mDataBase.rawQuery(MessageFormat.format(
+				"select {0} from {1} where {2} = ?", COLUMN_CONFERENCE_ID,
+				TABLE_NAME, COLUMN_ID), new String[] { String
+				.valueOf(sessionId) });
+		try {
+			if (cursor.moveToFirst()) {
+				return cursor.getLong(0);
+			} else {
+				return null;
+			}
+		} finally {
+			cursor.close();
+		}
+	}
+	
 	@Override
 	public void delete(Long id) {
 		super.delete(id);
@@ -169,6 +186,15 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 		session.setDetails(cursor.getString(8));
 		session.setLocation(cursor.getString(9));
 		return session;
+	}
+	
+	public SearchData cursorToSearchObject(Cursor cursor) {
+		SearchData data = new SearchData();
+		data.setType(SearchData.TYPE_SESSION);
+		data.setId(cursor.getLong(0));
+		data.setTitle(cursor.getString(2));
+		data.setSubtitle(cursor.getString(3));
+		return data;
 	}
 
 	@Override

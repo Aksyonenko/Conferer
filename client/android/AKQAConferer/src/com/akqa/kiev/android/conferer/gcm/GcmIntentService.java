@@ -30,7 +30,7 @@ public class GcmIntentService extends IntentService {
 
 		String messageType = gcm.getMessageType(intent);
 
-		if (!extras.isEmpty()) { 
+		if (!extras.isEmpty()) {
 			if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR
 					.equals(messageType)) {
 				sendNotification("Receiver error: " + extras.getString("error")
@@ -41,10 +41,11 @@ public class GcmIntentService extends IntentService {
 				// If it's a regular GCM message, do some work.
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE
 					.equals(messageType)) {
-				//send notification here in case of session that was changed in favorites
+				// send notification here in case of session that was changed in
+				// favorites
 			}
 		}
-		
+
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
 		GcmBroadcastReceiver.completeWakefulIntent(intent);
 	}
