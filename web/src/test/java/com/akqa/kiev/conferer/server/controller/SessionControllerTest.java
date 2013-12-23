@@ -1,37 +1,51 @@
 package com.akqa.kiev.conferer.server.controller;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.math.BigInteger;
 
 import org.junit.Test;
-import org.springframework.http.MediaType;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-public class SessionControllerTest extends AbstractControllerTest {
+import com.akqa.kiev.conferer.server.dao.ActionDao;
+import com.akqa.kiev.conferer.server.dao.SessionDao;
+import com.akqa.kiev.conferer.server.model.Action;
 
-	@Test
-	public void session_existing() throws Exception {
-		preCheckJsonResponse("/sessions/1")
-			.andExpect(jsonPath("$.id", is(1)))
-			.andExpect(jsonPath("$.title", is("Avoiding Invisible Impediments to High Performance")))
-			.andExpect(jsonPath("$.summary", not(isEmptyOrNullString())))
-			.andExpect(jsonPath("$.startTime", is("02-01-2013T09:00:00.000+0900")))
-			.andExpect(jsonPath("$.endTime", is("02-01-2013T11:00:00.000+0900")))
-			.andExpect(jsonPath("$.type", is("Workshop")));
-	}
-	
-	@Test
-	public void session_nonExisting() throws Exception {
-		mockMvc.perform(get("/sessions/-1").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isNotFound());
-	}
-	
-	@Test
-	public void session_wrongId() throws Exception {
-		mockMvc.perform(get("/sessions/- &").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isBadRequest());
-	}
+@RunWith(MockitoJUnitRunner.class)
+public class SessionControllerTest {
+
+    @InjectMocks
+    private SessionController sessionController = new SessionController();
+
+    @Mock
+    private SessionDao sessionDao;
+
+    @Mock
+    private ActionDao actionDao;
+
+    @Test
+    public void deleteExistingConference() throws Exception {
+        BigInteger id = BigInteger.valueOf(1L);
+        when(sessionDao.exists(id)).thenReturn(true);
+        
+        sessionController.delete(id);
+        verify(sessionDao).delete(id);
+        verify(actionDao).save(any(Action.class));
+    }
+
+    @Test
+    public void deleteNotExistingConference() throws Exception {
+        BigInteger id = BigInteger.valueOf(1L);
+        when(sessionDao.exists(id)).thenReturn(false);
+        
+        sessionController.delete(id);
+        verify(sessionDao, never()).delete(id);
+        verify(actionDao, never()).save(any(Action.class));
+    }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.akqa.kiev.conferer.server.dao.ConferenceDao;
 import com.akqa.kiev.conferer.server.model.Conference;
-import com.akqa.kiev.conferer.server.model.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -50,18 +50,14 @@ public class ConferenceController extends AbstractConfererController<Conference>
 	@Transactional(readOnly = true)
 	public Conference findOne(@PathVariable BigInteger id) {
 		Conference conference = super.findOne(id);
-		for (Session session : conference.getSessions()) session.getSpeakers().size();
 		return conference;
 	}
+	
 	
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
     public Iterable<Conference> findAll() {
         Iterable<Conference> all = conferenceDao.findAll();
-        for (Conference conference : all) {
-            for (Session session : conference.getSessions())
-                session.getSpeakers().size();
-        }
         return all;
     }
 
@@ -124,6 +120,12 @@ public class ConferenceController extends AbstractConfererController<Conference>
 		
 		return sortedDates;
 	}
+	
+    @Override
+    protected Conference saveEntity(HttpServletRequest request) {
+        // TODO Auto-generated method stub
+        return null;
+    } 	
 
 	@Override
 	protected ConferenceDao getDao() {

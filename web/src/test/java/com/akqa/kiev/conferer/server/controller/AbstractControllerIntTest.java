@@ -23,7 +23,7 @@ import com.akqa.kiev.conferer.server.WebConfig;
 @ActiveProfiles("test")
 @WebAppConfiguration
 @ContextConfiguration(classes = WebConfig.class)
-public abstract class AbstractControllerTest {
+public abstract class AbstractControllerIntTest {
 	
 	@Autowired
 	protected WebApplicationContext applicationContext;

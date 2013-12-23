@@ -59,8 +59,8 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 			      COLUMN_SESSION_ID + " long, " + 
 			      COLUMN_SPEAKER_ID + " long, " + 
 			      "primary key (" + COLUMN_SESSION_ID + "," + COLUMN_SPEAKER_ID + "), " +
-			      "foreign key(" + COLUMN_SESSION_ID + ") references "+ TABLE_NAME + "(" + COLUMN_ID + "), "+
-			      "foreign key(" + COLUMN_SPEAKER_ID + ") references "+ SpeakerDao.TABLE_NAME + "(" + COLUMN_ID + "));";
+			      "foreign key(" + COLUMN_SESSION_ID + ") references "+ TABLE_NAME + "(" + COLUMN_ID + ") on delete cascade on update cascade, "+
+			      "foreign key(" + COLUMN_SPEAKER_ID + ") references "+ SpeakerDao.TABLE_NAME + "(" + COLUMN_ID + ") on delete cascade on update cascade);";
 		db.execSQL(createSessionSpeakerStatement);
 	}
 	
@@ -104,6 +104,19 @@ public class SessionDao extends AbstractBaseDao<SessionData> {
 				COLUMN_SESSION_ID, COLUMN_SPEAKER_ID), new String[] { String
 				.valueOf(speakerId) });
 		return cursorToListObjects(cursor);
+	}
+	
+	@Override
+	public void delete(Long id) {
+		super.delete(id);
+		mDataBase.delete(SESSION_SPEAKER_TABLE_NAME, COLUMN_ID + "=?",
+				new String[] { String.valueOf(id) });
+	}
+	
+	@Override
+	public void deleteAll() {
+		super.deleteAll();
+		mDataBase.delete(SESSION_SPEAKER_TABLE_NAME, null, null);
 	}
 	
 	public void insert(SessionData session, Long conferenceId) {

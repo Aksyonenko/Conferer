@@ -60,6 +60,15 @@ public abstract class AbstractBaseDao<T> implements IBaseDao<T> {
 		}
 	}
 	
+	public void delete(Long id) {
+		mDataBase.delete(getTableName(), COLUMN_ID + "=?",
+				new String[] { String.valueOf(id) });
+	}
+
+	public void deleteAll() {
+		mDataBase.delete(getTableName(), null, null);
+	}
+
 	public Cursor searchQuery(String searchArg) {
 		Map<String, String> map = getSearchColumnsMap();
 		final String query = MessageFormat

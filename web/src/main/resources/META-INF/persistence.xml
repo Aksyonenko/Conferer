@@ -9,6 +9,8 @@
 		<class>com.akqa.kiev.conferer.server.model.Session</class>
 		<class>com.akqa.kiev.conferer.server.model.Speaker</class>
 		<class>com.akqa.kiev.conferer.server.model.SocialLinks</class>
+		<class>com.akqa.kiev.conferer.server.model.GcmRegistration</class>
+		<class>com.akqa.kiev.conferer.server.model.Action</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		
 		<!--

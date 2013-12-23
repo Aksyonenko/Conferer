@@ -9,4 +9,5 @@
     <string name="search_title">Search</string>
     <string name="conferences_title">CONFERENCES</string>
     <string name="search_hint">Enter search query here</string>
+    <string name="gcm_sender_id">897752841406</string>
 </resources>

@@ -77,6 +77,41 @@ public class ConfererDatabase {
 		}
 	}
 	
+	private void cleanDb(){
+		mDataBase.beginTransaction();
+		try {
+			conferenceDao.deleteAll();
+			speakerDao.deleteAll();
+			sessionDao.deleteAll();
+			mDataBase.setTransactionSuccessful();
+		} finally {
+			mDataBase.endTransaction();
+		}
+	}
+	
+	public void fullSync() {
+		new AsyncTask<Void, Void, Boolean>() {
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				cleanDb();
+				String allConferencesDetailsJson = client.getAllConferences();
+				try {
+					List<ConferenceDetailsData> result = ReflectionJsonParsingHelper
+							.listObjectsFromJsonString(
+									allConferencesDetailsJson,
+									ConferenceDetailsData.class);
+					if (result != null) {
+						initTablesData(result);
+					}
+				} catch (Exception e) {
+					LogUtils.logE(getClass().getName(), e);
+					return false;
+				}
+				return true;
+			}
+		}.execute();
+	}
+	
 	private void initTablesData(List<ConferenceDetailsData> data) {
 		mDataBase.beginTransaction();
 		try {

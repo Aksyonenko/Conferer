@@ -1,46 +1,51 @@
 package com.akqa.kiev.conferer.server.controller;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.math.BigInteger;
 
 import org.junit.Test;
-import org.springframework.http.MediaType;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-public class SpeakerControllerTest extends AbstractControllerTest {
+import com.akqa.kiev.conferer.server.dao.ActionDao;
+import com.akqa.kiev.conferer.server.dao.SpeakerDao;
+import com.akqa.kiev.conferer.server.model.Action;
 
-	@Test
-	public void speaker_existing() throws Exception {
-		preCheckJsonResponse("/speakers/2")
-			.andExpect(jsonPath("$.id", is(2)))
-			.andExpect(jsonPath("$.speakerUrl", is("http://johnsmith-johnsimages.blogspot.com/2013/08/montreal-street-fashion-festival-2013.html")))
-			.andExpect(jsonPath("$.firstName", is("Alain")))
-			// FIXME: Fix Unicode issue
-			// .andExpect(jsonPath("$.lastName", is("Hélaïli")))
-			.andExpect(jsonPath("$.photoUrl", is("http://www.bicompetenceforum.com/wp-content/uploads/2013/04/fabriziodepetris.jpg")))
-			.andExpect(jsonPath("$.about", not(isEmptyOrNullString())))
-			.andExpect(jsonPath("$.socialLinks.facebook", is("http://www.facebook.com/acousticsmith")))
-			.andExpect(jsonPath("$.socialLinks.twitter", is("http://twitter.com/JohnWSmith")))
-			.andExpect(jsonPath("$.socialLinks.linkedin", is("http://uk.linkedin.com/in/johnwsmithchange")));
-	}
-	
-	@Test
-	public void speaker_nonExisting() throws Exception {
-		mockMvc.perform(get("/speakers/-1").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isNotFound());
-	}
-	
-	@Test
-	public void speaker_wrongId() throws Exception {
-		mockMvc.perform(get("/speakers/- &").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isBadRequest());
-	}
-	
+@RunWith(MockitoJUnitRunner.class)
+public class SpeakerControllerTest {
+
+    @InjectMocks
+    private SpeakerController speakerController = new SpeakerController();
+
+    @Mock
+    private SpeakerDao speakerDao;
+
+    @Mock
+    private ActionDao actionDao;
+
     @Test
-    public void speaker_sessions() throws Exception {
-        mockMvc.perform(get("/speakers/1/sessions").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    public void deleteExistingConference() throws Exception {
+        BigInteger id = BigInteger.valueOf(1L);
+        when(speakerDao.exists(id)).thenReturn(true);
+        
+        speakerController.delete(id);
+        verify(speakerDao).delete(id);
+        verify(actionDao).save(any(Action.class));
+    }
+
+    @Test
+    public void deleteNotExistingConference() throws Exception {
+        BigInteger id = BigInteger.valueOf(1L);
+        when(speakerDao.exists(id)).thenReturn(false);
+        
+        speakerController.delete(id);
+        verify(speakerDao, never()).delete(id);
+        verify(actionDao, never()).save(any(Action.class));
     }
 }

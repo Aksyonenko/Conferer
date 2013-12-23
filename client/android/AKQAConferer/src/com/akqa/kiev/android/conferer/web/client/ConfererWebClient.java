@@ -39,6 +39,10 @@ public class ConfererWebClient {
 	private static final String SPEAKERS_URL = SERVER_ADDR + "/speakers";
 	private static final String SPEAKER_SESSIONS_URL = SERVER_ADDR
 			+ "/speakers/{0}/sessions";
+	
+	private static final String GCM_REGISTRATION_URL = SERVER_ADDR
+			+ "/gcm/register/{0}";
+	
 
 
 	private DefaultHttpClient httpClient;
@@ -79,9 +83,13 @@ public class ConfererWebClient {
 		return getRequest(SPEAKERS_URL + "/" + id);
 	}
 	
-
 	public String getSpeakerSessions(long speakerId){
 		return getRequest(MessageFormat.format(SPEAKER_SESSIONS_URL, speakerId));
+	}
+	
+	public String registerDevice(String registratonId) {
+		return getRequest(MessageFormat.format(GCM_REGISTRATION_URL,
+				registratonId));
 	}
 
 	private String getRequest(String url) {

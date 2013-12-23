@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.akqa.kiev.android.conferer.db.ConfererDatabase;
 import com.akqa.kiev.android.conferer.fragments.ConferenceDetailsFragment;
+import com.akqa.kiev.android.conferer.gcm.GcmClient;
 import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.akqa.kiev.android.conferer.utils.Constants;
@@ -22,12 +25,18 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 	private boolean isTwoPane = false;
 	private ConfererWebService confererService;
 	private ConfererDbService cs;
+	private GcmClient gcmClient = new GcmClient();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_start);
 		cs = new ConfererDbService(getApplicationContext());
+
+		if (!gcmClient.checkPlayServices(this)) {
+			Log.i(getClass().getName(),
+					"No valid Google Play Services APK found.");
+		}
 	}
 
 	@Override
@@ -38,6 +47,12 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 			isTwoPane = true;
 		}
 		super.onStart();
+	}
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    gcmClient.checkPlayServices(this);
 	}
 	
 	private ConferenceDetailsFragment initDetailsFragment() {

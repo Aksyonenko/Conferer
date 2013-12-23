@@ -77,7 +77,7 @@ public class Conference extends AbstractEntity {
 	private String details;
 
 	@JsonView(FullView.class)
-	@OneToMany(targetEntity = Session.class, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Session.class, fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "conferences_sessions",
 		joinColumns = @JoinColumn(name = "conference_id", referencedColumnName = "id", nullable = false, unique = false),

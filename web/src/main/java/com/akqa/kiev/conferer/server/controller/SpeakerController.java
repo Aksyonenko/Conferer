@@ -2,6 +2,8 @@ package com.akqa.kiev.conferer.server.controller;
 
 import java.math.BigInteger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +27,13 @@ public class SpeakerController extends AbstractConfererController<Speaker> {
 
 	@Autowired
 	private SpeakerDao speakerDao;
-
+	
+    @Override
+    protected Speaker saveEntity(HttpServletRequest request) {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+    
 	@Override
 	protected SpeakerDao getDao() {
 		return speakerDao;

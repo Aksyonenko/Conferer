@@ -1,7 +1,6 @@
 package com.akqa.kiev.conferer.server.model;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;

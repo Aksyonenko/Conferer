@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.context.request.WebRequestInterceptor;
@@ -23,16 +25,22 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.android.gcm.server.Sender;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.akqa.kiev.conferer.server.controller", "com.akqa.kiev.conferer.server.dao.config"})
+@ComponentScan(basePackages = {"com.akqa.kiev.conferer.server.controller", "com.akqa.kiev.conferer.server.gcm",
+        "com.akqa.kiev.conferer.server.dao.config"})
+@PropertySource(value = { "classpath:project.properties" })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
 	
 	@Autowired
 	private ApplicationContext context;
+	
+	@Autowired
+    Environment env;
 	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -68,5 +76,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		mapper.registerModule(calendarModule);
 		
 		return mapper;
+	}
+	
+	@Bean
+	public Sender sender(){
+	    return new Sender(env.getProperty("gcm.api.key"));
 	}
 }

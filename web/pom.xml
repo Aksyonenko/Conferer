@@ -197,6 +197,13 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.7.5</version>
 		</dependency>
+		
+		<!-- Android  -->
+		<dependency>
+			<groupId>com.ganyo</groupId>
+			<artifactId>gcm-server</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 
 		<!-- Testing -->
 		<dependency>
