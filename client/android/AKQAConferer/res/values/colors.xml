@@ -25,4 +25,8 @@
     <color name="separator_gradient_start">#cdcdcd</color>
     <color name="separator_gradient_end">#00cdcdcd</color>
     <color name="conference_details_details_button_background">#cdcdcd</color>
+    <color name="drawer_background_color">#aa262626</color>
+    <color name="drawer_item_background_color">#88000000</color>
+    <color name="drawer_gap_color">#606060</color>
+    <color name="drawer_list_item_selected_bg">#d94342</color>
 </resources>

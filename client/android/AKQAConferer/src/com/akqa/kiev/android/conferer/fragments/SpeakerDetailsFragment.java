@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.model.SocialLinksData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.androidquery.AQuery;
@@ -37,7 +38,7 @@ public class SpeakerDetailsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		confererService = new ConfererWebService();
+		confererService = new ConfererDbService(getActivity());
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

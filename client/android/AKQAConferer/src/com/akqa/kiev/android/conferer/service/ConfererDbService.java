@@ -99,6 +99,10 @@ public class ConfererDbService implements ConfererService {
 		}
 		return monthConf;
 	}
+	
+	public List<ConferenceData> loadConferencesForCategory(long categoryId) {
+		return conferenceDao.getByCategory(categoryId);
+	}
 
 	@Override
 	public ConferenceDetailsData loadConferenceDetails(long id) {

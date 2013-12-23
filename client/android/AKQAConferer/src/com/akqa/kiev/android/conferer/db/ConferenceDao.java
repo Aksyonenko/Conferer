@@ -1,7 +1,9 @@
 package com.akqa.kiev.android.conferer.db;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.SearchManager;
@@ -30,44 +32,34 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 	private static final String COLUMN_CITY = "city";
 	private static final String COLUMN_ADDRESS = "address";
 	private static final String COLUMN_CATEGORY_ID = "category_id";
-	
-	private CategoryDao categoryDao;
-	
-	protected ConferenceDao() {
 
+	private CategoryDao categoryDao;
+
+	protected ConferenceDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
 	}
-	
+
 	@Override
 	public void init(SQLiteDatabase db) {
 		mDataBase = db;
-		final String createStatement = "create table " + TABLE_NAME + " (" + 
-			      COLUMN_ID + " long primary key, " + 
-			      COLUMN_CONFERENCE_URL + " text, " + 
-			      COLUMN_LOGO_URL + " text, " + 
-			      COLUMN_TITLE + " text, " + 
-			      COLUMN_SUMMARY + " text, " + 
-			      COLUMN_START_DATE + " long, " + 
-			      COLUMN_END_DATE + " long, " + 
-			      COLUMN_COUNTRY + " text, " + 
-			      COLUMN_REGION + " text, " + 
-			      COLUMN_CITY + " text, " + 
-			      COLUMN_ADDRESS + " text, " +
-			      COLUMN_CATEGORY_ID + " long, " +
-			      "foreign key(" + COLUMN_CATEGORY_ID + ") references " + CategoryDao.TABLE_NAME + "(" + COLUMN_ID + "));";
+		final String createStatement = "create table " + TABLE_NAME + " (" + COLUMN_ID + " long primary key, "
+				+ COLUMN_CONFERENCE_URL + " text, " + COLUMN_LOGO_URL + " text, " + COLUMN_TITLE + " text, "
+				+ COLUMN_SUMMARY + " text, " + COLUMN_START_DATE + " long, " + COLUMN_END_DATE + " long, "
+				+ COLUMN_COUNTRY + " text, " + COLUMN_REGION + " text, " + COLUMN_CITY + " text, " + COLUMN_ADDRESS
+				+ " text, " + COLUMN_CATEGORY_ID + " long, " + "foreign key(" + COLUMN_CATEGORY_ID + ") references "
+				+ CategoryDao.TABLE_NAME + "(" + COLUMN_ID + "));";
 		db.execSQL(createStatement);
 	}
-	
+
 	@Override
 	protected Map<String, String> getSearchColumnsMap() {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, COLUMN_TITLE);
 		map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, COLUMN_SUMMARY);
-		map.put(SearchManager.SUGGEST_COLUMN_ICON_1,
-				String.valueOf(R.drawable.search_conference));
+		map.put(SearchManager.SUGGEST_COLUMN_ICON_1, String.valueOf(R.drawable.search_conference));
 		return map;
 	}
-	
-	
+
 	@Override
 	protected ContentValues asContentValues(ConferenceData conference) {
 		ContentValues valuesMap = new ContentValues();
@@ -77,11 +69,9 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		valuesMap.put(COLUMN_LOGO_URL, conference.getLogoUrl());
 		valuesMap.put(COLUMN_TITLE, conference.getTitle());
 		valuesMap.put(COLUMN_SUMMARY, conference.getSummary());
-		Long startDateInMillis = conference.getStartDate() != null ? conference
-				.getStartDate().getTime() : null;
+		Long startDateInMillis = conference.getStartDate() != null ? conference.getStartDate().getTime() : null;
 		valuesMap.put(COLUMN_START_DATE, startDateInMillis);
-		Long endDateInMillis = conference.getEndDate() != null ? conference
-				.getEndDate().getTime() : null;
+		Long endDateInMillis = conference.getEndDate() != null ? conference.getEndDate().getTime() : null;
 		valuesMap.put(COLUMN_END_DATE, endDateInMillis);
 		valuesMap.put(COLUMN_COUNTRY, conference.getCountry());
 		valuesMap.put(COLUMN_REGION, conference.getRegion());
@@ -89,7 +79,7 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		valuesMap.put(COLUMN_ADDRESS, conference.getAddress());
 		return valuesMap;
 	}
-	
+
 	@Override
 	protected ConferenceData cursorToObjectInternal(Cursor cursor) {
 		ConferenceData conf = new ConferenceData();
@@ -104,15 +94,12 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		conf.setRegion(cursor.getString(8));
 		conf.setCity(cursor.getString(9));
 		conf.setAddress(cursor.getString(10));
-		if(categoryDao == null) {
-			categoryDao = new CategoryDao();
-			categoryDao.setDataBase(mDataBase);
-		}
-		CategoryData catData  = categoryDao.getById(cursor.getLong(11));
+
+		CategoryData catData = categoryDao.getById(cursor.getLong(11));
 		conf.setCategory(catData);
 		return conf;
 	}
-	
+
 	public SearchData cursorToSearchObject(Cursor cursor) {
 		SearchData data = new SearchData();
 		data.setType(SearchData.TYPE_CONFERENCE);
@@ -127,5 +114,22 @@ public class ConferenceDao extends AbstractBaseDao<ConferenceData> {
 		return TABLE_NAME;
 	}
 
+	public List<ConferenceData> getByCategory(long categoryId) {
+		Cursor cursor = mDataBase.rawQuery(
+				String.format("select * from %s where %s = %s", TABLE_NAME, COLUMN_CATEGORY_ID, categoryId), null);
+		List<ConferenceData> result = new ArrayList<ConferenceData>();
+		try {
+			if(cursor.moveToFirst()) {
+				while(!cursor.isAfterLast()) {
+					result.add(cursorToObjectInternal(cursor));
+					cursor.moveToNext();
+				}
+			}
+		} finally {
+			cursor.close();
+		}
+		return result;
+		
+	}
 
 }

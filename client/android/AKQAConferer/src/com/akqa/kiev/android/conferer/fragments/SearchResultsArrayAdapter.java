@@ -43,13 +43,13 @@ public class SearchResultsArrayAdapter extends ArrayAdapter<SearchData> {
 		ImageView icon = (ImageView) row.findViewById(R.id.search_results_list_item_icon);
 		switch(item.getType()) {
 		case SearchData.TYPE_CONFERENCE:
-			icon.setImageResource(R.drawable.search_conference);
+			icon.setImageResource(R.drawable.icon_conference_grey);
 			break;
 		case SearchData.TYPE_SESSION:
-			icon.setImageResource(R.drawable.search_session);
+			icon.setImageResource(R.drawable.icon_session_grey);
 			break;
 		case SearchData.TYPE_SPEAKER:
-			icon.setImageResource(R.drawable.search_speaker);
+			icon.setImageResource(R.drawable.icon_speaker_grey);
 			break;
 		}
 		TextView title = (TextView) row.findViewById(R.id.search_results_list_item_title);

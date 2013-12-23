@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/separator_gradient_start"
+    android:background="@color/conference_list_background"
     android:orientation="vertical" >
 
     <TextView

@@ -42,11 +42,11 @@ public class ConfererDatabase {
 	}
 
 	private ConfererDatabase(Context context) {
+		categoryDao = new CategoryDao();
 		client = new ConfererWebClient();
-		conferenceDao = new ConferenceDao();
+		conferenceDao = new ConferenceDao(categoryDao);
 		sessionDao = new SessionDao();
 		speakerDao = new SpeakerDao();
-		categoryDao = new CategoryDao();
 
 		mDataBase = new OpenHelper(context).getWritableDatabase();
 		conferenceDao.setDataBase(mDataBase);

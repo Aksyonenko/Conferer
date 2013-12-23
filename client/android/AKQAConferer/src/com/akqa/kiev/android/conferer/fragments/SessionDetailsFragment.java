@@ -23,6 +23,7 @@ import com.akqa.kiev.android.conferer.R;
 import com.akqa.kiev.android.conferer.SessionDetailsFragmentListener;
 import com.akqa.kiev.android.conferer.model.SessionData;
 import com.akqa.kiev.android.conferer.model.SpeakerData;
+import com.akqa.kiev.android.conferer.service.ConfererDbService;
 import com.akqa.kiev.android.conferer.service.ConfererService;
 import com.akqa.kiev.android.conferer.service.ConfererWebService;
 import com.androidquery.AQuery;
@@ -48,7 +49,7 @@ public class SessionDetailsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		confererService = new ConfererWebService();
+		confererService = new ConfererDbService(getActivity());
 		sessionTimeFormat = new SimpleDateFormat("HH:mm");
 		sessionDateFormat = new SimpleDateFormat("dd MMMM yyyy, EEE");
 		sessionDetailsFragmentListener = (SessionDetailsFragmentListener) getActivity();
