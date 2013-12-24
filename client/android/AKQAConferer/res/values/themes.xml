@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- New Conferer styling -->
 
-	<style name="ConfererBaseTheme"
-           parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="ConfererBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/ConfererActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/ConfererActionBarOverflow</item>
     </style>
 
     <!-- ActionBar styles -->
-    <style name="ConfererActionBar"
-           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="ConfererActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/actionbar_background_color</item>
         <item name="android:titleTextStyle">@style/ConfererActionBarTitleText</item>
     </style>
-    
+
     <!-- ActionBar title text -->
-    <style name="ConfererActionBarTitleText"
-           parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <style name="ConfererActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/actionbar_title_text_color</item>
     </style>
-    
+
+    <!-- ActionBar overflow button -->
+    <style name="ConfererActionBarOverflow" parent="@android:style/Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_overflow</item>
+    </style>
+
 </resources>

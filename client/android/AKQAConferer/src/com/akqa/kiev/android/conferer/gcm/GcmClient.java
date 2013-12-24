@@ -32,8 +32,8 @@ public class GcmClient {
 				.isGooglePlayServicesAvailable(activity);
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
-						PLAY_SERVICES_RESOLUTION_REQUEST).show();
+				//GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
+						//PLAY_SERVICES_RESOLUTION_REQUEST).show();
 			} else {
 				Log.i(getClass().getName(), "This device is not supported.");
 				activity.finish();

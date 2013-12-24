@@ -12,10 +12,10 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    
-     <permission
-        android:name="com.akqa.kiev.android.conferer.permission.C2D_MESSAGE" 
-        android:protectionLevel="signature"/>
+
+    <permission
+        android:name="com.akqa.kiev.android.conferer.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="com.akqa.kiev.android.conferer.permission.C2D_MESSAGE" />
 
@@ -63,6 +63,13 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:name="SettingsActivity"
+            android:parentActivityName="com.akqa.kiev.android.conferer.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.akqa.kiev.android.conferer.StartActivity" />
+        </activity>
 
         <provider
             android:name=".SearchSuggestionProvider"
@@ -81,25 +88,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akqa.kiev.android.conferer.StartActivity" />
         </activity>
-        
-         <!-- GCM -->
+
+        <!-- GCM -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        
+
         <receiver
             android:name="com.akqa.kiev.android.conferer.gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />                
-                
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.akqa.kiev.android.conferer" />
             </intent-filter>
         </receiver>
-        
+
         <service android:name="com.akqa.kiev.android.conferer.gcm.GcmIntentService" />
-        <!-- -->
-        
+        <!--  -->
+
     </application>
 
 </manifest>

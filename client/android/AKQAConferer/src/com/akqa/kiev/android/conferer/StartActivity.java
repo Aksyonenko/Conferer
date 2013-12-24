@@ -101,6 +101,11 @@ public class StartActivity extends FragmentActivity implements OnConferenceSelec
 		if(mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
+		switch(item.getItemId()) {
+		case R.id.menu_settings:
+			Intent settingsIntent = new Intent(this, SettingsActivity.class);
+			startActivity(settingsIntent);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
